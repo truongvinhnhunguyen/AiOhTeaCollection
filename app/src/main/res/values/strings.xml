@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">AiohTeaCollection</string>
     <string name="action_settings">Settings</string>
+    <string name="button">Button</string>
+    <string name="add_switch">ADD SWITCH</string>
+    <string name="add_switch_guide">Enter ID and Description of switch that was attached to network, press ADD SWITCH button to add the switch to your device collection.</string>
+    <string name="switch_desc_box">Switch Description</string>
+    <string name="switch_id_box">Switch ID</string>
 </resources>
