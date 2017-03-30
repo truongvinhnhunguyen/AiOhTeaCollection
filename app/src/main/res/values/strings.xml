@@ -6,4 +6,5 @@
     <string name="add_switch_guide">Enter ID and Description of switch that was attached to network, press ADD SWITCH button to add the switch to your device collection.</string>
     <string name="switch_desc_box">Switch Description</string>
     <string name="switch_id_box">Switch ID</string>
+    <string name="action_about">About...</string>
 </resources>
