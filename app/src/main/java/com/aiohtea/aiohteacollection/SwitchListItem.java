@@ -10,10 +10,24 @@ public class SwitchListItem extends DeviceListItem {
     }
 
     public int getStatusImgRscId(){
-        if(this.m_deviceStatus == 0){
-            return R.mipmap.aiohtea_sw_off;
-        }else {
-            return R.mipmap.aiohtea_sw_on;
+        switch (this.m_deviceStatus) {
+            case 0:
+                return R.mipmap.aiohtea_sw_off;
+            case 1:
+                return R.mipmap.aiohtea_sw_on;
+            default:
+                return R.mipmap.aiohtea_sw_offline;
+        }
+    }
+
+    public String getDeviceStatusText() {
+        switch (this.m_deviceStatus) {
+            case 0:
+                return "STATUS: OFF";
+            case 1:
+                return "STATUS: ON";
+            default:
+                return "STATUS: OFFLINE";
         }
     }
 }

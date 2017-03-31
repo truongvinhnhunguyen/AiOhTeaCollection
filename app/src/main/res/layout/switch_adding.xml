@@ -51,6 +51,7 @@
         android:id="@+id/switch_adding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="addSwitchOnClick"
         android:paddingTop="10dp"
         android:text="@string/add_switch" />
     <Space

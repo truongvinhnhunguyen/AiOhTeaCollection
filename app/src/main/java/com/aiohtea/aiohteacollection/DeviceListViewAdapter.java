@@ -22,6 +22,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         ImageView   m_itemIcon;
         TextView    m_itemName;
         TextView    m_itemDesc;
+        TextView    m_itemStatus;
     }
 
     private Context m_context;
@@ -42,15 +43,17 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.device_list_item, null);
             holder = new ViewHolder();
+            holder.m_itemIcon = (ImageView) convertView.findViewById(R.id.item_icon);
             holder.m_itemName = (TextView) convertView.findViewById(R.id.item_name);
             holder.m_itemDesc = (TextView) convertView.findViewById(R.id.item_desc);
-            holder.m_itemIcon = (ImageView) convertView.findViewById(R.id.item_icon);
+            holder.m_itemStatus = (TextView) convertView.findViewById(R.id.item_status);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
 
         holder.m_itemName.setText(rowItem.getDeviceName());
         holder.m_itemDesc.setText(rowItem.getDeviceDesc());
+        holder.m_itemStatus.setText(rowItem.getDeviceStatusText());
         holder.m_itemIcon.setImageResource(rowItem.getStatusImgRscId());
 
         return convertView;

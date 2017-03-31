@@ -40,4 +40,5 @@ abstract public class DeviceListItem {
     }
 
     abstract int getStatusImgRscId();
+    abstract String getDeviceStatusText();
 }

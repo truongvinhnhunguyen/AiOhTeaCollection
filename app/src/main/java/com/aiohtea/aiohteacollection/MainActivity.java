@@ -1,6 +1,8 @@
 package com.aiohtea.aiohteacollection;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         m_swList = new ArrayList<DeviceListItem>();
 
-        for(int i = 0; i<20; i++){
-            m_swList.add(new SwitchListItem("Switch" + i, "Description of: "+i, i%2));
+        for(int i = 0; i<3; i++){
+            m_swList.add(new SwitchListItem("Switch-" + i, "Description of: "+i, i%3));
         }
 
         ListView listView = (ListView)findViewById(R.id.device_list);
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
               Intent intent = new Intent(m_t, SwitchAdding.class);
-              startActivity(intent);
+              startActivityForResult(intent, 1);
             }
         }
 
@@ -63,9 +65,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fab.setOnClickListener(new Xxx(this));
     }
 
+    static void myToast(Context ctx, String msg){
+        Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+
+        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+    }
+
+    // Take data from called child such as SwitchAdding
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    String switchId = data.getStringExtra("switchid");
+                    String switchDesc = data.getStringExtra("switchdesc");
+                    myToast(getApplicationContext(), switchId + "-" + switchDesc);
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast toast = Toast.makeText(getApplicationContext(),
                 "Item " + (position + 1) + ": " + m_swList.get(position),
                 Toast.LENGTH_SHORT);
