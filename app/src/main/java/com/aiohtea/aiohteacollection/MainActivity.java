@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
@@ -17,17 +18,28 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    List<DeviceListItem> m_swList;
+    List<DeviceListItem> m_devList;
+    ListView m_listView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.activity_main);
 
@@ -35,17 +47,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         setSupportActionBar(toolbar);
 
-        m_swList = new ArrayList<DeviceListItem>();
+        m_devList = new ArrayList<DeviceListItem>();
 
-        for(int i = 0; i<3; i++){
-            m_swList.add(new SwitchListItem("Switch-" + i, "Description of: "+i, i%3));
-        }
+        m_devList.add(new SwitchListItem(this, "ASWITCH0001", "My first AiOhTea stuff",
+                "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x"));
 
-        ListView listView = (ListView)findViewById(R.id.device_list);
+        m_listView = (ListView)findViewById(R.id.device_list);
 
-        listView.setAdapter(new DeviceListViewAdapter(this, R.layout.device_list_item, m_swList));
+        m_listView.setAdapter(new DeviceListViewAdapter(this, R.layout.device_list_item, m_devList));
 
-        listView.setOnItemClickListener(this);
+        m_listView.setOnItemClickListener(this);
 
 
         // Class to listen Floating Action Button
@@ -65,21 +76,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fab.setOnClickListener(new Xxx(this));
     }
 
+    // --------------------------------------------------------------------------------------------
+    // A utility to post a Toast of information to screen
+    // --------------------------------------------------------------------------------------------
     static void myToast(Context ctx, String msg){
         Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
 
         toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
     }
-
+    // --------------------------------------------------------------------------------------------
     // Take data from called child such as SwitchAdding
+    // --------------------------------------------------------------------------------------------
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode) {
-            case 1:
+            case 1: // Floating button returns for adding a new device to list
                 if (resultCode == Activity.RESULT_OK) {
                     String switchId = data.getStringExtra("switchid");
                     String switchDesc = data.getStringExtra("switchdesc");
@@ -89,14 +104,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
         }
     }
+    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
+    public void refreshDeviceList(DeviceListItem item){
+        Log.d("MQTT MAIN", "List refreshed!");
+        DeviceListViewAdapter a = (DeviceListViewAdapter)m_listView.getAdapter();
+        a.notifyDataSetChanged();
+    }
 
+    // --------------------------------------------------------------------------------------------
+    // An item in device list is clicked.
+    // It call DeviceListItem.onClick for corresponding activities
+    // --------------------------------------------------------------------------------------------
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Item " + (position + 1) + ": " + m_swList.get(position),
-                Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
+
+        DeviceListItem clickedDevice = m_devList.get(position);
+
+        myToast(getApplicationContext(), "Publishing " + (position + 1) + ": "
+                + clickedDevice.getDeviceName());
+
+        clickedDevice.onClick(getApplicationContext(), parent, view, position, id);
     }
 
     @Override
