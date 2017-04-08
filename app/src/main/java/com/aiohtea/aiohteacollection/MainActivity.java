@@ -18,15 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new Xxx(this));
+
+        // Test
+        //m_devList.get(0).deviceStore(0);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -88,6 +83,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // --------------------------------------------------------------------------------------------
     // Take data from called child such as SwitchAdding
     // --------------------------------------------------------------------------------------------
+    void deviceStore(){
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -120,9 +119,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         DeviceListItem clickedDevice = m_devList.get(position);
-
-        myToast(getApplicationContext(), "Publishing " + (position + 1) + ": "
-                + clickedDevice.getDeviceName());
 
         clickedDevice.onClick(getApplicationContext(), parent, view, position, id);
     }

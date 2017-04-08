@@ -1,22 +1,21 @@
 package com.aiohtea.aiohteacollection;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.internal.wire.MqttWireMessage;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Nguyen Truong on 3/30/2017.
@@ -55,12 +54,14 @@ public class SwitchListItem extends DeviceListItem {
     @Override
     public String getDeviceStatusText() {
         switch (this.m_deviceStatus) {
-            case 0:
+            case SW_OFF:
                 return "STATUS: OFF";
-            case 1:
+            case SW_ON:
                 return "STATUS: ON";
-            default:
+            case SW_OFFLINE:
                 return "STATUS: OFFLINE";
+            default:
+                return "Tap to connect server";
         }
     }
 
@@ -71,18 +72,21 @@ public class SwitchListItem extends DeviceListItem {
     @Override
     void onClick(Context ctx, AdapterView<?> parent, View view, int position, long id){
 
-        if (m_deviceStatus == SW_OFFLINE) { // OFFLINE, connect to MQTT server
+        if (m_deviceStatus == APP_NOT_CONNECTED) { // OFFLINE, connect to MQTT server
             // Prepare MQTT connection
-            MqttAndroidClient client = new MqttAndroidClient(ctx, m_mqttServerUri, m_deviceName);
+            MqttAndroidClient client = new MqttAndroidClient(ctx, m_mqttServerUri, m_deviceName+"APP");
+
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(m_mqttUser);
             options.setPassword(m_mqttPassword.toCharArray());
+            //options.setAutomaticReconnect(true);
 
             try {
-                IMqttToken token = client.connect(options);
+                m_mqttToken = client.connect(options);
+
                 client.setCallback(new SwitchStatusListener(this));
 
-                token.setActionCallback(new IMqttActionListener() {
+                m_mqttToken.setActionCallback(new IMqttActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
                         // Connected, subscribing switch status topic
@@ -120,6 +124,21 @@ public class SwitchListItem extends DeviceListItem {
             }
         } else { // Online, send cmd to MQTT server
 
+            byte[] payload = {'0'};
+
+            switch (m_deviceStatus){
+                case SW_OFF: payload[0] = '1'; break;
+                case SW_ON: payload[0] = '0'; break;
+            }
+
+            try {
+                MqttMessage message = new MqttMessage(payload);
+                message.setRetained(true);
+
+                m_mqttToken.getClient().publish("AiOhTea/" + m_deviceName + "/Cmd", message);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -151,9 +170,6 @@ public class SwitchListItem extends DeviceListItem {
         public void connectionLost(Throwable cause){
             cause.printStackTrace();
         }
-
-
-
     }
 }
 
