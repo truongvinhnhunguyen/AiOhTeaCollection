@@ -28,9 +28,15 @@ public class SwitchListItem extends DeviceListItem {
     public static final int SW_OFFLINE = 2;
 
 
+    public SwitchListItem(MainActivity mainActivity, String deviceName){
+        super(mainActivity, deviceName);
+        m_deviceType = SWITCH_DEV_TYPE;
+    }
+
     public SwitchListItem(MainActivity mainActivity, String deviceName, String devicceDesc,
                           String mqttServerUri, String mqttUser, String mqttPassword) {
         super(mainActivity, deviceName, devicceDesc, mqttServerUri, mqttUser, mqttPassword);
+        m_deviceType = SWITCH_DEV_TYPE;
     }
 
     // --------------------------------------------------------------------------------------------
@@ -43,8 +49,10 @@ public class SwitchListItem extends DeviceListItem {
                 return R.mipmap.aiohtea_sw_off;
             case 1:
                 return R.mipmap.aiohtea_sw_on;
-            default:
+            case 2:
                 return R.mipmap.aiohtea_sw_offline;
+            default:
+                return R.mipmap.aiohtea_sw_no_info;
         }
     }
 
@@ -55,16 +63,15 @@ public class SwitchListItem extends DeviceListItem {
     public String getDeviceStatusText() {
         switch (this.m_deviceStatus) {
             case SW_OFF:
-                return "STATUS: OFF";
+                return m_mainActivity.getString(R.string.sw_off);
             case SW_ON:
-                return "STATUS: ON";
+                return m_mainActivity.getString(R.string.sw_on);
             case SW_OFFLINE:
-                return "STATUS: OFFLINE";
+                return m_mainActivity.getString(R.string.sw_off_line);
             default:
-                return "Tap to connect server";
+                return m_mainActivity.getString(R.string.sw_unknown);
         }
     }
-
 
     // --------------------------------------------------------------------------------------------
     // Called when DeviceList View on MainActivity is clicked
@@ -73,13 +80,14 @@ public class SwitchListItem extends DeviceListItem {
     void onClick(Context ctx, AdapterView<?> parent, View view, int position, long id){
 
         if (m_deviceStatus == APP_NOT_CONNECTED) { // OFFLINE, connect to MQTT server
+
             // Prepare MQTT connection
-            MqttAndroidClient client = new MqttAndroidClient(ctx, m_mqttServerUri, m_deviceName+"APP");
+            MqttAndroidClient client = new MqttAndroidClient(ctx, m_mqttServerUri,
+                    m_deviceName+Long.toString(System.currentTimeMillis()));
 
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(m_mqttUser);
             options.setPassword(m_mqttPassword.toCharArray());
-            //options.setAutomaticReconnect(true);
 
             try {
                 m_mqttToken = client.connect(options);
@@ -97,8 +105,10 @@ public class SwitchListItem extends DeviceListItem {
                             subToken.setActionCallback(new IMqttActionListener() {
                                 @Override
                                 public void onSuccess(IMqttToken asyncActionToken) {
-                                    // The message was published
-                                    Log.d("MQTT", "Message came");
+                                    // Once subcribe successfully, change switch status to offline
+                                    m_deviceStatus = SW_OFFLINE;
+                                    m_mainActivity.refreshDeviceList();
+                                    Log.d("MQTT", "Subscribe successfully");
                                 }
 
                                 @Override
@@ -133,7 +143,6 @@ public class SwitchListItem extends DeviceListItem {
 
             try {
                 MqttMessage message = new MqttMessage(payload);
-                message.setRetained(true);
 
                 m_mqttToken.getClient().publish("AiOhTea/" + m_deviceName + "/Cmd", message);
             } catch (MqttException e) {
@@ -157,7 +166,7 @@ public class SwitchListItem extends DeviceListItem {
             // Message arrived
             // Action: check current status and update list correspondingly
             m_deviceStatus = Character.getNumericValue(message.getPayload()[0]);
-            m_mainActivity.refreshDeviceList(m_switchListItem);
+            m_mainActivity.refreshDeviceList();
 
             Log.d("MQTT", "Message arrived");
             Log.d("MQTT", topic+":"+m_deviceStatus);

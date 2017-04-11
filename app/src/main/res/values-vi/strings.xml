@@ -2,8 +2,19 @@
 <resources>
     <string name="app_name">AiohTeaCollection</string>
     <string name="action_settings">Cài đặt</string>
+    <string name="button">Button</string>
     <string name="add_switch">THÊM CÔNG TẮC</string>
     <string name="add_switch_guide">Nhập ID và Mô tả của công tắc đã được nối mạng. Sau đó, nhấn nút THÊM CÔNG TẮC để thêm vào danh sách thiết bị của bạn.</string>
     <string name="switch_desc_box">Mô tả công tắc</string>
-    <string name="switch_id_box">ID của công tắc</string>
+    <string name="switch_id_box">Tên của công tắc</string>
+    <string name="action_about">About...</string>
+    <string name="guide">1. Press (+) button to add your devices\n2. Tap an added device to control</string>
+    <string name="guide_title">HELP</string>
+    <string name="guide_description">Short guidance:</string>
+
+    <!--> SWITCH STATUS</!-->
+    <string name="sw_on">"STATUS: ON"</string>
+    <string name="sw_off">"STATUS: OFF"</string>
+    <string name="sw_off_line">"STATUS: OFFLINE"</string>
+    <string name="sw_unknown">"Tap to find the switch"</string>
 </resources>

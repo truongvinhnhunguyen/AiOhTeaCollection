@@ -4,28 +4,35 @@ package com.aiohtea.aiohteacollection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+//@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    List<DeviceListItem> m_devList;
-    ListView m_listView;
+    private List<DeviceListItem> m_devList;
+    private ListView m_listView;
 
 
     @Override
@@ -39,17 +46,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         setSupportActionBar(toolbar);
 
-        m_devList = new ArrayList<DeviceListItem>();
+        m_devList = new ArrayList<>();
 
-        m_devList.add(new SwitchListItem(this, "ASWITCH0001", "My first AiOhTea stuff",
-                "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x"));
+        // Load added devices
+        deviceLoad();
 
         m_listView = (ListView)findViewById(R.id.device_list);
 
         m_listView.setAdapter(new DeviceListViewAdapter(this, R.layout.device_list_item, m_devList));
 
-        m_listView.setOnItemClickListener(this);
+        m_listView.setLongClickable(true);
 
+        m_listView.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+            int pos, long id) {
+                // TODO Auto-generated method stub
+
+                Log.v("long clicked","pos: " + pos);
+
+                return true;
+            }
+        });
+
+        m_listView.setOnItemClickListener(this);
 
         // Class to listen Floating Action Button
         class Xxx implements View.OnClickListener{
@@ -66,10 +86,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new Xxx(this));
-
-        // Test
-        //m_devList.get(0).deviceStore(0);
-    }
+     }
 
     // --------------------------------------------------------------------------------------------
     // A utility to post a Toast of information to screen
@@ -83,8 +100,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // --------------------------------------------------------------------------------------------
     // Take data from called child such as SwitchAdding
     // --------------------------------------------------------------------------------------------
-    void deviceStore(){
+    void deviceLoad(){
+        SharedPreferences settings = this.getSharedPreferences
+                (getString(R.string.app_name), MODE_PRIVATE);
 
+        // Load Switch
+        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
+                ("SW_NAME_LIST", new HashSet<String>());
+
+        int numDev = nameSet.size();
+        Log.d("MAIN_ACT: Numdev stored", Integer.toString(numDev));
+
+        if (numDev == 0) return;
+
+        String[] nameList = new String[numDev];
+        nameSet.toArray(nameList);
+
+
+        for(int i = 0; i < numDev; i++){
+            DeviceListItem item = new SwitchListItem(this, nameList[i]);
+            item.deviceLoad();
+            m_devList.add(item);
+        }
     }
 
     @Override
@@ -94,9 +131,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         switch(requestCode) {
             case 1: // Floating button returns for adding a new device to list
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == DeviceListItem.SWITCH_DEV_TYPE) {
                     String switchId = data.getStringExtra("switchid");
                     String switchDesc = data.getStringExtra("switchdesc");
+
+                    DeviceListItem item = new SwitchListItem(this, switchId, switchDesc,
+                                  "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
+
+                    m_devList.add(item);
+                    refreshDeviceList();
+
+                    // Write to disk
+                    item.deviceStore();
+
+                    SharedPreferences settings = getSharedPreferences
+                            (getString(R.string.app_name) , Context.MODE_PRIVATE);
+
+                    SharedPreferences.Editor editor = settings.edit();
+
+                    HashSet<String> nameList = new HashSet<String>();
+
+                    for(int i=0; i < m_devList.size(); i++){
+                        nameList.add(m_devList.get(i).getDeviceName());
+
+                        Log.d("MAIN_ACT", m_devList.get(i).getDeviceName());
+                    }
+
+                    editor.putStringSet("SW_NAME_LIST", nameList);
+
+                    editor.commit();
+
                     myToast(getApplicationContext(), switchId + "-" + switchDesc);
                 }
 
@@ -105,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
     // --------------------------------------------------------------------------------------------
     // --------------------------------------------------------------------------------------------
-    public void refreshDeviceList(DeviceListItem item){
-        Log.d("MQTT MAIN", "List refreshed!");
+    public void refreshDeviceList(){
+        Log.d("MAIN", "List refreshed!");
         DeviceListViewAdapter a = (DeviceListViewAdapter)m_listView.getAdapter();
         a.notifyDataSetChanged();
     }

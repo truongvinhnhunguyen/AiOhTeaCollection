@@ -19,15 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="30dp" />
 
-
     <EditText
         android:id="@+id/switch_id_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/switch_id_box"
-        tools:text="@string/switch_id_box" />
+        android:hint="@string/switch_id_box"
+        android:inputType="text"
+        android:maxLength="32"
+        android:text="ASWITCH0001"
+        android:textColor="@android:color/holo_blue_dark" />
 
     <Space
         android:layout_width="match_parent"
@@ -38,10 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/switch_desc_box"
         android:inputType="textPersonName"
-        android:text="@string/switch_desc_box"
-        android:textSize="15dp"
-        tools:text="@string/switch_desc_box" />
+        android:text="Move around switch."
+        android:textSize="15sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -59,7 +60,7 @@
         android:layout_height="30dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_switch_guide"

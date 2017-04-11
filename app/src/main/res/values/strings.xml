@@ -5,6 +5,15 @@
     <string name="add_switch">ADD SWITCH</string>
     <string name="add_switch_guide">Enter ID and Description of switch that was attached to network, press ADD SWITCH button to add the switch to your device collection.</string>
     <string name="switch_desc_box">Switch Description</string>
-    <string name="switch_id_box">Switch ID</string>
+    <string name="switch_id_box">Switch Name</string>
     <string name="action_about">About...</string>
+    <string name="guide">1. Press (+) button to add your devices\n2. Tap an added device to control</string>
+    <string name="guide_title">HELP</string>
+    <string name="guide_description">Short guidance:</string>
+
+    <!--> SWITCH STATUS</!-->
+    <string name="sw_on">"STATUS: ON"</string>
+    <string name="sw_off">"STATUS: OFF"</string>
+    <string name="sw_off_line">"STATUS: OFFLINE"</string>
+    <string name="sw_unknown">"Tap to find the switch"</string>
 </resources>

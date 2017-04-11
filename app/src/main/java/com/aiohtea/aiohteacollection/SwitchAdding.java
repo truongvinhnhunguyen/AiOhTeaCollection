@@ -26,7 +26,7 @@ public class SwitchAdding extends AppCompatActivity {
         resultIntent.putExtra("switchdesc", switchDescBox.getText().toString());
 
 
-        setResult(Activity.RESULT_OK, resultIntent);
+        setResult(DeviceListItem.SWITCH_DEV_TYPE, resultIntent);
 
         finish();
 
