@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AiohTeaCollection</string>
-    <string name="action_settings">Cài đặt</string>
+    <string name="action_setingup_devices">Cài đặt thiết bị...</string>
     <string name="button">Button</string>
     <string name="add_switch">THÊM CÔNG TẮC</string>
     <string name="add_switch_guide">Nhập ID và Mô tả của công tắc đã được nối mạng. Sau đó, nhấn nút THÊM CÔNG TẮC để thêm vào danh sách thiết bị của bạn.</string>

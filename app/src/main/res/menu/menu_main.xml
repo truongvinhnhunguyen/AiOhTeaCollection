@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aiohtea.aiohteacollection.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_setingup_devices"
+        android:checkable="false"
         android:orderInCategory="100"
-        android:title="@string/action_settings" />
+        android:title="@string/action_setingup_devices" />
     <item
         android:id="@+id/action_about"
         android:orderInCategory="100"

@@ -1,39 +1,31 @@
 package com.aiohtea.aiohteacollection;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 //@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private List<DeviceListItem> m_devList;
     private ListView m_listView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +80,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fab.setOnClickListener(new Xxx(this));
      }
 
+    @Override
     // --------------------------------------------------------------------------------------------
-    // A utility to post a Toast of information to screen
+    // Process Overflow menu (3 vetical dots menu) on App Bar
     // --------------------------------------------------------------------------------------------
-    static void myToast(Context ctx, String msg){
-        Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_setingup_devices:
+                Intent intent = new Intent(this, SwitchSetup.class);
+                startActivityForResult(intent, 2);
 
-        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
+                myToast(this, "Settingup...");
+                return true;
+
+            case R.id.action_about:
+                myToast(this, "About...");
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
+
+
     // --------------------------------------------------------------------------------------------
     // Take data from called child such as SwitchAdding
     // --------------------------------------------------------------------------------------------
@@ -123,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             m_devList.add(item);
         }
     }
-
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -165,9 +176,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
                 break;
+
+            case 2: // "Setup device..." overflow menu
+                myToast(this, "Setup return");
+                break;
         }
     }
     // --------------------------------------------------------------------------------------------
+    // Ensure change in data is displayed to the devices list
     // --------------------------------------------------------------------------------------------
     public void refreshDeviceList(){
         Log.d("MAIN", "List refreshed!");
@@ -187,6 +203,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         clickedDevice.onClick(getApplicationContext(), parent, view, position, id);
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Android Studio created
+    // --------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -194,18 +213,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    // --------------------------------------------------------------------------------------------
+    // A utility to post a Toast of information to screen
+    // --------------------------------------------------------------------------------------------
+    static void myToast(Context ctx, String msg){
+        Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
     }
-}
+
+} // End class
