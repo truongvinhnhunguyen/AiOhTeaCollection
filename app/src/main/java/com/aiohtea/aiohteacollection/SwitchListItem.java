@@ -86,8 +86,11 @@ public class SwitchListItem extends DeviceListItem {
                     m_deviceName+Long.toString(System.currentTimeMillis()));
 
             MqttConnectOptions options = new MqttConnectOptions();
-            options.setUserName(m_mqttUser);
-            options.setPassword(m_mqttPassword.toCharArray());
+
+            if(!m_mqttUser.matches("")) {
+                options.setUserName(m_mqttUser);
+                options.setPassword(m_mqttPassword.toCharArray());
+            }
 
             try {
                 m_mqttToken = client.connect(options);

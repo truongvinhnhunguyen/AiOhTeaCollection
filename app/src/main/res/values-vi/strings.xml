@@ -6,15 +6,29 @@
     <string name="add_switch">THÊM CÔNG TẮC</string>
     <string name="add_switch_guide">Nhập ID và Mô tả của công tắc đã được nối mạng. Sau đó, nhấn nút THÊM CÔNG TẮC để thêm vào danh sách thiết bị của bạn.</string>
     <string name="switch_desc_box">Mô tả công tắc</string>
+    <string name="switch_desc_guide">Such as \"Irrigation system\"</string>
+
     <string name="switch_id_box">Tên của công tắc</string>
     <string name="action_about">About...</string>
-    <string name="guide">1. Press (+) button to add your devices\n2. Tap an added device to control</string>
-    <string name="guide_title">HELP</string>
-    <string name="guide_description">Short guidance:</string>
+    <string name="about_text">IoT should make our life easy and enjoyable\n
+        like having tea.</string>
 
     <!--> SWITCH STATUS</!-->
     <string name="sw_on">"STATUS: ON"</string>
     <string name="sw_off">"STATUS: OFF"</string>
     <string name="sw_off_line">"STATUS: OFFLINE"</string>
     <string name="sw_unknown">"Tap to find the switch"</string>
+
+    <!--> SWITCH SETUP</!-->
+    <string name="setup_switch_guide_1">Should be a name that is easy to remeber</string>
+    <string name="setup_switch_guide_2">WiFi access point name where the switch will connect to</string>
+    <string name="setup_switch_guide_3">WiFi password</string>
+
+    <string name="setup_switch">SETUP SWITCH</string>
+    <string name="wifi_ssid_box">WiFi SSID</string>
+    <string name="wifi_password_box">WiFi password</string>
+    <string name="option_check_box">Add new switch to device list</string>
+    <string name="can_not_be_empty">can not be empty.</string>
+
+
 </resources>

@@ -85,16 +85,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Process Overflow menu (3 vetical dots menu) on App Bar
     // --------------------------------------------------------------------------------------------
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_setingup_devices:
-                Intent intent = new Intent(this, SwitchSetup.class);
+                intent = new Intent(this, SwitchSetup.class);
                 startActivityForResult(intent, 2);
-
-                myToast(this, "Settingup...");
                 return true;
 
             case R.id.action_about:
-                myToast(this, "About...");
+                intent = new Intent(this, About.class);
+                startActivity(intent);
                 return true;
 
             default:
@@ -143,45 +144,60 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch(requestCode) {
             case 1: // Floating button returns for adding a new device to list
                 if (resultCode == DeviceListItem.SWITCH_DEV_TYPE) {
-                    String switchId = data.getStringExtra("switchid");
-                    String switchDesc = data.getStringExtra("switchdesc");
+                    String switchId = data.getStringExtra("SW_NAME");
+                    String switchDesc = data.getStringExtra("SW_DESC");
 
                     DeviceListItem item = new SwitchListItem(this, switchId, switchDesc,
                                   "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
-
-                    m_devList.add(item);
-                    refreshDeviceList();
-
-                    // Write to disk
-                    item.deviceStore();
-
-                    SharedPreferences settings = getSharedPreferences
-                            (getString(R.string.app_name) , Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = settings.edit();
-
-                    HashSet<String> nameList = new HashSet<String>();
-
-                    for(int i=0; i < m_devList.size(); i++){
-                        nameList.add(m_devList.get(i).getDeviceName());
-
-                        Log.d("MAIN_ACT", m_devList.get(i).getDeviceName());
-                    }
-
-                    editor.putStringSet("SW_NAME_LIST", nameList);
-
-                    editor.commit();
-
-                    myToast(getApplicationContext(), switchId + "-" + switchDesc);
+                    addDeviceToList(item);
                 }
-
                 break;
 
             case 2: // "Setup device..." overflow menu
-                myToast(this, "Setup return");
+                if(resultCode == 2){ //Add to list
+                    String swName = data.getStringExtra("SW_NAME");
+
+                    DeviceListItem item = new SwitchListItem(this, swName,
+                            "Atomatically added", "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
+                    addDeviceToList(item);
+                }
+
+                if(resultCode == -1)
+                    myToast(this, "Setup error!");
+                else
+                    if(resultCode != 0)
+                        myToast(this, "Setup successfully!!");
                 break;
         }
     }
+    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
+    public void addDeviceToList(DeviceListItem item){
+
+        m_devList.add(item);
+        refreshDeviceList();
+
+        // Write to disk
+        item.deviceStore();
+
+        SharedPreferences settings = getSharedPreferences
+                (getString(R.string.app_name) , Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+
+        HashSet<String> nameList = new HashSet<String>();
+
+        for(int i=0; i < m_devList.size(); i++){
+            nameList.add(m_devList.get(i).getDeviceName());
+
+            Log.d("MAIN_ACT", m_devList.get(i).getDeviceName());
+        }
+
+        editor.putStringSet("SW_NAME_LIST", nameList);
+
+        editor.commit();
+    }
+
     // --------------------------------------------------------------------------------------------
     // Ensure change in data is displayed to the devices list
     // --------------------------------------------------------------------------------------------

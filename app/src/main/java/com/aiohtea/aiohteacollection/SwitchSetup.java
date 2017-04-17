@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.io.IOException;
@@ -32,27 +33,69 @@ public class SwitchSetup extends AppCompatActivity {
 
         // AP_ssid&AP_wiFiPass&MQTT_server&MQTT_port&MQTT_ClientID&MQTT_user&MQTT_pass&
         String setupMsg = new String();
+        String str = new String();
 
         EditText editBox = (EditText) findViewById(R.id.wifi_ssid_box);
-        setupMsg = editBox.getText().toString() + "&";
+        str = editBox.getText().toString();
+
+        if(!str.matches("")) {
+            setupMsg = str + "&";
+        }else {
+            MainActivity.myToast(this, getString(R.string.wifi_ssid_box)
+                    + " " + getString(R.string.can_not_be_empty));
+            editBox.requestFocus();
+            return;
+        }
 
         editBox = (EditText) findViewById(R.id.wifi_password_box);
-        setupMsg += editBox.getText().toString() + "&m10.cloudmqtt.com&14110&";
+        str = editBox.getText().toString();
+
+        if(!str.matches("")) {
+            setupMsg += str + "&m10.cloudmqtt.com&14110&";
+        }else {
+            MainActivity.myToast(this, getString(R.string.wifi_password_box)
+                    + " " + getString(R.string.can_not_be_empty));
+            editBox.requestFocus();
+            return;
+        }
 
         editBox = (EditText) findViewById(R.id.switch_id_box);
-        setupMsg += editBox.getText().toString() + "&nywjllog&DXwwL_1Bye8x&";
+        str = editBox.getText().toString();
+
+        if(!str.matches("")) {
+            setupMsg += str + "&nywjllog&DXwwL_1Bye8x&";
+        }else {
+            MainActivity.myToast(this, getString(R.string.switch_id_box)
+                    + " " + getString(R.string.can_not_be_empty));
+            editBox.requestFocus();
+            return;
+        }
+
 
         Log.d("SWITCH_SETUP", setupMsg);
 
         SwitchSetupThread swst = new SwitchSetupThread ();
         swst.execute(setupMsg);
 
+        // Wait until communication with Switch completed
         Integer result = swst.get();
 
         Log.d("SWITCH_SETUP THD RESULT", result.toString());
 
         Intent resultIntent = new Intent();
-        setResult(Activity.RESULT_OK, resultIntent);
+
+        int resultCode = -1; // Error
+
+        if(result == 0) { // Setup successfully
+            if (((CheckBox) findViewById(R.id.checkBox)).isEnabled()) {
+                resultCode = 2; // No error, add to list
+                resultIntent.putExtra("SW_NAME", str);
+            }else{ // No error, don't add to list
+                resultCode = 1;
+            }
+        }
+
+        setResult(resultCode, resultIntent);
 
         finish();
     }
@@ -68,17 +111,19 @@ public class SwitchSetup extends AppCompatActivity {
             final String ip = "192.168.4.1";
             final int port = 1109;
 
-            //final String ip = "192.168.2.11";
+            //final String ip = "192.168.190.152";
             //final int port = 8080;
+
 
             String setupMsg = params[0];
 
             Socket socket = null;
             try {
                 // Make socket to server
-                socket = new Socket(ip, port);
-                //serverSocket.connect(new InetSocketAddress(ip, port), 10000);
-                //Log.d("SWITCH_SETUP", "Connected!");
+                //socket = new Socket(ip, port);
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(ip, port), 3000);
+                Log.d("SWITCH_SETUP", "Connected!");
 
                 // Send data to server
                 socket.getOutputStream().write(setupMsg.getBytes());
@@ -86,7 +131,7 @@ public class SwitchSetup extends AppCompatActivity {
                 Log.d("SWITCH_SETUP", "Sent: " + setupMsg);
 
                 // Set timeout to wait for reading "OK" from Switch
-                socket.setSoTimeout(5000);
+                socket.setSoTimeout(3000);
 
                 byte[] buffer = new byte[8];
 
@@ -107,14 +152,21 @@ public class SwitchSetup extends AppCompatActivity {
                 e.printStackTrace();
                 return 2;
             } finally {
-                if (socket != null) {
+                if (socket != null) {/*
                     try {
                         socket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                         return 3;
-                    }
+                    }*/
                 }
+            }
+
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return 3;
             }
 
             return 0; // Successfully setup

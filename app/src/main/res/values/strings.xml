@@ -6,15 +6,15 @@
     <string name="button">Button</string>
     <string name="add_switch">ADD SWITCH</string>
     <string name="add_switch_guide">
-        Enter ID and Description of switch that was attached to network,
-        press ADD SWITCH button to add the switch to your device collection.
+        1.Enter ID and Description of a switch that will be/was attached to network\n
+        2.Press ADD SWITCH button to add the switch to your device collection.
     </string>
     <string name="switch_desc_box">Switch Description</string>
+    <string name="switch_desc_guide">Such as \"Irrigation system\"</string>
     <string name="switch_id_box">Switch Name</string>
     <string name="action_about">About...</string>
-    <string name="guide">1. Press (+) button to add your devices\n2. Tap an added device to control</string>
-    <string name="guide_title">HELP</string>
-    <string name="guide_description">Short guidance:</string>
+    <string name="about_text">IoT should make our life easy and enjoyable\n
+        like having tea.</string>
 
     <!--> SWITCH STATUS</!-->
     <string name="sw_on">"STATUS: ON"</string>
@@ -23,14 +23,14 @@
     <string name="sw_unknown">"Tap to find the switch"</string>
 
     <!--> SWITCH SETUP</!-->
-    <string name="setup_switch_guide">
-        \u0020+ Switch name: an easy to remember name\n
-        + WiFi SSID: WiFi name that the switch will connect to\n
-        + WiFi password: WiFi password
-    </string>
+    <string name="setup_switch_guide_1">Should be an easy to remember name</string>
+    <string name="setup_switch_guide_2">WiFi access point name where the switch will connect to</string>
+    <string name="setup_switch_guide_3">WiFi password to access to WiFi access point</string>
 
     <string name="setup_switch">SETUP SWITCH</string>
-    <string name="ssid_box">WiFi SSID</string>
+    <string name="wifi_ssid_box">WiFi SSID</string>
     <string name="wifi_password_box">WiFi password</string>
+    <string name="option_check_box">Add new switch to device list</string>
+    <string name="can_not_be_empty">can not be empty.</string>
 
 </resources>

@@ -10,14 +10,44 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:contentDescription="@string/app_name"
-        android:paddingTop="30dp"
+        android:paddingTop="15dp"
         app:srcCompat="@mipmap/aiohtea_sw_on" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="20dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_switch_guide"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/switch_id_box"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/setup_switch_guide_1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
 
     <EditText
         android:id="@+id/switch_id_box"
@@ -27,12 +57,29 @@
         android:hint="@string/switch_id_box"
         android:inputType="text"
         android:maxLength="32"
-        android:text="ASWITCH0001"
         android:textColor="@android:color/holo_blue_dark" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="10dp" />
+    <TextView
+        android:id="@+id/textView101"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/switch_desc_box"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/switch_desc_guide"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
 
     <EditText
         android:id="@+id/switch_desc_box"
@@ -41,12 +88,11 @@
         android:ems="10"
         android:hint="@string/switch_desc_box"
         android:inputType="textPersonName"
-        android:text="Move around switch."
         android:textSize="15sp" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="15dp" />
 
     <Button
         android:id="@+id/switch_adding"
@@ -55,16 +101,6 @@
         android:onClick="addSwitchOnClick"
         android:paddingTop="10dp"
         android:text="@string/add_switch" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_switch_guide"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
 
 </LinearLayout>
