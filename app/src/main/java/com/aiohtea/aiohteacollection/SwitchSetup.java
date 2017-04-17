@@ -1,14 +1,17 @@
 package com.aiohtea.aiohteacollection;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +26,10 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class SwitchSetup extends AppCompatActivity {
+
+    private String m_swName;
+    private Boolean m_addToList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +42,17 @@ public class SwitchSetup extends AppCompatActivity {
         String setupMsg = new String();
         String str = new String();
 
-        EditText editBox = (EditText) findViewById(R.id.wifi_ssid_box);
+        EditText editBox = (EditText) findViewById(R.id.switch_id_box);
+        m_swName = editBox.getText().toString();
+
+        if(m_swName.matches("")) {
+            MainActivity.myToast(this, getString(R.string.switch_id_box)
+                    + " " + getString(R.string.can_not_be_empty));
+            editBox.requestFocus();
+            return;
+        }
+
+        editBox = (EditText) findViewById(R.id.wifi_ssid_box);
         str = editBox.getText().toString();
 
         if(!str.matches("")) {
@@ -59,45 +76,20 @@ public class SwitchSetup extends AppCompatActivity {
             return;
         }
 
-        editBox = (EditText) findViewById(R.id.switch_id_box);
-        str = editBox.getText().toString();
-
-        if(!str.matches("")) {
-            setupMsg += str + "&nywjllog&DXwwL_1Bye8x&";
-        }else {
-            MainActivity.myToast(this, getString(R.string.switch_id_box)
-                    + " " + getString(R.string.can_not_be_empty));
-            editBox.requestFocus();
-            return;
-        }
-
+        setupMsg += m_swName + "&nywjllog&DXwwL_1Bye8x&";
 
         Log.d("SWITCH_SETUP", setupMsg);
+
+        m_addToList = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
 
         SwitchSetupThread swst = new SwitchSetupThread ();
         swst.execute(setupMsg);
 
-        // Wait until communication with Switch completed
-        Integer result = swst.get();
-
-        Log.d("SWITCH_SETUP THD RESULT", result.toString());
-
-        Intent resultIntent = new Intent();
-
-        int resultCode = -1; // Error
-
-        if(result == 0) { // Setup successfully
-            if (((CheckBox) findViewById(R.id.checkBox)).isEnabled()) {
-                resultCode = 2; // No error, add to list
-                resultIntent.putExtra("SW_NAME", str);
-            }else{ // No error, don't add to list
-                resultCode = 1;
-            }
-        }
-
-        setResult(resultCode, resultIntent);
-
-        finish();
+        // Waiting screen
+        setContentView(R.layout.about);
+        WebView image = (WebView) findViewById(R.id.wait_image);
+        image.loadDataWithBaseURL("file:///android_res/drawable/",
+                "<img style=\"display:block; margin-left:auto; margin-right:auto;\" src='loader.gif' />", "text/html", "utf-8", null);
     }
 
     private class SwitchSetupThread extends AsyncTask<String, Void, Integer> {
@@ -114,6 +106,7 @@ public class SwitchSetup extends AppCompatActivity {
             //final String ip = "192.168.190.152";
             //final int port = 8080;
 
+            publishProgress();
 
             String setupMsg = params[0];
 
@@ -121,8 +114,9 @@ public class SwitchSetup extends AppCompatActivity {
             try {
                 // Make socket to server
                 //socket = new Socket(ip, port);
+                Log.d("SWITCH_SETUP", "Connecting!");
                 socket = new Socket();
-                socket.connect(new InetSocketAddress(ip, port), 3000);
+                socket.connect(new InetSocketAddress(ip, port), 5000);
                 Log.d("SWITCH_SETUP", "Connected!");
 
                 // Send data to server
@@ -131,7 +125,7 @@ public class SwitchSetup extends AppCompatActivity {
                 Log.d("SWITCH_SETUP", "Sent: " + setupMsg);
 
                 // Set timeout to wait for reading "OK" from Switch
-                socket.setSoTimeout(3000);
+                socket.setSoTimeout(5000);
 
                 byte[] buffer = new byte[8];
 
@@ -143,7 +137,7 @@ public class SwitchSetup extends AppCompatActivity {
                 while (((bytesRead = inputStream.read(buffer)) != -1) && (bytesRead < 2)) {
                 }
 
-                Log.d("SWITCH_SETUP RESULT", new String(buffer));
+                Log.d("SWITCH_SETUP_RESULT", new String(buffer, 0, bytesRead));
 
             } catch (UnknownHostException e) {
                 e.printStackTrace();
@@ -175,6 +169,35 @@ public class SwitchSetup extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
+
+            // Wait until communication with Switch completed
+            //Integer result = swst.get();
+            //Integer result = new Integer(1);
+
+            Log.d("SWITCH_SETUP_THD_REST", result.toString());
+
+            Intent resultIntent = new Intent();
+
+            int resultCode = -1; // Error
+
+            if(result == 0) { // Setup successfully
+                if (m_addToList) {
+                    resultCode = 2; // No error, add to list
+                    resultIntent.putExtra("SW_NAME", m_swName);
+
+                }else{ // No error, don't add to list
+                    resultCode = 1;
+                }
+            }
+
+            setResult(resultCode, resultIntent);
+
+            finish();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void...p){
+
         }
     }
 }
