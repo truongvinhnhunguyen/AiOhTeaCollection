@@ -14,13 +14,5 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
-
-        WebView image = (WebView) findViewById(R.id.wait_image);
-
-        //image.loadUrl("file:///android_asset/loader.gif");
-
-        image.loadDataWithBaseURL("file:///android_res/drawable/",
-                "<img style=\"display:block; margin-left:auto; margin-right:auto;\" src='loader.gif' />", "text/html", "utf-8", null);
-
     }
 }

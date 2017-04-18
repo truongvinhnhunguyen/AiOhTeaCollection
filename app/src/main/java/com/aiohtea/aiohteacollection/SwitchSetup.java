@@ -86,10 +86,10 @@ public class SwitchSetup extends AppCompatActivity {
         swst.execute(setupMsg);
 
         // Waiting screen
-        setContentView(R.layout.about);
+        setContentView(R.layout.wait_view);
         WebView image = (WebView) findViewById(R.id.wait_image);
         image.loadDataWithBaseURL("file:///android_res/drawable/",
-                "<img style=\"display:block; margin-left:auto; margin-right:auto;\" src='loader.gif' />", "text/html", "utf-8", null);
+                "<img style=\"display:block; margin-left:auto; margin-right:auto;\" width=\"150\" height=\"150\" src='loader.gif' />", "text/html", "utf-8", null);
     }
 
     private class SwitchSetupThread extends AsyncTask<String, Void, Integer> {
@@ -106,7 +106,7 @@ public class SwitchSetup extends AppCompatActivity {
             //final String ip = "192.168.190.152";
             //final int port = 8080;
 
-            publishProgress();
+            //publishProgress();
 
             String setupMsg = params[0];
 

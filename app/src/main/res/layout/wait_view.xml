@@ -20,16 +20,23 @@
         android:layout_width="match_parent"
         android:layout_height="30dp" />
 
+    <WebView
+        android:id="@+id/wait_image"
+        android:layout_width="match_parent"
+        android:layout_height="160dp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:text="@string/about_text"
+        android:text="@string/wait_msg"
         android:textAlignment="center"
+        android:textColor="@android:color/holo_green_dark"
         android:textSize="18sp"
-        android:textStyle="italic" />
-
-
+        android:textStyle="bold|italic" />
 </LinearLayout>
