@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swName = data.getStringExtra("SW_NAME");
 
                     DeviceListItem item = new SwitchListItem(this, swName,
-                            "Atomatically added", "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
+                            "Automatically added", "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
                     addDeviceToList(item);
                 }
 
