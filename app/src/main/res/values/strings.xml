@@ -23,6 +23,15 @@
     <string name="sw_off_line">"STATUS: OFFLINE"</string>
     <string name="sw_unknown">"Tap to find the switch"</string>
 
+    <!--> SWITCH CONTROL MESSAGES</!-->
+    <string name="sw_conn_ok">"Successfully establishing connection"</string>
+    <string name="sw_conn_err">"Error in establishing connection"</string>
+    <string name="sw_subcribe_ok">"Listening switch's status"</string>
+    <string name="sw_subcribe_err">"Error in listening switch"</string>
+    <string name="sw_cmd_sent">"Command was sent"</string>
+    <string name="sw_cmd_err">"Command was sent"</string>
+    <string name="sw_offline_err">"Switch offline, could not send command"</string>
+
     <!--> SWITCH SETUP</!-->
     <string name="setup_switch_guide_1">Should be an easy to remember name</string>
     <string name="setup_switch_guide_2">WiFi access point name where the switch will connect to</string>

@@ -12,6 +12,7 @@
     <string name="action_about">About...</string>
     <string name="about_text">IoT should make our life easy and enjoyable\n
         like having tea.</string>
+    <string name="wait_msg">Processing..., please wait!</string>
 
     <!--> SWITCH STATUS</!-->
     <string name="sw_on">"STATUS: ON"</string>

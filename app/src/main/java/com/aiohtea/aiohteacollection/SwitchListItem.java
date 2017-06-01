@@ -102,6 +102,8 @@ public class SwitchListItem extends DeviceListItem {
                     public void onSuccess(IMqttToken asyncActionToken) {
                         // Connected, subscribing switch status topic
                         Log.d("MQTT", "Connected successfully");
+                        MainActivity.myToast
+                                (m_mainActivity, m_mainActivity.getString(R.string.sw_conn_ok));
                         try {
                             IMqttToken subToken = asyncActionToken.getClient().
                                     subscribe("AiOhTea/" + m_deviceName + "/Status", 1);
@@ -112,12 +114,16 @@ public class SwitchListItem extends DeviceListItem {
                                     m_deviceStatus = SW_OFFLINE;
                                     m_mainActivity.refreshDeviceList();
                                     Log.d("MQTT", "Subscribe successfully");
+                                    MainActivity.myToast
+                                            (m_mainActivity, m_mainActivity.getString(R.string.sw_subcribe_ok));
                                 }
 
                                 @Override
                                 public void onFailure(IMqttToken asyncActionToken,
                                                       Throwable exception) {
                                     Log.d("MY-MQTT", "Could not subscribe");
+                                    MainActivity.myToast
+                                            (m_mainActivity, m_mainActivity.getString(R.string.sw_subcribe_err));
                                 }
 
                             });
@@ -130,26 +136,42 @@ public class SwitchListItem extends DeviceListItem {
                     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                         // Something went wrong e.g. connection timeout or firewall problems
                         Log.d("MY-MQTT", "Connection failure");
+                        MainActivity.myToast
+                                (m_mainActivity, m_mainActivity.getString(R.string.sw_conn_err));
                     }
                 });
             } catch (MqttException e) {
                 e.printStackTrace();
             }
-        } else { // Online, send cmd to MQTT server
+        } else { // App connected to MQTT server, send cmd to MQTT server
 
-            byte[] payload = {'0'};
+            if (m_deviceStatus != SW_OFFLINE) { // Send command if switch online
+                byte[] payload = {'0'};
 
-            switch (m_deviceStatus){
-                case SW_OFF: payload[0] = '1'; break;
-                case SW_ON: payload[0] = '0'; break;
-            }
+                switch (m_deviceStatus) {
+                    case SW_OFF:
+                        payload[0] = '1';
+                        break;
+                    case SW_ON:
+                        payload[0] = '0';
+                        break;
+                }
 
-            try {
-                MqttMessage message = new MqttMessage(payload);
+                try {
+                    MqttMessage message = new MqttMessage(payload);
 
-                m_mqttToken.getClient().publish("AiOhTea/" + m_deviceName + "/Cmd", message);
-            } catch (MqttException e) {
-                e.printStackTrace();
+                    m_mqttToken.getClient().publish("AiOhTea/" + m_deviceName + "/Cmd", message);
+                    MainActivity.myToast
+                            (m_mainActivity, m_mainActivity.getString(R.string.sw_cmd_sent));
+
+                } catch (MqttException e) {
+                    MainActivity.myToast
+                            (m_mainActivity, m_mainActivity.getString(R.string.sw_cmd_err));
+                    e.printStackTrace();
+                }
+            } else {
+                MainActivity.myToast
+                        (m_mainActivity, m_mainActivity.getString(R.string.sw_offline_err));
             }
         }
     }
