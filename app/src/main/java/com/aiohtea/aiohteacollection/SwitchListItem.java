@@ -74,16 +74,17 @@ public class SwitchListItem extends DeviceListItem {
     }
 
     // --------------------------------------------------------------------------------------------
-    // Called when DeviceList View on MainActivity is clicked
+    // This function is called to change switch's status
     // --------------------------------------------------------------------------------------------
     @Override
-    void onClick(Context ctx, AdapterView<?> parent, View view, int position, long id){
+    void onClick(){
 
         if (m_deviceStatus == APP_NOT_CONNECTED) { // OFFLINE, connect to MQTT server
 
             // Prepare MQTT connection
-            MqttAndroidClient client = new MqttAndroidClient(ctx, m_mqttServerUri,
-                    m_deviceName+Long.toString(System.currentTimeMillis()));
+
+            MqttAndroidClient client = new MqttAndroidClient(m_mainActivity, m_mqttServerUri,
+                            m_deviceName+Long.toString(System.currentTimeMillis()));
 
             MqttConnectOptions options = new MqttConnectOptions();
 

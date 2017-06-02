@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -134,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
     // --------------------------------------------------------------------------------------------
-    //
+    // This function is call from returning of Activities/View called by MainActivity
+    // such as Floating button to add new device; set up device item from overflow menu
     // --------------------------------------------------------------------------------------------
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -214,9 +216,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        DeviceListItem clickedDevice = m_devList.get(position);
-
-        clickedDevice.onClick(getApplicationContext(), parent, view, position, id);
+        // DeviceListItem clickedDevice = m_devList.get(position);
+        // clickedDevice.onClick(getApplicationContext(), parent, view, position, id);
     }
 
     // --------------------------------------------------------------------------------------------

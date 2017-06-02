@@ -82,7 +82,7 @@ abstract public class DeviceListItem {
     // Methods for device list
     abstract int getStatusImgRscId();
     abstract String getDeviceStatusText();
-    abstract void onClick(Context ctx, AdapterView<?> parent, View view, int position, long id);
+    abstract void onClick();
 
     // Methods for saving/loading class
     void deviceStore(){
