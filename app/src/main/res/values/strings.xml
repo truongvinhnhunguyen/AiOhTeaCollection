@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="app_name">AiohTeaCollection</string>
+    <string name="app_name">AiOhTea Collection</string>
     <string name="action_setingup_devices">Setup device...</string>
     <string name="button">Button</string>
     <string name="add_switch">ADD SWITCH</string>
@@ -18,9 +18,9 @@
     <string name="wait_msg">Processing..., please wait!</string>
 
     <!--> SWITCH STATUS</!-->
-    <string name="sw_on">"STATUS: ON"</string>
-    <string name="sw_off">"STATUS: OFF"</string>
-    <string name="sw_off_line">"STATUS: OFFLINE"</string>
+    <string name="sw_on">"Status: ON"</string>
+    <string name="sw_off">"Status: OFF"</string>
+    <string name="sw_off_line">"Status: OFFLINE"</string>
     <string name="sw_unknown">"Tap to find the switch"</string>
 
     <!--> SWITCH CONTROL MESSAGES</!-->
