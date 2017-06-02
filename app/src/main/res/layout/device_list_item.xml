@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:textColor="#3399FF"
+        android:textColor="#607d8b"
         android:paddingTop="0dp"
         android:layout_toRightOf="@id/item_icon"
         android:layout_below="@id/item_name"/>
@@ -83,7 +83,7 @@
             android:paddingLeft="0dp"
             android:paddingTop="5dp"
             android:text="On every:"
-            android:textColor="#3399FF"
+            android:textColor="#607d8b"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -119,7 +119,7 @@
             android:paddingLeft="0dp"
             android:paddingTop="5dp"
             android:text="Off every:"
-            android:textColor="#3399FF"
+            android:textColor="#607d8b"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -155,7 +155,7 @@
             android:paddingLeft="0dp"
             android:paddingTop="10dp"
             android:text="On at:"
-            android:textColor="#3399FF"
+            android:textColor="#607d8b"
             android:textSize="14dp"
             android:textStyle="bold" />
 
@@ -192,7 +192,7 @@
             android:paddingLeft="0dp"
             android:paddingTop="10dp"
             android:text="Off at:"
-            android:textColor="#3399FF"
+            android:textColor="#607d8b"
             android:textSize="14dp"
             android:textStyle="bold" />
 
