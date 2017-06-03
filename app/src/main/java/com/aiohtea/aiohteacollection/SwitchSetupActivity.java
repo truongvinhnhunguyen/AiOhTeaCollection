@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
  * Created by Nguyen Truong on 4/12/2017.
  */
 
-public class SwitchSetup extends AppCompatActivity {
+public class SwitchSetupActivity extends AppCompatActivity {
 
     private String m_swName;
     private Boolean m_addToList;

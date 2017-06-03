@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.v("ON_CREATE","Eccc ");
 
         setContentView(R.layout.activity_main);
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onClick(View view) {
-              Intent intent = new Intent(m_t, SwitchAdding.class);
+              Intent intent = new Intent(m_t, SwitchAddingActivity.class);
               startActivityForResult(intent, 1);
             }
         }
@@ -90,12 +90,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_setingup_devices:
-                intent = new Intent(this, SwitchSetup.class);
+                intent = new Intent(this, SwitchSetupActivity.class);
                 startActivityForResult(intent, 2);
                 return true;
 
             case R.id.action_about:
-                intent = new Intent(this, About.class);
+                intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     // --------------------------------------------------------------------------------------------
-    // Take data from called child such as SwitchAdding
+    // Take data from called child such as SwitchAddingActivity
     // --------------------------------------------------------------------------------------------
     void deviceLoad(){
         SharedPreferences settings = this.getSharedPreferences
