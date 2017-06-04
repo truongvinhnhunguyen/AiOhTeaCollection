@@ -20,42 +20,33 @@ abstract public class DeviceListItem {
 
     protected int m_deviceType;
 
-    // MainActivity
-    MainActivity m_mainActivity;
 
-    // Device parameter
+
+    // Strored Device parameter
     protected String m_deviceName;
     protected String m_deviceDesc;
+    protected String m_connnName;
+
     protected int m_deviceStatus;
 
 
-    // MQTT
-    protected String m_mqttServerUri;
-    protected String m_mqttUser;
-    protected String m_mqttPassword;
-    protected IMqttToken m_mqttToken;
 
-    public DeviceListItem(MainActivity mainActivity, String deviceName){
 
-        m_mainActivity = mainActivity;
+
+    public DeviceListItem(String deviceName){
         m_deviceName = deviceName;
 
         this.m_deviceStatus = APP_NOT_CONNECTED;
-        m_mqttToken = null;
     }
 
-    public DeviceListItem(MainActivity mainActivity, String deviceName, String devicceDesc,
-                          String mqttServerUri, String mqttUser, String mqttPassword){
+    public DeviceListItem(String deviceName, String devicceDesc,
+                          String connnName){
 
-        this.m_mainActivity = mainActivity;
         this.m_deviceName = deviceName;
         this.m_deviceDesc = devicceDesc;
-        this.m_mqttServerUri = mqttServerUri;
-        this.m_mqttUser = mqttUser;
-        this.m_mqttPassword = mqttPassword;
+        this.m_connnName = connnName;
 
         this.m_deviceStatus = APP_NOT_CONNECTED;
-        m_mqttToken = null;
     }
 
     public int getM_deviceType() {
@@ -81,40 +72,35 @@ abstract public class DeviceListItem {
 
     // Methods for device list
     abstract int getStatusImgRscId();
-    abstract String getDeviceStatusText();
-    abstract void onClick();
+    abstract String getDeviceStatusText(MainActivity mainActivity);
+    abstract void onClick(MainActivity mainActivity);
 
     // Methods for saving/loading class
-    void deviceStore(){
-        SharedPreferences settings = m_mainActivity.getSharedPreferences
-                (m_mainActivity.getString(R.string.app_name) , Context.MODE_PRIVATE);
+    void deviceStore(MainActivity mainActivity){
+        SharedPreferences settings = mainActivity.getSharedPreferences
+                (mainActivity.getString(R.string.app_name) , Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = settings.edit();
 
         editor.putString(m_deviceName + "_m_deviceName", m_deviceName);
         editor.putString(m_deviceName + "_m_deviceDesc", m_deviceDesc);
-
-        editor.putString(m_deviceName + "_m_mqttServerUri", m_mqttServerUri);
-        editor.putString(m_deviceName + "_m_mqttUser", m_mqttUser);
-        editor.putString(m_deviceName + "_m_mqttPassword", m_mqttPassword);
+        editor.putString(m_deviceName + "_m_connnName", m_connnName);
 
         editor.commit();
     }
 
-    void deviceLoad() {
-        SharedPreferences settings = m_mainActivity.getSharedPreferences
-                (m_mainActivity.getString(R.string.app_name), Context.MODE_PRIVATE);
+    void deviceLoad(MainActivity mainActivity) {
+        SharedPreferences settings = mainActivity.getSharedPreferences
+                (mainActivity.getString(R.string.app_name), Context.MODE_PRIVATE);
 
         m_deviceDesc = settings.getString(m_deviceName + "_m_deviceDesc", "");
-        m_mqttServerUri = settings.getString(m_deviceName + "_m_mqttServerUri", "");
-        m_mqttUser = settings.getString(m_deviceName + "_m_mqttUser", "");
-        m_mqttPassword = settings.getString(m_deviceName + "_m_mqttPassword", "");
+        m_connnName = settings.getString(m_deviceName + "_m_connnName", "");
 
-        Log.d("LOAD", "Loading...");
+
+        Log.d("DevListItem.deviceLoad", "Loading...");
         Log.d("LOAD", m_deviceName);
         Log.d("LOAD", m_deviceDesc);
-        Log.d("LOAD", m_mqttServerUri);
-        Log.d("LOAD", m_mqttUser);
-        Log.d("LOAD", m_mqttPassword);
+        Log.d("LOAD", m_connnName);
+
     }
 }

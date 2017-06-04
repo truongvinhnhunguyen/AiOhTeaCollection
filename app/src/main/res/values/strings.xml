@@ -29,7 +29,7 @@
     <string name="sw_subcribe_ok">"Listening switch's status"</string>
     <string name="sw_subcribe_err">"Error in listening switch"</string>
     <string name="sw_cmd_sent">"Command was sent"</string>
-    <string name="sw_cmd_err">"Command was sent"</string>
+    <string name="sw_cmd_err">"Command sent is error"</string>
     <string name="sw_offline_err">"Switch offline, could not send command"</string>
 
     <!--> SWITCH SETUP</!-->

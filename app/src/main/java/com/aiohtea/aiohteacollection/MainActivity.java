@@ -24,32 +24,67 @@ import java.util.List;
 //@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    private List<MyMqttConnection> m_connList;
     private List<DeviceListItem> m_devList;
     private ListView m_listView;
+
+/*
+    // DEFAULT CONNECTION
+    final String DEFAULT_CONN_NAME = "CloudMQTT";
+    final String DEFAULT_CONN_URI = "tcp://m10.cloudmqtt.com:14110";
+    final String DEFAULT_CONN_USER = "nywjllog";
+    final String DEFAULT_CONN_PASS = "DXwwL_1Bye8x";
+*/
+    // DEFAULT CONNECTION
+    final String DEFAULT_CONN_NAME = "HiveMQ";
+    final String DEFAULT_CONN_URI = "tcp://broker.hivemq.com:1883";
+    final String DEFAULT_CONN_USER = "";
+    final String DEFAULT_CONN_PASS = "";
+
+    /*
+     * =============================================================================================
+     * AREA TO DEFINE OVERRIDE FUNCTIONS
+     * =============================================================================================
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.v("ON_CREATE","Eccc ");
-
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
+        // Create and Load added devices
         m_devList = new ArrayList<>();
-
-        // Load added devices
         deviceLoad();
 
-        m_listView = (ListView)findViewById(R.id.device_list);
+        // Create and Load MQTT connections
+        m_connList = new ArrayList<>();
+        connectionLoad();
 
+
+        if(m_connList.size() == 0) {
+            // MAKE A DEFAULT CONNECTION
+            MyMqttConnection conn = new MyMqttConnection(DEFAULT_CONN_NAME, DEFAULT_CONN_URI,
+                    DEFAULT_CONN_USER, DEFAULT_CONN_PASS);
+            addConnectionToList(conn);
+            // END MAKE A DEFAULT CONNECTION
+        }
+
+        int size = m_connList.size();
+
+        for(int i=0; i < size; i++) {
+            m_connList.get(i).connect(this);
+        }
+
+        // Initiate displayed list
+        m_listView = (ListView)findViewById(R.id.device_list);
         m_listView.setAdapter(new DeviceListViewAdapter(this, R.layout.device_list_item, m_devList));
 
-        m_listView.setLongClickable(true);
 
+        m_listView.setLongClickable(true);
         m_listView.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -66,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Class to listen Floating Action Button
         class Xxx implements View.OnClickListener{
-            MainActivity m_t;
+            private MainActivity m_t;
 
             Xxx(MainActivity t){ m_t = t;}
 
@@ -107,33 +142,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-
-    // --------------------------------------------------------------------------------------------
-    // Take data from called child such as SwitchAddingActivity
-    // --------------------------------------------------------------------------------------------
-    void deviceLoad(){
-        SharedPreferences settings = this.getSharedPreferences
-                (getString(R.string.app_name), MODE_PRIVATE);
-
-        // Load Switch
-        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
-                ("SW_NAME_LIST", new HashSet<String>());
-
-        int numDev = nameSet.size();
-        Log.d("MAIN_ACT: Numdev stored", Integer.toString(numDev));
-
-        if (numDev == 0) return;
-
-        String[] nameList = new String[numDev];
-        nameSet.toArray(nameList);
-
-
-        for(int i = 0; i < numDev; i++){
-            DeviceListItem item = new SwitchListItem(this, nameList[i]);
-            item.deviceLoad();
-            m_devList.add(item);
-        }
-    }
     // --------------------------------------------------------------------------------------------
     // This function is call from returning of Activities/View called by MainActivity
     // such as Floating button to add new device; set up device item from overflow menu
@@ -149,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String switchId = data.getStringExtra("SW_NAME");
                     String switchDesc = data.getStringExtra("SW_DESC");
 
-                    DeviceListItem item = new SwitchListItem(this, switchId, switchDesc,
-                                  "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
+                    DeviceListItem item =
+                            new SwitchListItem(switchId, switchDesc, DEFAULT_CONN_NAME);
                     addDeviceToList(item);
                 }
                 break;
@@ -159,54 +167,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if(resultCode == 2){ //Add to list
                     String swName = data.getStringExtra("SW_NAME");
 
-                    DeviceListItem item = new SwitchListItem(this, swName,
-                            "Automatically added", "tcp://m10.cloudmqtt.com:14110", "nywjllog", "DXwwL_1Bye8x");
+                    DeviceListItem item = new SwitchListItem(swName, "Automatically added", DEFAULT_CONN_NAME);
                     addDeviceToList(item);
                 }
 
                 if(resultCode == -1)
                     myToast(this, "Setup error!");
                 else
-                    if(resultCode != 0)
-                        myToast(this, "Setup successfully!!");
+                if(resultCode != 0)
+                    myToast(this, "Setup successfully!!");
                 break;
         }
-    }
-    // --------------------------------------------------------------------------------------------
-    // --------------------------------------------------------------------------------------------
-    public void addDeviceToList(DeviceListItem item){
-
-        m_devList.add(item);
-        refreshDeviceList();
-
-        // Write to disk
-        item.deviceStore();
-
-        SharedPreferences settings = getSharedPreferences
-                (getString(R.string.app_name) , Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
-
-        HashSet<String> nameList = new HashSet<String>();
-
-        for(int i=0; i < m_devList.size(); i++){
-            nameList.add(m_devList.get(i).getDeviceName());
-
-            Log.d("MAIN_ACT", m_devList.get(i).getDeviceName());
-        }
-
-        editor.putStringSet("SW_NAME_LIST", nameList);
-
-        editor.commit();
-    }
-
-    // --------------------------------------------------------------------------------------------
-    // Ensure change in data is displayed to the devices list
-    // --------------------------------------------------------------------------------------------
-    public void refreshDeviceList(){
-        Log.d("MAIN", "List refreshed!");
-        DeviceListViewAdapter a = (DeviceListViewAdapter)m_listView.getAdapter();
-        a.notifyDataSetChanged();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -228,6 +199,157 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    /*
+     * =============================================================================================
+     * AREA TO DEFINE OTHER FUNCTIONS
+     * =============================================================================================
+     */
+
+    // --------------------------------------------------------------------------------------------
+    // Load devices
+    // --------------------------------------------------------------------------------------------
+    void deviceLoad(){
+        SharedPreferences settings = this.getSharedPreferences
+                (getString(R.string.app_name), MODE_PRIVATE);
+
+        // Load Switch
+        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
+                ("SW_NAME_LIST", new HashSet<String>());
+
+        int numDev = nameSet.size();
+        Log.d("MA: Numdev stored", Integer.toString(numDev));
+
+        if (numDev == 0) return;
+
+        String[] nameList = new String[numDev];
+        nameSet.toArray(nameList);
+
+
+        for(int i = 0; i < numDev; i++){
+            DeviceListItem item = new SwitchListItem(nameList[i]);
+            item.deviceLoad(this);
+            m_devList.add(item);
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // public void addDeviceToList(DeviceListItem item)
+    // --------------------------------------------------------------------------------------------
+    public void addDeviceToList(DeviceListItem item){
+
+        m_devList.add(item);
+        refreshDeviceList();
+
+        // Write to disk
+        item.deviceStore(this);
+
+        SharedPreferences settings = getSharedPreferences
+                (getString(R.string.app_name) , Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+
+        HashSet<String> nameList = new HashSet<String>();
+
+        for(int i=0; i < m_devList.size(); i++){
+            nameList.add(m_devList.get(i).getDeviceName());
+
+            Log.d("MA.addDeviceToList: ", m_devList.get(i).getDeviceName());
+        }
+
+        editor.putStringSet("SW_NAME_LIST", nameList);
+
+        editor.commit();
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Load connection
+    // --------------------------------------------------------------------------------------------
+    void connectionLoad(){
+        SharedPreferences settings = this.getSharedPreferences
+                (getString(R.string.app_name), MODE_PRIVATE);
+
+        // Load Switch
+        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
+                ("MQTT_CONN_NAME_LIST", new HashSet<String>());
+
+        int numConn = nameSet.size();
+        Log.d("MA: Numdev stored", Integer.toString(numConn));
+
+        if (numConn == 0) return;
+
+        String[] nameList = new String[numConn];
+        nameSet.toArray(nameList);
+
+
+        for(int i = 0; i < numConn; i++){
+            MyMqttConnection conn = new MyMqttConnection (nameList[i]);
+            conn.connLoad(this);
+            m_connList.add(conn);
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // public void addConnectionToList(MyMqttConnection conn)
+    // --------------------------------------------------------------------------------------------
+    public void addConnectionToList(MyMqttConnection conn){
+
+        m_connList.add(conn);
+
+        // Write to disk
+        conn.connStore(this);
+
+        SharedPreferences settings = getSharedPreferences
+                (getString(R.string.app_name) , Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+
+        HashSet<String> nameList = new HashSet<String>();
+
+        for(int i=0; i < m_connList.size(); i++){
+            nameList.add(m_connList.get(i).getconnName());
+
+            Log.d("MA.addConnToList:", m_connList.get(i).getconnName());
+        }
+
+        editor.putStringSet("MQTT_CONN_NAME_LIST", nameList);
+
+        editor.commit();
+    }
+
+
+    // --------------------------------------------------------------------------------------------
+    // Ensure change in data is displayed to the devices list
+    // --------------------------------------------------------------------------------------------
+    public void refreshDeviceList(){
+        DeviceListViewAdapter a = (DeviceListViewAdapter)m_listView.getAdapter();
+        a.notifyDataSetChanged();
+    }
+
+
+    // --------------------------------------------------------------------------------------------
+    // Android Studio created
+    // --------------------------------------------------------------------------------------------
+    public MyMqttConnection getConnByName(String name) {
+        int size = m_connList.size();
+
+        for(int i=0; i < size; i++){
+            String connName = m_connList.get(i).getconnName();
+           if (connName.equals(name)) {
+               Log.d("MA.getConnByName: ", connName);
+               return m_connList.get(i);
+           }
+        }
+        Log.d("MA.getConnByName: ", "NOT FOUND");
+        return null;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Process MQTT message arrival
+    // --------------------------------------------------------------------------------------------
+    public void mqttMessageArrive(String connName, String topic, byte[] payload){
+        Log.d("MA.mqttMsgArrive: ", "Topic: " + topic + ": "+ (char)payload[0]);
     }
 
     // --------------------------------------------------------------------------------------------

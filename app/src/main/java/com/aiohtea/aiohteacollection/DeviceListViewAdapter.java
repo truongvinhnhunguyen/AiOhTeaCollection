@@ -38,7 +38,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
         @Override
         public void onClick(View v) {
-            m_clickedDevice.onClick();
+            m_clickedDevice.onClick(m_context);
         }
     }
 
@@ -57,9 +57,9 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         }
     }
 
-    private Context m_context;
+    private MainActivity m_context;
 
-    public DeviceListViewAdapter(Context context, int resource, List<DeviceListItem> listItems) {
+    public DeviceListViewAdapter(MainActivity context, int resource, List<DeviceListItem> listItems) {
         super(context, resource, listItems);
 
         this.m_context = context;
@@ -93,7 +93,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
         holder.m_itemName.setText(rowItem.getDeviceName());
         holder.m_itemDesc.setText(rowItem.getDeviceDesc());
-        holder.m_itemStatus.setText(rowItem.getDeviceStatusText());
+        holder.m_itemStatus.setText(rowItem.getDeviceStatusText(m_context));
         holder.m_itemIcon.setImageResource(rowItem.getStatusImgRscId());
 
 
