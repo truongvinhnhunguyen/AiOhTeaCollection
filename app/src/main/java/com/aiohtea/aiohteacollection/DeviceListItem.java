@@ -61,6 +61,10 @@ abstract public class DeviceListItem {
         return m_deviceDesc;
     }
 
+    public String getConnName() {
+        return m_connnName;
+    }
+
     public int getDeviceStatus() {
         return m_deviceStatus;
     }
@@ -73,7 +77,10 @@ abstract public class DeviceListItem {
     // Methods for device list
     abstract int getStatusImgRscId();
     abstract String getDeviceStatusText(MainActivity mainActivity);
-    abstract void onClick(MainActivity mainActivity);
+
+
+    abstract void iconClicked(MainActivity mainActivity);
+    abstract void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload);
 
     // Methods for saving/loading class
     void deviceStore(MainActivity mainActivity){

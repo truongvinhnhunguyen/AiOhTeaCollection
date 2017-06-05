@@ -1,23 +1,7 @@
 package com.aiohtea.aiohteacollection;
 
-/*
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-*/
-
-import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * Created by Nguyen Truong on 3/30/2017.
@@ -28,6 +12,8 @@ public class SwitchListItem extends DeviceListItem {
     public static final int SW_OFF = 0;
     public static final int SW_ON = 1;
     public static final int SW_OFFLINE = 2;
+
+    private String m_statusChangedTime = "00:00 - 11-Sep-1970";
 
 
     public SwitchListItem(String deviceName){
@@ -64,9 +50,9 @@ public class SwitchListItem extends DeviceListItem {
     public String getDeviceStatusText(MainActivity mainActivity) {
         switch (this.m_deviceStatus) {
             case SW_OFF:
-                return mainActivity.getString(R.string.sw_off);
+                return mainActivity.getString(R.string.sw_off) + ": "+ m_statusChangedTime;
             case SW_ON:
-                return mainActivity.getString(R.string.sw_on);
+                return mainActivity.getString(R.string.sw_on) + ": "+ m_statusChangedTime;
             case SW_OFFLINE:
                 return mainActivity.getString(R.string.sw_off_line);
             default:
@@ -78,7 +64,7 @@ public class SwitchListItem extends DeviceListItem {
     // This function is called to change switch's status
     // --------------------------------------------------------------------------------------------
     @Override
-    void onClick(MainActivity mainActivity){
+    void iconClicked (MainActivity mainActivity){
 
         MyMqttConnection conn = mainActivity.getConnByName(m_connnName);
         if(conn == null)
@@ -126,6 +112,37 @@ public class SwitchListItem extends DeviceListItem {
             }
         }
     }
+
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+    public void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload){
+
+        // Processing Status message
+        if(lastLevelTopic.equals("Status")){
+
+            m_deviceStatus = Character.getNumericValue(payload[0]);
+
+            String s = "";
+            int size = payload.length - 1;
+
+            for (int i=2; i<size; i++){
+                s += (char)payload[i];
+            }
+
+            Date d = new Date(Long.valueOf(s).longValue()*1000);
+            DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
+
+            m_statusChangedTime = df.format(d);
+
+            mainActivity.refreshDeviceList();
+
+            return;
+        }
+
+        // Processing Settings message
+        if(lastLevelTopic.equals("Settings")){
+            return;
+        }
+    }
 }
-
-

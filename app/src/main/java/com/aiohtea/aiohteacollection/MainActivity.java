@@ -201,6 +201,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
+    // --------------------------------------------------------------------------------------------
+    // public void onStop()
+    // --------------------------------------------------------------------------------------------
+    @Override
+    public void onStop(){
+        super.onStop();
+
+        /*
+        int size = m_connList.size();
+
+        for(int i=0; i < size; i++) {
+            m_connList.get(i).disconnect();
+        }
+        */
+    }
+
     /*
      * =============================================================================================
      * AREA TO DEFINE OTHER FUNCTIONS
@@ -350,6 +366,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // --------------------------------------------------------------------------------------------
     public void mqttMessageArrive(String connName, String topic, byte[] payload){
         Log.d("MA.mqttMsgArrive: ", "Topic: " + topic + ": "+ (char)payload[0]);
+
+        int size = m_devList.size();
+
+        for(int i=0; i < size; i++){
+            DeviceListItem item = m_devList.get(i);
+
+            if(connName.equals(item.getConnName()) && topic.contains("/"+item.getDeviceName()+"/")){
+                item.mqttMessageArrive(this, topic.substring(topic.lastIndexOf("/")+1), payload);
+                break;
+            }
+        }
     }
 
     // --------------------------------------------------------------------------------------------

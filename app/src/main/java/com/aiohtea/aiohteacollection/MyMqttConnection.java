@@ -99,6 +99,15 @@ public class MyMqttConnection {
         return 0;
     }
 
+    public void disconnect(){
+        try {
+            if(m_client != null)
+                m_client.disconnect();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
     // --------------------------------------------------------------------------------------------
     // Return 0 -> subscribe successfully
     // --------------------------------------------------------------------------------------------
@@ -187,8 +196,9 @@ public class MyMqttConnection {
         editor.commit();
     }
 
-        // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
     // For listening switch status
+    // WARNING MAY GET MEMORY CONFILT WHILE MQTT LIB RUNNING IN DIFFERENT THREAD WITH MAIN_ATIVITY
     // --------------------------------------------------------------------------------------------
     class MyMqttConnCallback implements MqttCallback {
 

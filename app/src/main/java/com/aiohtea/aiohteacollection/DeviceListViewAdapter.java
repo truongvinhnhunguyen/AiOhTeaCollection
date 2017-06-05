@@ -38,7 +38,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
         @Override
         public void onClick(View v) {
-            m_clickedDevice.onClick(m_context);
+            m_clickedDevice.iconClicked(m_context);
         }
     }
 
