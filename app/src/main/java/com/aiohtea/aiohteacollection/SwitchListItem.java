@@ -61,7 +61,8 @@ public class SwitchListItem extends DeviceListItem {
     }
 
     // --------------------------------------------------------------------------------------------
-    // void commInit()
+    // void commInit(MainActivity mainActivity)
+    // For Switch, subscribe "Status" and "Settings" to initiate the switch
     // --------------------------------------------------------------------------------------------
     public void commInit(MainActivity mainActivity){
         MyMqttConnection conn = mainActivity.getConnByName(m_connnName);
@@ -144,6 +145,7 @@ public class SwitchListItem extends DeviceListItem {
     // --------------------------------------------------------------------------------------------
     public void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload){
 
+
         // Processing Status message
         if(lastLevelTopic.equals("Status")){
 
@@ -160,15 +162,14 @@ public class SwitchListItem extends DeviceListItem {
             DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
 
             m_statusChangedTime = df.format(d);
+        } else {
 
-            mainActivity.refreshDeviceList();
-
-            return;
+            // Processing Settings message
+            if (lastLevelTopic.equals("Settings")) {
+                m_hwSettings.parsePayload(payload);
+            }
         }
 
-        // Processing Settings message
-        if(lastLevelTopic.equals("Settings")){
-            return;
-        }
+        mainActivity.refreshDeviceList();
     }
 }

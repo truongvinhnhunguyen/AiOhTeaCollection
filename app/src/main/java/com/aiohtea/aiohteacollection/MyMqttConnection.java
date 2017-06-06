@@ -81,12 +81,6 @@ public class MyMqttConnection {
             // Set callback for m_client.connect result
             class Xxx implements IMqttActionListener {
 
-                MainActivity m_mainActivity;
-
-                Xxx(MainActivity mainActivity1){
-                    m_mainActivity = mainActivity;
-                }
-
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // Connected
@@ -101,7 +95,7 @@ public class MyMqttConnection {
                 }
             }
 
-            mqttToken.setActionCallback(new Xxx (mainActivity));
+            mqttToken.setActionCallback(new Xxx ());
 
         } catch (MqttException e) {
             e.printStackTrace();

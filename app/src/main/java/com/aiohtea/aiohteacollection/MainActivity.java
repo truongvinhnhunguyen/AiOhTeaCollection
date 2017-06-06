@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Initiate displayed list
         m_listView = (ListView)findViewById(R.id.device_list);
-        m_listView.setAdapter(new DeviceListViewAdapter(this, R.layout.device_list_item, m_devList));
+        m_listView.setAdapter(new DeviceListViewAdapter(this, R.layout.switch_list_item, m_devList));
 
 
         m_listView.setLongClickable(true);
@@ -320,6 +320,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     // --------------------------------------------------------------------------------------------
+    // void commInit()
+    // For Switch, subscribe "Status" and "Settings" to initiate the switch
+    // --------------------------------------------------------------------------------------------
+    public void commInit(){
+        // Communication initiating for all devices
+        int size = m_devList.size();
+        for(int i=0; i < size; i++) {
+            m_devList.get(i).commInit(this);
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
     // public void addConnectionToList(MyMqttConnection conn)
     // --------------------------------------------------------------------------------------------
     public void addConnectionToList(MyMqttConnection conn){
@@ -392,13 +404,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    public void commInit(){
-        // Communication initiating for all devices
-        int size = m_devList.size();
-        for(int i=0; i < size; i++) {
-            m_devList.get(i).commInit(this);
-        }
-    }
+
 
     // --------------------------------------------------------------------------------------------
     // A utility to post a Toast of information to screen

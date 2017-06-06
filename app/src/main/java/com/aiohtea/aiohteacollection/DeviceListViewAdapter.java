@@ -1,8 +1,6 @@
 package com.aiohtea.aiohteacollection;
 
 import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +23,10 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         TextView    m_itemName;
         TextView    m_itemDesc;
         TextView    m_itemStatus;
+        TextView    m_onEvery;
+        TextView    m_offEvery;
+        TextView    m_onAt;
+        TextView    m_offAt;
     }
 
     // Class to implement onClick behavior when user click on DEVICE'S ICON
@@ -73,7 +75,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                 (LayoutInflater) m_context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.device_list_item, null);
+            convertView = mInflater.inflate(R.layout.switch_list_item, null);
             holder = new ViewHolder();
 
             holder.m_itemIcon = (ImageView) convertView.findViewById(R.id.item_icon);
@@ -81,9 +83,14 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder.m_itemName = (TextView) convertView.findViewById(R.id.item_name);
             holder.m_itemDesc = (TextView) convertView.findViewById(R.id.item_desc);
             holder.m_itemStatus = (TextView) convertView.findViewById(R.id.item_status);
+            holder.m_onEvery = (TextView) convertView.findViewById(R.id.on_every_value);
+            holder.m_offEvery = (TextView) convertView.findViewById(R.id.off_every_value);
+            holder.m_onAt = (TextView) convertView.findViewById(R.id.on_at_value);
+            holder.m_offAt = (TextView) convertView.findViewById(R.id.off_at_value);
 
+            // Register onClickListener
             holder.m_itemIcon.setOnClickListener(new ItemIconOnClickListener(rowItem));
-            holder.m_itemStatus.setOnClickListener(new Item3DotsOnClickListener(rowItem));
+            holder.m_detailsButton.setOnClickListener(new Item3DotsOnClickListener(rowItem));
 
             convertView.setTag(holder);
 
@@ -91,11 +98,15 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.m_itemIcon.setImageResource(rowItem.getStatusImgRscId());
         holder.m_itemName.setText(rowItem.getDeviceName());
         holder.m_itemDesc.setText(rowItem.getDeviceDesc());
         holder.m_itemStatus.setText(rowItem.getDeviceStatusText(m_context));
-        holder.m_itemIcon.setImageResource(rowItem.getStatusImgRscId());
 
+        holder.m_onEvery.setText(rowItem.getOnEveyText());
+        holder.m_offEvery.setText(rowItem.getOffEveyText());
+        holder.m_onAt.setText(rowItem.getOnAtText());
+        holder.m_offAt.setText(rowItem.getOffAtText());
 
         return convertView;
     }

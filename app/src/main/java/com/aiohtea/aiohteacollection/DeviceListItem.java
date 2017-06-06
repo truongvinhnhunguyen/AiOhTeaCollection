@@ -3,10 +3,6 @@ package com.aiohtea.aiohteacollection;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 
 /**
  * Created by Nguyen Truong on 3/30/2017.
@@ -19,7 +15,7 @@ abstract public class DeviceListItem {
     public static final int SWITCH_DEV_TYPE = 1;
 
     protected int m_deviceType;
-
+    protected int m_deviceStatus;
 
 
     // Strored Device parameter
@@ -27,14 +23,13 @@ abstract public class DeviceListItem {
     protected String m_deviceDesc;
     protected String m_connnName;
 
-    protected int m_deviceStatus;
-
-
-
-
+    // Hardware settings
+    HardwareSettings m_hwSettings;
 
     public DeviceListItem(String deviceName){
         m_deviceName = deviceName;
+
+        m_hwSettings = new HardwareSettings();
 
         this.m_deviceStatus = APP_NOT_CONNECTED;
     }
@@ -45,6 +40,8 @@ abstract public class DeviceListItem {
         this.m_deviceName = deviceName;
         this.m_deviceDesc = devicceDesc;
         this.m_connnName = connnName;
+
+        m_hwSettings = new HardwareSettings();
 
         this.m_deviceStatus = APP_NOT_CONNECTED;
     }
@@ -77,6 +74,23 @@ abstract public class DeviceListItem {
     // Methods for device list
     abstract int getStatusImgRscId();
     abstract String getDeviceStatusText(MainActivity mainActivity);
+
+    // THOSE METHOD CALLES TO DISPLAY IN DEVICE LIST BUT MUST REDESIGN IF DEVICE DOESN'T HAVE TIMER
+    public String getOnEveyText(){
+        return m_hwSettings.getStartEveryText();
+    }
+
+    public String getOffEveyText(){
+        return m_hwSettings.getStopEveryText();
+    }
+
+    public String getOnAtText(){
+        return m_hwSettings.getStartAtText();
+    }
+
+    public String getOffAtText(){
+        return m_hwSettings.getStopAtText();
+    }
 
     // Specific behaviors
     abstract void commInit(MainActivity mainActivity);
