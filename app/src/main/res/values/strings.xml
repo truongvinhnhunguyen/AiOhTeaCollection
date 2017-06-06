@@ -18,9 +18,9 @@
     <string name="wait_msg">Processing..., please wait!</string>
 
     <!--> SWITCH STATUS</!-->
-    <string name="sw_on">"Status: ON"</string>
-    <string name="sw_off">"Status: OFF"</string>
-    <string name="sw_off_line">"Status: OFFLINE"</string>
+    <string name="sw_on">"ON at"</string>
+    <string name="sw_off">"OFF at"</string>
+    <string name="sw_off_line">"OFFLINE"</string>
     <string name="sw_unknown">"Tap to find the switch"</string>
 
     <!--> SWITCH CONTROL MESSAGES</!-->

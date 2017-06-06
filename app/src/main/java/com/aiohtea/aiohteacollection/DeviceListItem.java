@@ -78,7 +78,9 @@ abstract public class DeviceListItem {
     abstract int getStatusImgRscId();
     abstract String getDeviceStatusText(MainActivity mainActivity);
 
-
+    // Specific behaviors
+    abstract void commInit(MainActivity mainActivity);
+    abstract void commRelease(MainActivity mainActivity);
     abstract void iconClicked(MainActivity mainActivity);
     abstract void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload);
 

@@ -28,18 +28,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private List<DeviceListItem> m_devList;
     private ListView m_listView;
 
-/*
+
     // DEFAULT CONNECTION
     final String DEFAULT_CONN_NAME = "CloudMQTT";
     final String DEFAULT_CONN_URI = "tcp://m10.cloudmqtt.com:14110";
     final String DEFAULT_CONN_USER = "nywjllog";
     final String DEFAULT_CONN_PASS = "DXwwL_1Bye8x";
-*/
+/*
     // DEFAULT CONNECTION
     final String DEFAULT_CONN_NAME = "HiveMQ";
     final String DEFAULT_CONN_URI = "tcp://broker.hivemq.com:1883";
     final String DEFAULT_CONN_USER = "";
     final String DEFAULT_CONN_PASS = "";
+    */
 
     /*
      * =============================================================================================
@@ -73,11 +74,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // END MAKE A DEFAULT CONNECTION
         }
 
-        int size = m_connList.size();
-
-        for(int i=0; i < size; i++) {
-            m_connList.get(i).connect(this);
-        }
 
         // Initiate displayed list
         m_listView = (ListView)findViewById(R.id.device_list);
@@ -99,7 +95,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         m_listView.setOnItemClickListener(this);
 
-        // Class to listen Floating Action Button
+
+
+        // ================== Class to listen Floating Action Button ===============================
         class Xxx implements View.OnClickListener{
             private MainActivity m_t;
 
@@ -115,6 +113,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new Xxx(this));
      }
+
+    // --------------------------------------------------------------------------------------------
+    // void onResume()
+    // --------------------------------------------------------------------------------------------
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        int size = m_connList.size();
+
+        for(int i=0; i < size; i++) {
+            m_connList.get(i).connect(this);
+        }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // public void onStop()
+    // --------------------------------------------------------------------------------------------
+    @Override
+    public void onStop(){
+        super.onStop();
+
+
+        int size = m_connList.size();
+
+        for(int i=0; i < size; i++) {
+            m_connList.get(i).disconnect();
+        }
+
+    }
 
     @Override
     // --------------------------------------------------------------------------------------------
@@ -201,21 +229,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
-    // --------------------------------------------------------------------------------------------
-    // public void onStop()
-    // --------------------------------------------------------------------------------------------
-    @Override
-    public void onStop(){
-        super.onStop();
-
-        /*
-        int size = m_connList.size();
-
-        for(int i=0; i < size; i++) {
-            m_connList.get(i).disconnect();
-        }
-        */
-    }
 
     /*
      * =============================================================================================
@@ -376,6 +389,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 item.mqttMessageArrive(this, topic.substring(topic.lastIndexOf("/")+1), payload);
                 break;
             }
+        }
+    }
+
+    public void commInit(){
+        // Communication initiating for all devices
+        int size = m_devList.size();
+        for(int i=0; i < size; i++) {
+            m_devList.get(i).commInit(this);
         }
     }
 

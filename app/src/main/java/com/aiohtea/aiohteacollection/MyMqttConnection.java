@@ -2,6 +2,7 @@ package com.aiohtea.aiohteacollection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.MailTo;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -56,7 +57,7 @@ public class MyMqttConnection {
     // --------------------------------------------------------------------------------------------
     // Return 0 -> connect successfully
     // --------------------------------------------------------------------------------------------
-    public int connect(MainActivity mainActivity){
+    public int connect(final MainActivity mainActivity){
 
         // Prepare MQTT connection
         m_client = new MqttAndroidClient(mainActivity, m_mqttServerUri, MqttClient.generateClientId());
@@ -69,6 +70,7 @@ public class MyMqttConnection {
         }
 
         try {
+
             IMqttToken mqttToken;
 
             mqttToken = m_client.connect(options);
@@ -77,11 +79,19 @@ public class MyMqttConnection {
             m_client.setCallback(new MyMqttConnCallback(mainActivity));
 
             // Set callback for m_client.connect result
-            mqttToken.setActionCallback(new IMqttActionListener() {
+            class Xxx implements IMqttActionListener {
+
+                MainActivity m_mainActivity;
+
+                Xxx(MainActivity mainActivity1){
+                    m_mainActivity = mainActivity;
+                }
+
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // Connected
                     Log.d("MQTT", "Connected successfully");
+                    mainActivity.commInit();
                 };
 
                 @Override
@@ -89,7 +99,9 @@ public class MyMqttConnection {
                     // Something went wrong e.g. connection timeout or firewall problems
                     Log.d("MY-MQTT", "Connection failure");
                 }
-            });
+            }
+
+            mqttToken.setActionCallback(new Xxx (mainActivity));
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -100,12 +112,16 @@ public class MyMqttConnection {
     }
 
     public void disconnect(){
+
+        m_client.unregisterResources();
+        /*
         try {
             if(m_client != null)
+
                 m_client.disconnect();
         } catch (MqttException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     // --------------------------------------------------------------------------------------------
@@ -147,7 +163,7 @@ public class MyMqttConnection {
                 MqttMessage message = new MqttMessage(payload);
 
                 IMqttDeliveryToken token = m_client.publish(topic, message);
-                token.waitForCompletion(5000);
+                //token.waitForCompletion(5000);
 
                 return 0;
 

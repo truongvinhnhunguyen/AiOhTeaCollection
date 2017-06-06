@@ -61,6 +61,32 @@ public class SwitchListItem extends DeviceListItem {
     }
 
     // --------------------------------------------------------------------------------------------
+    // void commInit()
+    // --------------------------------------------------------------------------------------------
+    public void commInit(MainActivity mainActivity){
+        MyMqttConnection conn = mainActivity.getConnByName(m_connnName);
+
+        if(conn == null)
+            return;
+
+        if((conn.subscribe("AiOhTea/" + m_deviceName + "/Status")!= 0)
+                    || conn.subscribe("AiOhTea/" + m_deviceName + "/Settings")!=0){
+            MainActivity.myToast (mainActivity, mainActivity.getString(R.string.sw_subcribe_err));
+            return;
+        }
+
+        m_deviceStatus = SW_OFFLINE;
+        mainActivity.refreshDeviceList();
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // void commRelease()
+    // --------------------------------------------------------------------------------------------
+    public void commRelease(MainActivity mainActivity){
+
+    }
+
+    // --------------------------------------------------------------------------------------------
     // This function is called to change switch's status
     // --------------------------------------------------------------------------------------------
     @Override
@@ -72,8 +98,8 @@ public class SwitchListItem extends DeviceListItem {
 
         if (m_deviceStatus == APP_NOT_CONNECTED) { // OFFLINE, connect to MQTT server
 
-            conn.subscribe("AiOhTea/" + m_deviceName + "/Status");
-            conn.subscribe("AiOhTea/" + m_deviceName + "/Settings");
+            // conn.subscribe("AiOhTea/" + m_deviceName + "/Status");
+            // conn.subscribe("AiOhTea/" + m_deviceName + "/Settings");
 
         } else { // App connected to MQTT server, send cmd to MQTT server
             if (m_deviceStatus != SW_OFFLINE) { // Send command if switch online
