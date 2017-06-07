@@ -43,4 +43,24 @@
     <string name="option_check_box">Add new switch to device list</string>
     <string name="can_not_be_empty">can not be empty.</string>
 
+    <!--> TIMER SETTINGS </!-->
+    <string name="interval_settings_title">Interval settings</string>
+    <string name="timer_settings_title">Timer settings</string>
+    <string name="on_every">On after:</string>
+    <string name="off_every">Off after:</string>
+    <string name="on_at">On at:</string>
+    <string name="off_at">Off at:</string>
+    <string name="sec_text">sec(s)</string>
+    <string name="timer_name_1">Timer 1</string>
+    <string name="timer_name_2">Timer 2</string>
+    <string name="timer_name_3">Timer 3</string>
+    <string name="setup_button">Setup</string>
+    <string name="cancel_button">Cancel</string>
+
+    <string name="interval_settings_guide">The device will be started after n seconds since last stop
+    and stopped m seconds since last start.
+        If the device has been started/stopped manually before, corresponding timer will be bypassed.</string>
+
+    <string name="timer_settings_guide">The device will be started/stopped at specific times.
+    If the device has been started/stopped manually before, corresponding timer will be bypassed.</string>
 </resources>

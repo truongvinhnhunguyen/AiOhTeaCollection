@@ -75,7 +75,7 @@ abstract public class DeviceListItem {
     abstract int getStatusImgRscId();
     abstract String getDeviceStatusText(MainActivity mainActivity);
 
-    // THOSE METHOD CALLES TO DISPLAY IN DEVICE LIST BUT MUST REDESIGN IF DEVICE DOESN'T HAVE TIMER
+    // THOSE METHOD CALLED TO DISPLAY IN DEVICE LIST BUT MUST REDESIGN IF DEVICE DOESN'T HAVE TIMER
     public String getOnEveyText(){
         return m_hwSettings.getStartEveryText();
     }
@@ -90,6 +90,10 @@ abstract public class DeviceListItem {
 
     public String getOffAtText(){
         return m_hwSettings.getStopAtText();
+    }
+
+    public String getHwSettingPayloadString(){
+        return m_hwSettings.toPayloadString();
     }
 
     // Specific behaviors

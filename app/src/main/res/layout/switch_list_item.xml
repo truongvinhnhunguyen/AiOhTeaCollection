@@ -11,11 +11,12 @@
         android:id="@+id/item_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textColor="#000000"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        tools:ignore="RelativeOverlap,RtlSymmetry" />
 
     <View
         android:id="@+id/divider"
@@ -32,13 +33,14 @@
         android:paddingBottom="0dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="0dp" />
+        android:paddingTop="0dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:textColor="#259B24"
         android:paddingTop="15dp"
         android:layout_toRightOf="@id/item_icon"
@@ -48,7 +50,7 @@
         android:id="@+id/item_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#607d8b"
         android:paddingTop="0dp"
         android:layout_toRightOf="@id/item_icon"
@@ -73,7 +75,8 @@
             android:paddingLeft="10dp"
             android:paddingBottom="0dp"
             android:paddingTop="0dp"
-            app:srcCompat="@mipmap/interval_on_icon" />
+            app:srcCompat="@mipmap/interval_icon"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
         <TextView
             android:id="@+id/on_every_title"
@@ -83,10 +86,11 @@
             android:paddingBottom="0dp"
             android:paddingLeft="0dp"
             android:paddingTop="5dp"
-            android:text="On every:"
+            android:text="@string/on_every"
             android:textColor="#607d8b"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
 
         <TextView
@@ -99,7 +103,8 @@
             android:paddingTop="5dp"
             android:textColor="#000000"
             android:text="06min"
-            android:textSize="14dp"/>
+            android:textSize="14sp"
+            tools:ignore="HardcodedText,RtlSymmetry" />
 
         <ImageView
             android:id="@+id/off_every_icon"
@@ -109,7 +114,8 @@
             android:paddingLeft="10dp"
             android:paddingBottom="0dp"
             android:paddingTop="0dp"
-            app:srcCompat="@mipmap/interval_on_icon" />
+            app:srcCompat="@mipmap/interval_icon"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
         <TextView
             android:id="@+id/off_every_title"
@@ -119,10 +125,11 @@
             android:paddingBottom="0dp"
             android:paddingLeft="0dp"
             android:paddingTop="5dp"
-            android:text="Off every:"
+            android:text="@string/off_every"
             android:textColor="#607d8b"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:id="@+id/off_every_value"
@@ -134,7 +141,8 @@
             android:paddingTop="5dp"
             android:textColor="#000000"
             android:text="06min"
-            android:textSize="14dp"/>
+            android:textSize="14sp"
+            tools:ignore="HardcodedText,RtlSymmetry" />
 
         <ImageView
             android:id="@+id/on_at_icon"
@@ -144,7 +152,8 @@
             android:paddingLeft="10dp"
             android:paddingBottom="0dp"
             android:paddingTop="5dp"
-            app:srcCompat="@mipmap/timer_on_icon" />
+            app:srcCompat="@mipmap/timer_icon"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
         <TextView
             android:id="@+id/on_at_title"
@@ -155,23 +164,25 @@
             android:paddingBottom="0dp"
             android:paddingLeft="0dp"
             android:paddingTop="10dp"
-            android:text="On at:"
+            android:text="@string/on_at"
             android:textColor="#607d8b"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:id="@+id/on_at_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:textColor="#000000"
             android:paddingTop="10dp"
             android:paddingBottom="0dp"
             android:paddingLeft="5dp"
             android:layout_toRightOf="@id/on_at_title"
             android:layout_below="@id/on_every_title"
-            android:text="15:00, 16:00, 06:00"/>
+            android:text="15:00, 16:00, 06:00"
+            tools:ignore="HardcodedText,RtlSymmetry" />
 
         <ImageView
             android:id="@+id/off_at_icon"
@@ -181,7 +192,8 @@
             android:paddingLeft="10dp"
             android:paddingBottom="0dp"
             android:paddingTop="5dp"
-            app:srcCompat="@mipmap/timer_on_icon" />
+            app:srcCompat="@mipmap/timer_icon"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
         <TextView
             android:id="@+id/off_at_title"
@@ -192,25 +204,35 @@
             android:paddingBottom="0dp"
             android:paddingLeft="0dp"
             android:paddingTop="10dp"
-            android:text="Off at:"
+            android:text="@string/off_at"
             android:textColor="#607d8b"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:id="@+id/off_at_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="14sp"
             android:textColor="#000000"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:layout_toRightOf="@id/off_at_title"
             android:layout_below="@id/on_at_value"
-            android:text="16:00, 17:00, 08:25"/>
+            android:text="16:00, 17:00, 08:25"
+            tools:ignore="HardcodedText,RtlSymmetry" />
 
-
+        <ImageView
+            android:id="@+id/timer_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/off_every_value"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            app:srcCompat="@mipmap/timer_on_button"
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
     </RelativeLayout>
 
@@ -222,6 +244,7 @@
         android:paddingTop="10dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@mipmap/horizon_dots" />
+        app:srcCompat="@mipmap/horizon_dots"
+        tools:ignore="ContentDescription,RtlSymmetry" />
 
 </RelativeLayout>

@@ -12,10 +12,105 @@ public class HardwareSettings {
 
     String m_deviceFwVer = "V1.0";
 
+    int m_timerActive = 0; // 0: Inactive; 1: Active
     long[] m_startTimer = {86401L, 86401L, 86401L, 86401L};
     long[] m_stopTimer = {86401L, 86401L, 86401L, 86401L};
 
     long m_timeZone = 25200; // +7
+
+    public HardwareSettings(){}
+
+    public HardwareSettings(String payloadString){
+        parsePayload(payloadString.getBytes());
+    }
+
+
+    /**
+     * public String toPayloadString()
+     * @return data encoded to String that can be used to send via MQTT or Intent between Activities
+     */
+    public String toPayloadString(){
+        String s = m_deviceFwVer + '#';
+
+        for (int i=0; i<NUM_TIMERS; i++){
+            s += m_startTimer[i];
+            s += '#';
+        }
+
+        for (int i=0; i<NUM_TIMERS; i++){
+            s += m_stopTimer[i];
+            s += '#';
+        }
+
+        s += m_timeZone;
+        s += '#';
+
+        // Timer active
+        s += m_timerActive;
+        s += '#';
+
+        return s;
+    }
+
+    /**
+     * public boolean isEnabled(int timerIdx)
+     * @param timerIdx
+     * @return
+     */
+    public boolean isEnabled(int timerIdx){
+        return (m_startTimer[timerIdx] < MAX_SECS_IN_DAY);
+    }
+
+    /**
+     * public String getStart(int timerIdx)
+     * @param timerIdx
+     * @return
+     */
+    public String getStart(int timerIdx){
+        String s = "";
+        int num;
+
+        if(isEnabled(timerIdx)) {
+            num = (int) (m_startTimer[timerIdx] / 3600);
+            if (num < 10)
+                s += '0';
+            s += num;
+            s += ":";
+
+            num = (int) ((m_startTimer[timerIdx] % 3600) / 60);
+            if (num < 10)
+                s += '0';
+            s += num;
+        }
+
+        return s;
+    }
+
+    /**
+     *
+     * @param timerIdx
+     * @return
+     */
+    public String getStop(int timerIdx){
+        String s = "";
+        int num;
+
+        if(isEnabled(timerIdx)) {
+            num = (int) (m_stopTimer[timerIdx] / 3600);
+            if (num < 10)
+                s += '0';
+            s += num;
+            s += ":";
+
+            num = (int) ((m_stopTimer[timerIdx] % 3600) / 60);
+            if (num < 10)
+                s += '0';
+            s += num;
+        }
+
+        return s;
+    }
+
 
     /**
      * void parsePayload(byte[] payload)

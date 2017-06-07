@@ -205,6 +205,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if(resultCode != 0)
                     myToast(this, "Setup successfully!!");
                 break;
+
+            case 3: // Timer settings
+                myToast(this, "Timer settings");
+                break;
         }
     }
 
