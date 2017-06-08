@@ -48,18 +48,19 @@
         android:textAlignment="center" />
 
     <LinearLayout
-        android:id="@+id/interval_group"
+        android:id="@+id/interval_group_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:paddingBottom="0dp"
         android:gravity="center|center_vertical"
         android:layout_below="@+id/interval_guide"
         android:layout_alignParentStart="true">
 
         <CheckBox
-            android:id="@+id/interval_enable"
+            android:id="@+id/interval_on_enable"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="20dp"
+            android:onClick="onClick" />
 
         <TextView
             android:id="@+id/textView"
@@ -86,10 +87,22 @@
             android:text="@string/sec_text"
             android:textSize="12sp" />
 
-        <Space
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/interval_group_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="00dp"
+        android:gravity="center|center_vertical"
+        android:layout_below="@+id/interval_group_1"
+        android:layout_alignParentStart="true">
+
+        <CheckBox
+            android:id="@+id/interval_off_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -123,7 +136,7 @@
         android:layout_height="30dp"
         app:srcCompat="@mipmap/timer_icon"
         tools:ignore="ContentDescription"
-        android:layout_below="@+id/interval_group"
+        android:layout_below="@+id/interval_group_2"
         android:layout_toStartOf="@+id/timer_title" />
 
     <TextView
@@ -131,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/interval_group"
+        android:layout_below="@+id/interval_group_2"
         android:paddingBottom="0dp"
         android:paddingTop="10dp"
         android:text="@string/timer_settings_title"
@@ -154,25 +167,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timer_guide"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:gravity="center|center_vertical">
 
         <CheckBox
-            android:id="@+id/timer_1_enable"
+            android:id="@+id/timer_1_on_enable"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timer_name_1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -195,6 +197,11 @@
             android:layout_width="15dp"
             android:layout_height="wrap_content"/>
 
+        <CheckBox
+            android:id="@+id/timer_1_off_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -219,24 +226,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timer_group_1"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:gravity="center|center_vertical">
 
         <CheckBox
-            android:id="@+id/timer_2_enable"
+            android:id="@+id/timer_2_on_enable"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timer_name_2"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -258,6 +255,12 @@
         <Space
             android:layout_width="15dp"
             android:layout_height="wrap_content"/>
+
+        <CheckBox
+            android:id="@+id/timer_2_off_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -287,21 +290,10 @@
         android:gravity="center|center_vertical">
 
         <CheckBox
-            android:id="@+id/timer_3_enable"
+            android:id="@+id/timer_3_on_enable"
             android:layout_width= "wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/timer_name_3"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Space
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -324,6 +316,12 @@
             android:layout_width="15dp"
             android:layout_height="wrap_content"/>
 
+
+        <CheckBox
+            android:id="@+id/timer_3_off_enable"
+            android:layout_width= "wrap_content"
+            android:layout_height="20dp"
+            android:onClick="onClick"/>
 
         <TextView
             android:layout_width="wrap_content"

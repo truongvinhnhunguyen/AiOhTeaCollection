@@ -57,33 +57,11 @@ public class HardwareSettings {
      * @param timerIdx
      * @return
      */
-    public boolean isEnabled(int timerIdx){
-        return (m_startTimer[timerIdx] < MAX_SECS_IN_DAY);
-    }
-
-    /**
-     * public String getStart(int timerIdx)
-     * @param timerIdx
-     * @return
-     */
-    public String getStart(int timerIdx){
-        String s = "";
-        int num;
-
-        if(isEnabled(timerIdx)) {
-            num = (int) (m_startTimer[timerIdx] / 3600);
-            if (num < 10)
-                s += '0';
-            s += num;
-            s += ":";
-
-            num = (int) ((m_startTimer[timerIdx] % 3600) / 60);
-            if (num < 10)
-                s += '0';
-            s += num;
-        }
-
-        return s;
+    public boolean isEnabled(int timerIdx, boolean startOrStop){
+        if(startOrStop == true)
+            return (m_startTimer[timerIdx] < MAX_SECS_IN_DAY);
+        else
+            return (m_stopTimer[timerIdx] < MAX_SECS_IN_DAY);
     }
 
     /**
@@ -91,18 +69,24 @@ public class HardwareSettings {
      * @param timerIdx
      * @return
      */
-    public String getStop(int timerIdx){
+    public String getValueString(int timerIdx, boolean startOrStop){
         String s = "";
         int num;
+        long[] timerPointer;
 
-        if(isEnabled(timerIdx)) {
-            num = (int) (m_stopTimer[timerIdx] / 3600);
+        if(startOrStop)
+            timerPointer = m_startTimer;
+        else
+            timerPointer = m_stopTimer;
+
+        if(isEnabled(timerIdx, startOrStop)) {
+            num = (int) (timerPointer[timerIdx] / 3600);
             if (num < 10)
                 s += '0';
             s += num;
             s += ":";
 
-            num = (int) ((m_stopTimer[timerIdx] % 3600) / 60);
+            num = (int) ((timerPointer[timerIdx] % 3600) / 60);
             if (num < 10)
                 s += '0';
             s += num;
