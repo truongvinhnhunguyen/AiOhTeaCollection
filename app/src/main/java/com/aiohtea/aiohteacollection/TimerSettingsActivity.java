@@ -2,9 +2,12 @@ package com.aiohtea.aiohteacollection;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -22,10 +25,10 @@ import java.util.Calendar;
  */
 
 
-public class TimerSettingsActivity extends AppCompatActivity implements View.OnClickListener,
-        View.OnFocusChangeListener {
+public class TimerSettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     HardwareSettings m_hw;
+    TimerSettingsActivity m_this;
 
 
 
@@ -33,27 +36,60 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer_settings);
 
+        m_this = this;
+
         Intent intent = getIntent();
 
         String hwSettingString = intent.getStringExtra("HW_SETTINGS");
         m_hw = new HardwareSettings(hwSettingString);
         display();
+
+
+        ((EditText)findViewById(R.id.on_every_value)).addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if(s.length() != 0)
+                            ((CheckBox) m_this.findViewById(R.id.interval_on_enable)).setChecked(true);
+                        else
+                            ((CheckBox) m_this.findViewById(R.id.interval_on_enable)).setChecked(false);
+                   }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+        ((EditText)findViewById(R.id.off_every_value)).addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        if(s.length() != 0)
+                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(true);
+                        else
+                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(false);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                }
+        );
     }
 
-    /**
-     * public void onFocusChange(View v, boolean hasFocus)
-     * @param v
-     * @param hasFocus
-     */
-    @Override
-    public void onFocusChange(View v, boolean hasFocus){
 
-    }
-
-    /**
-     * public void onClick (View v)
-     * @param v
-     */
     @Override
     public void onClick (View v){
         int id = v.getId();
@@ -88,45 +124,74 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
             case R.id.timer_1_off_enable:
             case R.id.timer_2_off_enable:
             case R.id.timer_3_off_enable:
+            case R.id.on_at_value_1:
+            case R.id.on_at_value_2:
+            case R.id.on_at_value_3:
+            case R.id.off_at_value_1:
+            case R.id.off_at_value_2:
+            case R.id.off_at_value_3:
 
                 TextView tvw;
+                CheckBox cbx;
+
                 int textViewId = R.id.timer_1_on_enable;
+                int cbxId = R.id.timer_1_on_enable;
                 int timerId = 1;
                 boolean onOrOff = true;
 
+                boolean isCbxClicked = false;
+
                 switch (id){
                     case R.id.timer_1_on_enable:
+                        isCbxClicked = true;
+                    case R.id.on_at_value_1:
                         textViewId = R.id.on_at_value_1;
+                        cbxId = R.id.timer_1_on_enable;
                         timerId = 1;
                         onOrOff = true;
                         break;
 
                     case R.id.timer_2_on_enable:
+                        isCbxClicked = true;
+                    case R.id.on_at_value_2:
                         textViewId = R.id.on_at_value_2;
+                        cbxId = R.id.timer_2_on_enable;
                         timerId = 2;
                         onOrOff = true;
                         break;
 
                     case R.id.timer_3_on_enable:
+                        isCbxClicked = true;
+                    case R.id.on_at_value_3:
                         textViewId = R.id.on_at_value_3;
+                        cbxId = R.id.timer_2_on_enable;
                         timerId = 3;
                         onOrOff = true;
                         break;
 
                     case R.id.timer_1_off_enable:
+                        isCbxClicked = true;
+                    case R.id.off_at_value_1:
                         textViewId = R.id.off_at_value_1;
+                        cbxId = R.id.timer_1_off_enable;
                         timerId = 1;
                         onOrOff = false;
                         break;
 
                     case R.id.timer_2_off_enable:
+                        isCbxClicked = true;
+                    case R.id.off_at_value_2:
                         textViewId = R.id.off_at_value_2;
+                        cbxId = R.id.timer_2_off_enable;
                         timerId = 2;
                         onOrOff = false;
                         break;
 
                     case R.id.timer_3_off_enable:
+                        isCbxClicked = true;
+                    case R.id.off_at_value_3:
                         textViewId = R.id.off_at_value_3;
+                        cbxId = R.id.timer_3_off_enable;
                         timerId = 3;
                         onOrOff = false;
                         break;
@@ -136,16 +201,20 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 int h = -1, m=-1;
 
                 tvw = (TextView)findViewById(textViewId);
+                cbx = (CheckBox) findViewById(cbxId);
 
-                if(((CheckBox)v).isChecked()) {
-                    if(m_hw.isEnabled(timerId, onOrOff)) {
+                if (isCbxClicked && (!((CheckBox) v).isChecked())) {
+                    tvw.setText("- -:- -");
+                } else {
+
+                    if (m_hw.isEnabled(timerId, onOrOff)) {
                         String s = m_hw.getValueString(timerId, onOrOff);
-                        h = Integer.valueOf(s.substring(0, 2)).intValue();
-                        m = Integer.valueOf(s.substring(3, 5)).intValue();
+                        h = Integer.valueOf(s.substring(0, 2));
+                        m = Integer.valueOf(s.substring(3, 5));
                     }
 
                     MyTimePickerDialog tp;
-                    tp = new MyTimePickerDialog(this, tvw, h, m);
+                    tp = new MyTimePickerDialog(this, tvw, cbx, isCbxClicked, h, m);
                     tp.show();
                 }
 
@@ -259,19 +328,26 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
 
     /**
-     *
+     * class MyTimePickerDialog
      */
     class MyTimePickerDialog implements TimePickerDialog.OnTimeSetListener {
 
         TimerSettingsActivity m_ctx;
         TextView m_tvw;
+        CheckBox m_cbx;
 
         int m_hour;
         int m_min;
+        boolean m_isCbxClicked;
 
-        MyTimePickerDialog (TimerSettingsActivity ctx, TextView tvw, int h, int m){
+        TimePickerDialog m_tp;
+
+
+        MyTimePickerDialog (TimerSettingsActivity ctx, TextView tvw, CheckBox cbx, final boolean isCbxClicked, int h, int m){
             m_ctx = ctx;
             m_tvw = tvw;
+            m_cbx = cbx;
+            m_isCbxClicked = isCbxClicked;
 
             if(h < 0){
                 Calendar cal = Calendar.getInstance();
@@ -281,12 +357,35 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 m_hour = h;
                 m_min = m;
             }
+
+            m_tp = new TimePickerDialog(m_ctx, R.style.DialogTheme, this, m_hour, m_min, true);
+
+            m_tp.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (which == DialogInterface.BUTTON_NEGATIVE)
+                    {
+                       if(isCbxClicked)
+                           m_cbx.setChecked(false);
+                    }
+                }
+            });
         }
 
+        /**
+         * void show()
+         */
         void show(){
-            new TimePickerDialog(m_ctx, this, m_hour, m_min, true).show();
+            m_tp.show();
         }
 
+
+        /**
+         * public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+         * @param view
+         * @param hourOfDay
+         * @param minute
+         */
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             String s = "";
@@ -295,11 +394,14 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 s += '0';
             s += hourOfDay;
 
+            s += ':';
+
             if (minute < 10)
                 s += '0';
             s += minute;
 
             m_tvw.setText(s);
+            m_cbx.setChecked(true);
         }
 
     }

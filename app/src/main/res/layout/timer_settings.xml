@@ -191,7 +191,8 @@
             android:text="10:30"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
 
         <Space
             android:layout_width="15dp"
@@ -218,7 +219,8 @@
             android:text="15:05"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
     </LinearLayout>
 
     <LinearLayout
@@ -250,7 +252,8 @@
             android:text="10:30"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
 
         <Space
             android:layout_width="15dp"
@@ -278,7 +281,8 @@
             android:text="15:05"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
 
     </LinearLayout>
 
@@ -310,7 +314,8 @@
             android:text="10:30"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
 
         <Space
             android:layout_width="15dp"
@@ -338,7 +343,8 @@
             android:text="15:05"
             android:textAlignment="center"
             android:textSize="18sp"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:onClick="onClick"/>
     </LinearLayout>
 
     <Button
