@@ -28,6 +28,7 @@ import java.util.Calendar;
 public class TimerSettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     HardwareSettings m_hw;
+    String m_deviceName;
     TimerSettingsActivity m_this;
 
 
@@ -42,6 +43,8 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         String hwSettingString = intent.getStringExtra("HW_SETTINGS");
         m_hw = new HardwareSettings(hwSettingString);
+        m_deviceName = intent.getStringExtra("HW_SETTINGS_DEV_NAME");
+
         display();
 
 
@@ -90,8 +93,61 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
     }
 
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick (View v){
+        if(v.getId() != R.id.timer_setup_button) {
+            reactOnClickTimerChange(v);
+        }
+        else{ // Setup button was pressed
+
+            String s;
+
+            s = ((EditText) findViewById(R.id.on_every_value)).getText().toString();
+            m_hw.setIntervalValue(true, s);
+
+            s = ((EditText) findViewById(R.id.off_every_value)).getText().toString();
+            m_hw.setIntervalValue(false, s);
+
+            s = ((TextView) findViewById(R.id.on_at_value_1)).getText().toString();
+            m_hw.setTimerValue(1, true, s);
+
+            s = ((TextView) findViewById(R.id.off_at_value_1)).getText().toString();
+            m_hw.setTimerValue(1, false, s);
+
+            s = ((TextView) findViewById(R.id.on_at_value_2)).getText().toString();
+            m_hw.setTimerValue(2, true, s);
+
+            s = ((TextView) findViewById(R.id.off_at_value_2)).getText().toString();
+            m_hw.setTimerValue(2, false, s);
+
+            s = ((TextView) findViewById(R.id.on_at_value_3)).getText().toString();
+            m_hw.setTimerValue(3, true, s);
+
+            s = ((TextView) findViewById(R.id.off_at_value_3)).getText().toString();
+            m_hw.setTimerValue(3, false, s);
+
+            Intent resultIntent = new Intent();
+
+            resultIntent.putExtra("HW_SETTINGS", m_hw.constructTimerSettingPayload());
+            resultIntent.putExtra("HW_SETTINGS_DEV_NAME", m_deviceName);
+
+            setResult(1, resultIntent);
+
+            finish();
+
+        }
+    }
+
+    /**
+     *
+     * @param v
+     */
+    void reactOnClickTimerChange (View v){
+
         int id = v.getId();
 
         switch(id){
@@ -204,7 +260,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 cbx = (CheckBox) findViewById(cbxId);
 
                 if (isCbxClicked && (!((CheckBox) v).isChecked())) {
-                    tvw.setText("- -:- -");
+                    tvw.setText("- -:- -"); // Length must be > 5 :-)
                 } else {
 
                     if (m_hw.isEnabled(timerId, onOrOff)) {
@@ -220,6 +276,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
                 break;
         }
+
     }
 
     /**

@@ -77,19 +77,19 @@ abstract public class DeviceListItem {
 
     // THOSE METHOD CALLED TO DISPLAY IN DEVICE LIST BUT MUST REDESIGN IF DEVICE DOESN'T HAVE TIMER
     public String getOnEveyText(){
-        return m_hwSettings.getStartEveryText();
+        return m_hwSettings.getIntervalText(true);
     }
 
     public String getOffEveyText(){
-        return m_hwSettings.getStopEveryText();
+        return m_hwSettings.getIntervalText(false);
     }
 
     public String getOnAtText(){
-        return m_hwSettings.getStartAtText();
+        return m_hwSettings.getTimerText(true);
     }
 
     public String getOffAtText(){
-        return m_hwSettings.getStopAtText();
+        return m_hwSettings.getTimerText(false);
     }
 
     public String getHwSettingPayloadString(){

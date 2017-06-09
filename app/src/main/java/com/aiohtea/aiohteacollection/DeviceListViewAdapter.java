@@ -79,6 +79,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         public void onClick(View v) {
             Intent intent = new Intent(m_activity, TimerSettingsActivity.class);
             intent.putExtra("HW_SETTINGS", m_clickedDevice.getHwSettingPayloadString());
+            intent.putExtra("HW_SETTINGS_DEV_NAME", m_clickedDevice.getDeviceName());
 
             m_activity.startActivityForResult(intent, 3);
         }

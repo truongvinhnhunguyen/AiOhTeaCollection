@@ -166,7 +166,7 @@ public class SwitchListItem extends DeviceListItem {
 
             // Processing Settings message
             if (lastLevelTopic.equals("Settings")) {
-                m_hwSettings.parsePayload(payload);
+                m_hwSettings.parseSettingsPayload(payload);
             }
         }
 

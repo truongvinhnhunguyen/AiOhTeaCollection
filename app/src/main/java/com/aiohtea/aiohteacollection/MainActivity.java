@@ -207,7 +207,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
 
             case 3: // Timer settings
-                myToast(this, "Timer settings");
+
+                if (resultCode == 1)
+                {
+                    String cmd = data.getStringExtra("HW_SETTINGS");
+                    String dev = data.getStringExtra("HW_SETTINGS_DEV_NAME");
+
+                    myToast(this, "Timer setting to device: " + dev);
+
+                    Log.d("TIMER_CMD", cmd);
+                }
+
                 break;
         }
     }
