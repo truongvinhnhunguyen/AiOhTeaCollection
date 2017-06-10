@@ -17,6 +17,15 @@
         like having tea.</string>
     <string name="wait_msg">Processing..., please wait!</string>
 
+    <!--> DEVIVE INFO </!-->
+    <string name="dev_offline_notsynced">"Device is offline or not synced!"</string>
+
+    <!--> OTHER INFO </!-->
+    <string name="confirm_dialog_title">"Question"</string>
+    <string name="confirm_1">"Do you want to ACTIVATE device's timers?"</string>
+    <string name="confirm_2">"Do you want to DEACTIVATE device's timers?"</string>
+
+
     <!--> SWITCH STATUS</!-->
     <string name="sw_on">"ON at"</string>
     <string name="sw_off">"OFF at"</string>

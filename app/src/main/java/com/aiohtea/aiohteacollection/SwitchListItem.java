@@ -1,5 +1,7 @@
 package com.aiohtea.aiohteacollection;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -11,7 +13,6 @@ public class SwitchListItem extends DeviceListItem {
 
     public static final int SW_OFF = 0;
     public static final int SW_ON = 1;
-    public static final int SW_OFFLINE = 2;
 
     private String m_statusChangedTime = "00:00 - 11-Sep-1970";
 
@@ -30,7 +31,7 @@ public class SwitchListItem extends DeviceListItem {
     // Called when DeviceList View on MainActivity is being established
     // --------------------------------------------------------------------------------------------
     @Override
-    public int getStatusImgRscId(){
+    public int getDevStatusImgRscId(){
         switch (this.m_deviceStatus) {
             case 0:
                 return R.mipmap.aiohtea_sw_off;
@@ -43,6 +44,14 @@ public class SwitchListItem extends DeviceListItem {
         }
     }
 
+    @Override
+    public int getTimerStatusImgRscId(){
+        if(isTimerActive())
+            return R.mipmap.timer_on_button;
+        else
+            return R.mipmap.timer_off_button;
+    }
+
     // --------------------------------------------------------------------------------------------
     // Called when DeviceList View on MainActivity is being established
     // --------------------------------------------------------------------------------------------
@@ -53,7 +62,7 @@ public class SwitchListItem extends DeviceListItem {
                 return mainActivity.getString(R.string.sw_off) + ": "+ m_statusChangedTime;
             case SW_ON:
                 return mainActivity.getString(R.string.sw_on) + ": "+ m_statusChangedTime;
-            case SW_OFFLINE:
+            case DEV_OFFLINE:
                 return mainActivity.getString(R.string.sw_off_line);
             default:
                 return mainActivity.getString(R.string.sw_unknown);
@@ -76,7 +85,7 @@ public class SwitchListItem extends DeviceListItem {
             return;
         }
 
-        m_deviceStatus = SW_OFFLINE;
+        m_deviceStatus = DEV_OFFLINE;
         mainActivity.refreshDeviceList();
     }
 
@@ -92,52 +101,21 @@ public class SwitchListItem extends DeviceListItem {
     // --------------------------------------------------------------------------------------------
     @Override
     void iconClicked (MainActivity mainActivity){
+        byte[] payload = {'0'};
 
-        MyMqttConnection conn = mainActivity.getConnByName(m_connnName);
-        if(conn == null)
-            return;
+        switch (m_deviceStatus) {
+            case SW_OFF:
+            payload[0] = '1';
+            break;
 
-        if (m_deviceStatus == APP_NOT_CONNECTED) { // OFFLINE, connect to MQTT server
-
-            // conn.subscribe("AiOhTea/" + m_deviceName + "/Status");
-            // conn.subscribe("AiOhTea/" + m_deviceName + "/Settings");
-
-        } else { // App connected to MQTT server, send cmd to MQTT server
-            if (m_deviceStatus != SW_OFFLINE) { // Send command if switch online
-                byte[] payload = {'0'};
-
-                switch (m_deviceStatus) {
-                    case SW_OFF:
-                        payload[0] = '1';
-                        break;
-                    case SW_ON:
-                        payload[0] = '0';
-                        break;
-                }
-
-                int error = conn.publish("AiOhTea/" + m_deviceName + "/Cmd", payload);
-
-                String result;
-
-                switch (error){
-
-                    case 0:
-                        result = mainActivity.getString(R.string.sw_cmd_sent);
-                        break;
-
-                    case 1:
-                        result = mainActivity.getString(R.string.sw_cmd_err);
-                        break;
-
-                    default:
-                        result = mainActivity.getString(R.string.sw_offline_err);
-                }
-
-                MainActivity.myToast(mainActivity, result);
-            } else {
-                MainActivity.myToast (mainActivity, mainActivity.getString(R.string.sw_offline_err));
-            }
+            case SW_ON:
+            payload[0] = '0';
+            break;
         }
+
+        String result = commandHardware(mainActivity, payload);
+
+        MainActivity.myToast(mainActivity, result);
     }
 
     // --------------------------------------------------------------------------------------------
@@ -145,11 +123,14 @@ public class SwitchListItem extends DeviceListItem {
     // --------------------------------------------------------------------------------------------
     public void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload){
 
-
         // Processing Status message
         if(lastLevelTopic.equals("Status")){
 
             m_deviceStatus = Character.getNumericValue(payload[0]);
+
+            // Clear timers if device offline
+            if(m_deviceStatus == DEV_OFFLINE)
+                m_hwSettings.clearTimers();
 
             String s = "";
             int size = payload.length - 1;
@@ -162,14 +143,48 @@ public class SwitchListItem extends DeviceListItem {
             DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
 
             m_statusChangedTime = df.format(d);
-        } else {
 
+
+
+        } else {
             // Processing Settings message
             if (lastLevelTopic.equals("Settings")) {
                 m_hwSettings.parseSettingsPayload(payload);
+                Log.d("SETTINGS_ARRIVED", m_hwSettings.constructTimerSettingPayload());
             }
         }
 
         mainActivity.refreshDeviceList();
+    }
+
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+    public String commandHardware (MainActivity mainActivity, byte[] payload){
+        MyMqttConnection conn = mainActivity.getConnByName(m_connnName);
+
+        if(conn == null)
+            return mainActivity.getString(R.string.sw_cmd_err) + ": No connection";
+
+
+        int error = conn.publish("AiOhTea/" + m_deviceName + "/Cmd", payload);
+
+        String result;
+
+        switch (error){
+
+            case 0:
+                result = mainActivity.getString(R.string.sw_cmd_sent);
+                break;
+
+            case 1:
+                result = mainActivity.getString(R.string.sw_cmd_err);
+                break;
+
+            default:
+                result = mainActivity.getString(R.string.sw_offline_err);
+        }
+
+        return result;
     }
 }

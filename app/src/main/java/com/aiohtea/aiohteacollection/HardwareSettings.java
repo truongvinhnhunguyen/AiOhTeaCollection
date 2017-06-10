@@ -13,13 +13,17 @@ public class HardwareSettings {
     final static public long MAX_SECS_IN_DAY = 86400;
 
     String m_deviceFwVer = "V1.0";
-    int m_timerActive = 0; // 0: Inactive; 1: Active
+    char m_timerActive = '0'; // 0: Inactive; 1: Active
     long[] m_startTimer = {86401L, 86401L, 86401L, 86401L}; // Secs in day (UTC timezone)
     long[] m_stopTimer = {86401L, 86401L, 86401L, 86401L};
     long m_timeZone = 25200; // +7
 
 
     long m_appTzOffset = 0;
+
+    public boolean isTimerActive(){
+        return m_timerActive != '0';
+    }
 
     public HardwareSettings(){
         m_appTzOffset = TimeZone.getDefault().getRawOffset()/1000; // App timezone offset in seconds
@@ -77,10 +81,18 @@ public class HardwareSettings {
 
     /**
      *
-     * @param timerIdx
+     */
+    public void clearTimers(){
+        for(int i=0; i<NUM_TIMERS; i++)
+            m_startTimer[i] = m_stopTimer[i] = MAX_SECS_IN_DAY+1;
+    }
+    /**
+     * public String getTimerString(int timerIdx, boolean startOrStop
+     * To fill in TimerSetting Activity
+     * @param timerIdx: between 1 and  NUM_TIMERS
      * @return
      */
-    public String getValueString(int timerIdx, boolean startOrStop){
+    public String getTimerString(int timerIdx, boolean startOrStop){
         String s = "";
         int num;
         long timer;
@@ -112,7 +124,7 @@ public class HardwareSettings {
 
     /**
      * public void setValue (int timerIdx, boolean startOrStop, String valueString)
-     * @param timerIdx
+     * @param timerIdx between 1 and  NUM_TIMERS
      * @param startOrStop
      * @param valueString
      */
@@ -125,7 +137,7 @@ public class HardwareSettings {
         else
             timerPointer = m_stopTimer;
 
-        if(valueString.length() > 5)
+        if(valueString.length() > 5) // :-D Làm biếng
         {
             timerPointer[timerIdx] = MAX_SECS_IN_DAY + 1;
         } else {
@@ -137,9 +149,67 @@ public class HardwareSettings {
 
     /**
      *
+     * @param startOrStop
+     * @return
+     */
+    public String getIntervalString(boolean startOrStop){
+        if(startOrStop == true){
+            return ""+m_startTimer[0];
+        } else{
+            return ""+m_stopTimer[0];
+        }
+    }
+
+    /**
+     *
+     * @param startOrStop
+     * @param valueString
+     */
+    public void setIntervalValue(boolean startOrStop, String valueString){
+        long timer;
+
+        if(valueString.equals("")){
+            timer = MAX_SECS_IN_DAY + 1;
+        }else {
+            timer = Long.parseLong(valueString);
+        }
+
+        if(startOrStop)
+            m_startTimer[0] = timer;
+        else
+            m_stopTimer[0] = timer;
+
+    }
+
+
+    /**
+     *
      * @return text to display on MainActivity list
      */
-    public String getTimerText(boolean startOrStop){
+    public String getIntervalFullText(boolean startOrStop){
+        String s = "";
+        long timer;
+
+        if(startOrStop)
+            timer = m_startTimer[0];
+        else
+            timer = m_stopTimer[0];
+
+        if (timer <= MAX_SECS_IN_DAY) {
+            s += timer;
+            s += " secs";
+        }else{
+            s = "- - - - - secs";
+        }
+
+        return s;
+    }
+
+    /**
+     *
+     * @return text to display on MainActivity list
+     */
+    public String getTimerFullText(boolean startOrStop){
 
         String s = "";
         int num;
@@ -171,51 +241,6 @@ public class HardwareSettings {
 
             if (i != NUM_TIMERS - 1)
                 s += " | ";
-        }
-
-        return s;
-    }
-
-    /**
-     *
-     * @param startOrStop
-     * @param valueString
-     */
-    public void setIntervalValue(boolean startOrStop, String valueString){
-        long timer;
-
-        if(valueString.equals("")){
-            timer = MAX_SECS_IN_DAY + 1;
-        }else {
-            timer = Long.parseLong(valueString);
-        }
-
-        if(startOrStop)
-            m_startTimer[0] = timer;
-        else
-            m_stopTimer[0] = timer;
-
-    }
-
-
-    /**
-     *
-     * @return text to display on MainActivity list
-     */
-    public String getIntervalText(boolean startOrStop){
-        String s = "";
-        long timer;
-
-        if(startOrStop)
-            timer = m_startTimer[0];
-        else
-            timer = m_stopTimer[0];
-
-        if (timer <= MAX_SECS_IN_DAY) {
-            s += timer;
-            s += " secs";
-        }else{
-            s = "- - - - - secs";
         }
 
         return s;
@@ -269,6 +294,10 @@ public class HardwareSettings {
             idx++;
         }
         m_timeZone = Long.valueOf(s).longValue();
+        idx++;
+
+        // Get timer activation status
+        m_timerActive = (char)payload[idx];
     }
 
     /**

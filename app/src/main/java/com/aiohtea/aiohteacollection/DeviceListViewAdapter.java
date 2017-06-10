@@ -36,104 +36,70 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         ImageView   m_timerButton;
     }
 
-    // Class to implement onClick behavior when user click on DEVICE'S ICON
-    private class ItemIconOnClickListener implements View.OnClickListener {
-
-        private DeviceListItem m_clickedDevice;
-
-        ItemIconOnClickListener(DeviceListItem clickedDevice){
-            m_clickedDevice = clickedDevice;
-        }
-
-        @Override
-        public void onClick(View v) {
-            m_clickedDevice.iconClicked(m_activity);
-        }
-    }
-
-    // Class to implement onClick behavior when user click on 3 DOTS ICON
-    private class Item3DotsOnClickListener implements View.OnClickListener {
-
-        private DeviceListItem m_clickedDevice;
-
-        Item3DotsOnClickListener(DeviceListItem clickedDevice){
-            m_clickedDevice = clickedDevice;
-        }
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    }
 
     // Class to implement onClick behavior when user click on TIMER VALUE AREA
-    private class ItemTimerValueOnClickListener implements View.OnClickListener {
+    private class DeviceListItemOnClickListener implements View.OnClickListener {
 
         private DeviceListItem m_clickedDevice;
 
-        ItemTimerValueOnClickListener (DeviceListItem clickedDevice){
+        DeviceListItemOnClickListener (DeviceListItem clickedDevice){
             m_clickedDevice = clickedDevice;
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(m_activity, TimerSettingsActivity.class);
-            intent.putExtra("HW_SETTINGS", m_clickedDevice.getHwSettingPayloadString());
-            intent.putExtra("HW_SETTINGS_DEV_NAME", m_clickedDevice.getDeviceName());
 
-            m_activity.startActivityForResult(intent, 3);
-        }
-    }
+            int devStatus = m_clickedDevice.getDeviceStatus();
 
-    // Class to implement onClick behavior when user click on TIMER BUTTON
-    private class ItemTimerButtonOnClickListener implements View.OnClickListener {
-
-        private DeviceListItem m_clickedDevice;
-        private View m_view;
-
-        private class Xxx implements DialogInterface.OnClickListener{
-            Xxx (View v){
-                m_view = v;
+            if((devStatus == DeviceListItem.DEV_NOT_SYNCED)
+                    ||(devStatus == DeviceListItem.DEV_OFFLINE)){
+                MainActivity.myToast(m_activity, m_activity.getString(R.string.dev_offline_notsynced));
+                return;
             }
 
-            public void onClick(DialogInterface dialog, int id) {
-                TimePicker tp = (TimePicker) m_view.findViewById(R.id.time_picker);
+            int id = v.getId();
 
-                String s = tp.getHour() + ":" + tp.getMinute();
+            switch (id) {
+                // Device icon clicked
+                case R.id.item_icon:
+                    m_clickedDevice.iconClicked(m_activity);
+                    break;
 
-                m_activity.myToast(m_activity, s);
+                // Timer value areas clicked
+                case R.id.on_every_value:
+                case R.id.off_every_value:
+                case R.id.on_at_value:
+                case R.id.off_at_value:
 
-                // User clicked OK button
+                    Intent intent = new Intent(m_activity, TimerSettingsActivity.class);
+                    intent.putExtra("HW_SETTINGS", m_clickedDevice.getHwSettingPayloadString());
+                    intent.putExtra("HW_SETTINGS_DEV_NAME", m_clickedDevice.getDeviceName());
+
+                    m_activity.startActivityForResult(intent, 3);
+                    break;
+
+                // Timer button clicked
+                case R.id.timer_button:
+                    byte[] cmd = {'2'};
+                    String msg = m_activity.getString(R.string.confirm_1);
+
+                    if(m_clickedDevice.isTimerActive()){
+                        cmd[0] = '3';
+                        msg = m_activity.getString(R.string.confirm_2);
+                    }
+
+                    // m_clickedDevice.commandHardware(m_activity, cmd);
+                    MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDevice, cmd);
+                    ask.show();
+
+                    //MainActivity.myToast(m_activity, "TIMER HELLO!");
+                    break;
+
+                // 3 Dots icon clicked
+                case R.id.details_button:
+                    MainActivity.myToast(m_activity, "3 DOTS HELLO!");
+                    break;
             }
-        }
-
-        ItemTimerButtonOnClickListener(DeviceListItem clickedDevice){
-            m_clickedDevice = clickedDevice;
-        }
-
-        @Override
-        public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(m_activity);
-            // builder.setMessage("Dialog Message");
-            // builder.setTitle("Dialog Title");
-
-            LayoutInflater inflater = m_activity.getLayoutInflater();
-            View v1 = inflater.inflate(R.layout.timer_settings, null);
-            builder.setView(v1);
-
-            // Add the buttons
-            builder.setPositiveButton("OK", new Xxx(v1));
-
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-
-
-
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
         }
     }
 
@@ -168,14 +134,14 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder.m_timerButton = (ImageView) convertView.findViewById(R.id.timer_button);
 
             // Register onClickListener
-            holder.m_itemIcon.setOnClickListener(new ItemIconOnClickListener(rowItem));
-            holder.m_detailsButton.setOnClickListener(new Item3DotsOnClickListener(rowItem));
-            holder.m_timerButton.setOnClickListener(new ItemTimerButtonOnClickListener(rowItem));
+            holder.m_itemIcon.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
+            holder.m_detailsButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
+            holder.m_timerButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
 
-            holder.m_onEvery.setOnClickListener(new ItemTimerValueOnClickListener (rowItem));
-            holder.m_offEvery.setOnClickListener(new ItemTimerValueOnClickListener (rowItem));
-            holder.m_onAt.setOnClickListener(new ItemTimerValueOnClickListener (rowItem));
-            holder.m_offAt.setOnClickListener(new ItemTimerValueOnClickListener (rowItem));
+            holder.m_onEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
+            holder.m_offEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
+            holder.m_onAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
+            holder.m_offAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
 
             convertView.setTag(holder);
 
@@ -183,7 +149,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.m_itemIcon.setImageResource(rowItem.getStatusImgRscId());
+        holder.m_itemIcon.setImageResource(rowItem.getDevStatusImgRscId());
         holder.m_itemName.setText(rowItem.getDeviceName());
         holder.m_itemDesc.setText(rowItem.getDeviceDesc());
         holder.m_itemStatus.setText(rowItem.getDeviceStatusText(m_activity));
@@ -192,6 +158,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         holder.m_offEvery.setText(rowItem.getOffEveyText());
         holder.m_onAt.setText(rowItem.getOnAtText());
         holder.m_offAt.setText(rowItem.getOffAtText());
+        holder.m_timerButton.setImageResource(rowItem.getTimerStatusImgRscId());
 
         return convertView;
     }

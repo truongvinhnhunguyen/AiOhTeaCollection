@@ -73,15 +73,15 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        if(s.length() != 0)
-                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(true);
-                        else
-                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(false);
+
                     }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                        if(s.length() != 0)
+                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(true);
+                        else
+                            ((CheckBox) m_this.findViewById(R.id.interval_off_enable)).setChecked(false);
                     }
 
                     @Override
@@ -264,7 +264,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
                 } else {
 
                     if (m_hw.isEnabled(timerId, onOrOff)) {
-                        String s = m_hw.getValueString(timerId, onOrOff);
+                        String s = m_hw.getTimerString(timerId, onOrOff);
                         h = Integer.valueOf(s.substring(0, 2));
                         m = Integer.valueOf(s.substring(3, 5));
                     }
@@ -296,7 +296,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         etx = (EditText) findViewById(R.id.on_every_value);
         if(isEnabled) {
-            etx.setText(m_hw.getValueString(0, true));
+            etx.setText(m_hw.getIntervalString(true));
         }else{
             etx.setHint("- - - - -");
         }
@@ -307,7 +307,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         etx = (EditText) findViewById(R.id.off_every_value);
         if(isEnabled) {
-            etx.setText(m_hw.getValueString(0, false));
+            etx.setText(m_hw.getIntervalString(false));
         }else{
             etx.setHint("- - - - -");
         }
@@ -319,7 +319,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         tvw = (TextView) findViewById(R.id.on_at_value_1);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(1, true));
+            tvw.setText(m_hw.getTimerString(1, true));
         }else{
             tvw.setText("- -:- -");
         }
@@ -330,7 +330,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         tvw = (TextView) findViewById(R.id.off_at_value_1);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(1, false));
+            tvw.setText(m_hw.getTimerString(1, false));
         }else{
             tvw.setText("- -:- -");
         }
@@ -342,18 +342,18 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         tvw = (TextView) findViewById(R.id.on_at_value_2);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(2, true));
+            tvw.setText(m_hw.getTimerString(2, true));
         }else{
             tvw.setText("- -:- -");
         }
 
         cbx = (CheckBox) findViewById(R.id.timer_2_off_enable);
-        isEnabled = m_hw.isEnabled(1, false);
+        isEnabled = m_hw.isEnabled(2, false);
         cbx.setChecked(isEnabled);
 
         tvw = (TextView) findViewById(R.id.off_at_value_2);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(2, false));
+            tvw.setText(m_hw.getTimerString(2, false));
         }else{
             tvw.setText("- -:- -");
         }
@@ -365,18 +365,18 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         tvw = (TextView) findViewById(R.id.on_at_value_3);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(3, true));
+            tvw.setText(m_hw.getTimerString(3, true));
         }else{
             tvw.setText("- -:- -");
         }
 
         cbx = (CheckBox) findViewById(R.id.timer_3_off_enable);
-        isEnabled = m_hw.isEnabled(1, false);
+        isEnabled = m_hw.isEnabled(3, false);
         cbx.setChecked(isEnabled);
 
         tvw = (TextView) findViewById(R.id.off_at_value_3);
         if (isEnabled) {
-            tvw.setText(m_hw.getValueString(3, false));
+            tvw.setText(m_hw.getTimerString(3, false));
         }else{
             tvw.setText("- -:- -");
         }

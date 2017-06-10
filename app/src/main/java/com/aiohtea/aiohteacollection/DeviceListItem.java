@@ -11,7 +11,8 @@ import android.util.Log;
 abstract public class DeviceListItem {
 
     // Constants
-    public static final int APP_NOT_CONNECTED = -1;
+    public static final int DEV_NOT_SYNCED = -1;
+    public static final int DEV_OFFLINE = 2;
     public static final int SWITCH_DEV_TYPE = 1;
 
     protected int m_deviceType;
@@ -31,7 +32,7 @@ abstract public class DeviceListItem {
 
         m_hwSettings = new HardwareSettings();
 
-        this.m_deviceStatus = APP_NOT_CONNECTED;
+        this.m_deviceStatus = DEV_NOT_SYNCED;
     }
 
     public DeviceListItem(String deviceName, String devicceDesc,
@@ -43,7 +44,7 @@ abstract public class DeviceListItem {
 
         m_hwSettings = new HardwareSettings();
 
-        this.m_deviceStatus = APP_NOT_CONNECTED;
+        this.m_deviceStatus = DEV_NOT_SYNCED;
     }
 
     public int getM_deviceType() {
@@ -72,28 +73,33 @@ abstract public class DeviceListItem {
 
 
     // Methods for device list
-    abstract int getStatusImgRscId();
+    abstract int getDevStatusImgRscId();
+    abstract int getTimerStatusImgRscId();
     abstract String getDeviceStatusText(MainActivity mainActivity);
 
     // THOSE METHOD CALLED TO DISPLAY IN DEVICE LIST BUT MUST REDESIGN IF DEVICE DOESN'T HAVE TIMER
     public String getOnEveyText(){
-        return m_hwSettings.getIntervalText(true);
+        return m_hwSettings.getIntervalFullText(true);
     }
 
     public String getOffEveyText(){
-        return m_hwSettings.getIntervalText(false);
+        return m_hwSettings.getIntervalFullText(false);
     }
 
     public String getOnAtText(){
-        return m_hwSettings.getTimerText(true);
+        return m_hwSettings.getTimerFullText(true);
     }
 
     public String getOffAtText(){
-        return m_hwSettings.getTimerText(false);
+        return m_hwSettings.getTimerFullText(false);
     }
 
     public String getHwSettingPayloadString(){
         return m_hwSettings.toPayloadString();
+    }
+
+    public boolean isTimerActive(){
+        return m_hwSettings.isTimerActive();
     }
 
     // Specific behaviors
@@ -101,6 +107,7 @@ abstract public class DeviceListItem {
     abstract void commRelease(MainActivity mainActivity);
     abstract void iconClicked(MainActivity mainActivity);
     abstract void mqttMessageArrive(MainActivity mainActivity, String lastLevelTopic, byte[] payload);
+    abstract String commandHardware (MainActivity mainActivity, byte[] payload);
 
     // Methods for saving/loading class
     void deviceStore(MainActivity mainActivity){

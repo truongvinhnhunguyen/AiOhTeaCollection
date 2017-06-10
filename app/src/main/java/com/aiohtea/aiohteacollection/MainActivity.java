@@ -211,11 +211,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (resultCode == 1)
                 {
                     String cmd = data.getStringExtra("HW_SETTINGS");
-                    String dev = data.getStringExtra("HW_SETTINGS_DEV_NAME");
+                    String devName = data.getStringExtra("HW_SETTINGS_DEV_NAME");
 
-                    myToast(this, "Timer setting to device: " + dev);
-
+                    myToast(this, "Timer setting to device: " + devName);
                     Log.d("TIMER_CMD", cmd);
+
+                    SwitchListItem dev = (SwitchListItem)getDeviveByName(devName);
+                    dev.commandHardware(this, cmd.getBytes());
                 }
 
                 break;
@@ -397,6 +399,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
            }
         }
         Log.d("MA.getConnByName: ", "NOT FOUND");
+        return null;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    /**
+     *
+     * @param name
+     * @return
+     */
+     // --------------------------------------------------------------------------------------------
+    public DeviceListItem getDeviveByName(String name) {
+        int size = m_devList.size();
+
+        for(int i=0; i<size; i++){
+            DeviceListItem dev = m_devList.get(i);
+            String devName = dev.getDeviceName();
+
+            if(devName.equals(name)){
+                return dev;
+            }
+        }
+
         return null;
     }
 
