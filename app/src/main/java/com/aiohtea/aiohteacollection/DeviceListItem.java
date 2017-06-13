@@ -19,20 +19,25 @@ abstract public class DeviceListItem {
     public static final int MQTT_CMD_TOPIC = 2;
     public static final int MQTT_SETTINGS_TOPIC = 3;
 
+
+    public String getDeviceID(){
+        return "AiOhTea/" + m_deviceName + "." + m_devicePassword + "/";
+    }
+
     public String getMqttTopic(int topicType){
-        String s = "AiOhTea/" + m_deviceName + "." + m_devicePassword;
+        String s = getDeviceID();
 
         switch (topicType){
             case MQTT_CMD_TOPIC:
-                s += "/Cmd";
+                s += "Cmd";
                 break;
 
             case MQTT_SETTINGS_TOPIC:
-                s += "/Settings";
+                s += "Settings";
                 break;
 
             case MQTT_STATUS_TOPIC:
-                s += "/Status";
+                s += "Status";
                 break;
         }
 
@@ -143,11 +148,16 @@ abstract public class DeviceListItem {
         SharedPreferences.Editor editor = settings.edit();
 
         editor.putString(m_deviceName + "_m_deviceName", m_deviceName);
-        editor.putString(m_devicePassword + "_m_devicePassword", m_devicePassword);
+        editor.putString(m_deviceName + "_m_devicePassword", m_devicePassword);
         editor.putString(m_deviceName + "_m_deviceDesc", m_deviceDesc);
         editor.putString(m_deviceName + "_m_connnName", m_connnName);
 
         editor.commit();
+
+        Log.d("STORE_DEV", "Name: "+m_deviceName);
+        Log.d("STORE_DEV", "Pass: "+m_devicePassword);
+        Log.d("STORE_DEV", "Desc: "+m_deviceDesc);
+        Log.d("STORE_DEV", "Conn: "+m_connnName);
     }
 
     // Methods for saving/loading class
@@ -158,7 +168,7 @@ abstract public class DeviceListItem {
         SharedPreferences.Editor editor = settings.edit();
 
         editor.remove(m_deviceName + "_m_deviceName");
-        editor.remove(m_devicePassword + "_m_devicePassword");
+        editor.remove(m_deviceName + "_m_devicePassword");
         editor.remove(m_deviceName + "_m_deviceDesc");
         editor.remove(m_deviceName + "_m_connnName");
 
@@ -169,16 +179,16 @@ abstract public class DeviceListItem {
         SharedPreferences settings = mainActivity.getSharedPreferences
                 (mainActivity.getString(R.string.app_name), Context.MODE_PRIVATE);
 
-        m_devicePassword = settings.getString(m_devicePassword + "_m_devicePassword", "");
+        m_devicePassword = settings.getString(m_deviceName + "_m_devicePassword", "");
         m_deviceDesc = settings.getString(m_deviceName + "_m_deviceDesc", "");
         m_connnName = settings.getString(m_deviceName + "_m_connnName", "");
 
 
         Log.d("DevListItem.deviceLoad", "Loading...");
-        Log.d("LOAD", m_deviceName);
-        Log.d("LOAD", m_devicePassword);
-        Log.d("LOAD", m_deviceDesc);
-        Log.d("LOAD", m_connnName);
+        Log.d("LOAD_DEV", "Name: "+m_deviceName);
+        Log.d("LOAD_DEV", "Pass: "+m_devicePassword);
+        Log.d("LOAD_DEV", "Desc: "+m_deviceDesc);
+        Log.d("LOAD_DEV", "Conn: "+m_connnName);
 
     }
 }

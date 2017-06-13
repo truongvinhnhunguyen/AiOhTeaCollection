@@ -154,7 +154,7 @@ public class MyMqttConnection {
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-
+                    Log.d("MyMqttConn.subscribe", "Subscribe successfully");
                 }
 
                 @Override

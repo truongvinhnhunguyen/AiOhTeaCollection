@@ -30,16 +30,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     // DEFAULT CONNECTION
-    final String DEFAULT_CONN_NAME = "CloudMQTT";
-    final String DEFAULT_CONN_URI = "tcp://m10.cloudmqtt.com:14110";
-    final String DEFAULT_CONN_USER = "nywjllog";
-    final String DEFAULT_CONN_PASS = "DXwwL_1Bye8x";
+    public final static String DEFAULT_CONN_NAME = "CloudMQTT";
+    public final static  String DEFAULT_CONN_URI = "tcp://m10.cloudmqtt.com:14110";
+    public final static  String DEFAULT_CONN_USER = "nywjllog";
+    public final static  String DEFAULT_CONN_PASS = "DXwwL_1Bye8x";
 /*
     // DEFAULT CONNECTION
-    final String DEFAULT_CONN_NAME = "HiveMQ";
-    final String DEFAULT_CONN_URI = "tcp://broker.hivemq.com:1883";
-    final String DEFAULT_CONN_USER = "";
-    final String DEFAULT_CONN_PASS = "";
+    public final static String DEFAULT_CONN_NAME = "HiveMQ";
+    public final static String DEFAULT_CONN_URI = "tcp://broker.hivemq.com:1883";
+    public final static String DEFAULT_CONN_USER = "";
+    public final static String DEFAULT_CONN_PASS = "";
     */
 
     /*
@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         for(int i=0; i < size; i++){
             DeviceListItem item = m_devList.get(i);
 
-            if(connName.equals(item.getConnName()) && topic.contains("/"+item.getDeviceName()+"/")){
+            if(connName.equals(item.getConnName()) && topic.contains(item.getDeviceID())){
                 item.mqttMessageArrive(this, topic.substring(topic.lastIndexOf("/")+1), payload);
                 break;
             }
