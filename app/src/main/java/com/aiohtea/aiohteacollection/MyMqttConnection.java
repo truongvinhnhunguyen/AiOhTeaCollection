@@ -81,21 +81,27 @@ public class MyMqttConnection {
             // Set callback for m_client.connect result
             class Xxx implements IMqttActionListener {
 
+                MainActivity m_mainActivity;
+
+                Xxx(MainActivity mainActivity1){
+                    m_mainActivity = mainActivity;
+                }
+
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // Connected
-                    Log.d("MQTT", "Connected successfully");
-                    mainActivity.commInit();
+                    MainActivity.myToast(m_mainActivity, "Successfully connected");
+                    m_mainActivity.commInit();
                 };
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d("MY-MQTT", "Connection failure");
+                    MainActivity.myToast(m_mainActivity, "Connection failure");
                 }
             }
 
-            mqttToken.setActionCallback(new Xxx ());
+            mqttToken.setActionCallback(new Xxx (mainActivity));
 
         } catch (MqttException e) {
             e.printStackTrace();
@@ -105,17 +111,35 @@ public class MyMqttConnection {
         return 0;
     }
 
+    public void refresh(MainActivity mainActivity){
+        if(m_client != null) {
+            if(m_client.isConnected()) {
+                m_client.registerResources(mainActivity);
+                mainActivity.commInit();
+                // MainActivity.myToast(mainActivity, "Refreshing conn:" + m_connName);
+            }
+            else {
+                connect(mainActivity);
+                // MainActivity.myToast(mainActivity, "Reconnecting:" + m_connName);
+            }
+        }
+    }
+
     public void disconnect(){
 
-        m_client.unregisterResources();
+        if(m_client != null)
+            m_client.unregisterResources();
+
         /*
         try {
-            if(m_client != null)
-
+            if(m_client != null) {
                 m_client.disconnect();
+                m_client.unregisterResources();
+            }
         } catch (MqttException e) {
             e.printStackTrace();
-        }*/
+        }
+        */
     }
 
     // --------------------------------------------------------------------------------------------

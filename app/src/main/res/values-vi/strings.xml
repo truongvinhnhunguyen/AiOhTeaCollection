@@ -6,67 +6,74 @@
     <string name="add_switch">THÊM CÔNG TẮC</string>
     <string name="add_switch_guide">Nhập ID và Mô tả của công tắc đã được nối mạng. Sau đó, nhấn nút THÊM CÔNG TẮC để thêm vào danh sách thiết bị của bạn.</string>
     <string name="switch_desc_box">Mô tả công tắc</string>
-    <string name="switch_desc_guide">Such as \"Irrigation system\"</string>
+    <string name="switch_desc_guide">Ví dụ \"Hệ thống tưới cây\"</string>
 
     <string name="switch_id_box">Tên của công tắc</string>
+    <string name="switch_password_box">Mật khẩu của công tắc</string>
     <string name="action_about">About...</string>
-    <string name="about_text">IoT should make our life easy and enjoyable\n
+    <string name="about_text">IoT làm cuộc sống chúng ta trở nên dễ dàng và thú vị\n
         like having tea.</string>
-    <string name="wait_msg">Processing..., please wait!</string>
+    <string name="wait_msg">Đang xử lý..., vui lòng chờ!</string>
+
+    <string name="dev_details_menu_item">Chi tiết thiết bị...</string>
+    <string name="delete_dev_menu_item">Xóa thiết bị...</string>
 
     <!--> DEVIVE INFO </!-->
-    <string name="dev_offline_notsynced">"Device is offline or not synced!"</string>
+    <string name="dev_offline_notsynced">"Thiết bị không nối mạng hoặc ứng dụng chưa liên lạc được
+        với thiết bị!"</string>
 
     <!--> OTHER INFO </!-->
-    <string name="confirm_dialog_title">"Question"</string>
-    <string name="confirm_1">"Do you want to ACTIVATE device's timers?"</string>
-    <string name="confirm_2">"Do you want to DEACTIVATE device's timers?"</string>
+    <string name="confirm_dialog_title">"Xác nhận"</string>
+    <string name="confirm_1">"Có phải bạn muốn BẬT định thời?"</string>
+    <string name="confirm_2">"Có phải bạn muốn TẮT định thời?"</string>
+    <string name="confirm_3">"Có phải bạn muốn xóa thiết bị: "</string>
 
     <!--> SWITCH STATUS</!-->
-    <string name="sw_on">"STATUS: ON"</string>
-    <string name="sw_off">"STATUS: OFF"</string>
-    <string name="sw_off_line">"STATUS: OFFLINE"</string>
-    <string name="sw_unknown">"Tap to find the switch"</string>
+    <string name="sw_on">"MỞ lúc"</string>
+    <string name="sw_off">"TẮT lúc"</string>
+    <string name="sw_off_line">"THIẾT BỊ KHÔNG NỐI MẠNG"</string>
+    <string name="sw_unknown">"Chạm vào log thiết bị để liên lạc"</string>
 
     <!--> SWITCH CONTROL MESSAGES</!-->
-    <string name="sw_conn_ok">"Successfully establishing connection"</string>
-    <string name="sw_conn_err">"Error in establishing connection"</string>
-    <string name="sw_subcribe_ok">"Listening switch's status"</string>
-    <string name="sw_subcribe_err">"Error in listening switch"</string>
-    <string name="sw_cmd_sent">"Command was sent"</string>
-    <string name="sw_cmd_err">"Command was sent"</string>
-    <string name="sw_offline_err">"Switch offline, could not send command"</string>
+    <string name="sw_conn_ok">"Nối mạng điều khiển thành công"</string>
+    <string name="sw_conn_err">"Lỗi khi nối mạng điều khiển"</string>
+    <string name="sw_subcribe_ok">"Đang chờ công tắc cập nhật trạng thái"</string>
+    <string name="sw_subcribe_err">"Lỗi khi chờ công tắc cập nhật trạng thái"</string>
+    <string name="sw_cmd_sent">"Lệnh đã gửi thành công"</string>
+    <string name="sw_cmd_err">"Lỗi khi gửi lệnh"</string>
+    <string name="sw_offline_err">"Công tắc không nối mạng, không thể gửi lệnh"</string>
 
     <!--> SWITCH SETUP</!-->
-    <string name="setup_switch_guide_1">Should be a name that is easy to remeber</string>
-    <string name="setup_switch_guide_2">WiFi access point name where the switch will connect to</string>
-    <string name="setup_switch_guide_3">WiFi password</string>
+    <string name="setup_switch_guide_1">Nên đặt tên dễ nhớ</string>
+    <string name="setup_switch_guide_1_1">Mật khẩu để truy xuất công tắc</string>
+    <string name="setup_switch_guide_2">Tên của WiFi access point mà công tắc sẽ nối vào</string>
+    <string name="setup_switch_guide_3">Mật khấu WiFi</string>
 
-    <string name="setup_switch">SETUP SWITCH</string>
+    <string name="setup_switch">CÀI ĐẶT CÔNG TẮC</string>
     <string name="wifi_ssid_box">WiFi SSID</string>
-    <string name="wifi_password_box">WiFi password</string>
-    <string name="option_check_box">Add new switch to device list</string>
-    <string name="can_not_be_empty">can not be empty.</string>
+    <string name="wifi_password_box">Mật khẩu WiFi</string>
+    <string name="option_check_box">Tự động thêm công tắc mới vào danh sách thiết bị</string>
+    <string name="can_not_be_empty">không thể để trống</string>
 
     <!--> TIMER SETTINGS </!-->
-    <string name="interval_settings_title">Interval settings</string>
-    <string name="timer_settings_title">Timer settings</string>
-    <string name="on_every">On after:</string>
-    <string name="off_every">Off after:</string>
-    <string name="on_at">On at:</string>
-    <string name="off_at">Off at:</string>
-    <string name="sec_text">sec(s)</string>
+    <string name="interval_settings_title">Định thời theo chu kỳ</string>
+    <string name="timer_settings_title">Định thời theo giờ</string>
+    <string name="on_every">Mở sau:</string>
+    <string name="off_every">Tắt sau:</string>
+    <string name="on_at">Mở lúc:</string>
+    <string name="off_at">Tắt lúc:</string>
+    <string name="sec_text">giây</string>
     <string name="timer_name_1">Timer 1</string>
     <string name="timer_name_2">Timer 2</string>
     <string name="timer_name_3">Timer 3</string>
-    <string name="setup_button">Setup</string>
-    <string name="cancel_button">Cancel</string>
+    <string name="setup_button">Cài đặt</string>
+    <string name="cancel_button">Bỏ</string>
 
-    <string name="interval_settings_guide">The device will be started after n seconds since last stop
-    and stopped m seconds since last start.
-        If the device has been started/stopped manually before, corresponding timer will be bypassed.</string>
+    <string name="interval_settings_guide">Thiết bị sẽ chạy sau n giây từ lúc nó ngừng lần cuối và ngừng
+        sau m giây từ lúc nó chạy.
+        Nếu thiết bị được điều khiển chạy/ngừng trước đó, định thời tương ứng sẽ bị bỏ qua</string>
 
-    <string name="timer_settings_guide">The device will be started/stopped at specific times.
-    If the device has been started/stopped manually before, corresponding timer will be bypassed.</string>
+    <string name="timer_settings_guide">Thiết bị sẽ chạy/ngừng ở một thời điểm chỉ định
+    Nếu thiết bị được điều khiển chạy/ngừng trước đó, định thời tương ứng sẽ bị bỏ qua</string>
 
 </resources>

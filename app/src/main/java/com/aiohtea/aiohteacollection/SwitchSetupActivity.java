@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class SwitchSetupActivity extends AppCompatActivity {
 
     private String m_swName;
+    private String m_swPassword;
     private Boolean m_addToList;
 
     @Override
@@ -45,12 +46,16 @@ public class SwitchSetupActivity extends AppCompatActivity {
         EditText editBox = (EditText) findViewById(R.id.switch_id_box);
         m_swName = editBox.getText().toString();
 
+
         if(m_swName.matches("")) {
             MainActivity.myToast(this, getString(R.string.switch_id_box)
                     + " " + getString(R.string.can_not_be_empty));
             editBox.requestFocus();
             return;
         }
+
+        editBox = (EditText) findViewById(R.id.switch_password_box);
+        m_swPassword = editBox.getText().toString();
 
         editBox = (EditText) findViewById(R.id.wifi_ssid_box);
         str = editBox.getText().toString();
@@ -76,7 +81,7 @@ public class SwitchSetupActivity extends AppCompatActivity {
             return;
         }
 
-        setupMsg += m_swName + "&nywjllog&DXwwL_1Bye8x&";
+        setupMsg += m_swName + "." + m_swPassword + "&nywjllog&DXwwL_1Bye8x&";
 
         Log.d("SWITCH_SETUP", setupMsg);
 
@@ -184,6 +189,7 @@ public class SwitchSetupActivity extends AppCompatActivity {
                 if (m_addToList) {
                     resultCode = 2; // No error, add to list
                     resultIntent.putExtra("SW_NAME", m_swName);
+                    resultIntent.putExtra("SW_PASSWORD", m_swPassword);
 
                 }else{ // No error, don't add to list
                     resultCode = 1;

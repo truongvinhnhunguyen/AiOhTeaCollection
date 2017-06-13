@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,15 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:contentDescription="@string/app_name"
-        android:paddingTop="30dp"
+        android:paddingTop="10dp"
         app:srcCompat="@mipmap/aiohtea_sw_on" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="10sp"
@@ -28,7 +29,6 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
@@ -44,7 +44,40 @@
         android:hint="@string/switch_id_box"
         android:inputType="textPersonName|textFilter"
         android:maxLength="32"
-        android:textColor="@android:color/holo_blue_dark"/>
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/switch_password_box"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/setup_switch_guide_1_1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/switch_password_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/switch_password_box"
+        android:inputType="textPassword|textVisiblePassword"
+        android:maxLength="32"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -76,7 +109,7 @@
         android:ems="10"
         android:hint="@string/wifi_ssid_box"
         android:inputType="textPersonName"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
 
     <Space
@@ -108,11 +141,7 @@
         android:ems="10"
         android:hint="@string/wifi_password_box"
         android:inputType="textPassword|textVisiblePassword"
-        android:textSize="18sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp" />
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -129,3 +158,4 @@
         android:text="@string/setup_switch" />
 
 </LinearLayout>
+    </ScrollView>

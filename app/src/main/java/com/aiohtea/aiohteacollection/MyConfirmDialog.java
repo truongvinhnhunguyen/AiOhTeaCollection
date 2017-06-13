@@ -10,15 +10,17 @@ import android.content.DialogInterface;
 public class MyConfirmDialog implements DialogInterface.OnClickListener {
 
     static public final int ACTION_CODE_COMMAND_HW = 1;
+    static public final int ACTION_CODE_DELETE_DEVICE = 2;
 
     int m_actionCode = 0;
 
     MainActivity m_mainActivity;
+    DeviceListItem m_device;
 
     // For ACTION_CODE_COMMAND_HW
-    DeviceListItem m_device;
     byte[] m_payload;
-    // END for ACTION_CODE_COMMAND_HW
+
+    // for ACTION_DELETE_DEVICE
 
     AlertDialog.Builder m_builder;
 
@@ -28,8 +30,8 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
      */
     MyConfirmDialog(MainActivity mainActivity, String msg) {
         m_mainActivity = mainActivity;
-        m_builder = new AlertDialog.Builder(m_mainActivity);
 
+        m_builder = new AlertDialog.Builder(m_mainActivity);
         m_builder.setTitle(m_mainActivity.getString(R.string.confirm_dialog_title));
         m_builder.setMessage(msg);
         m_builder.setIcon(R.mipmap.timer_on_button);
@@ -52,6 +54,19 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
         m_payload = payload;
     }
 
+    /**
+     *
+     * @param mainActivity
+     * @param msg
+     * @param device
+     */
+    MyConfirmDialog(MainActivity mainActivity, String msg, DeviceListItem device){
+        this(mainActivity, msg);
+
+        m_actionCode = this.ACTION_CODE_DELETE_DEVICE;
+        m_device = device;
+    }
+
 
 
     @Override
@@ -60,6 +75,10 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
         switch (m_actionCode){
             case ACTION_CODE_COMMAND_HW:
                 m_device.commandHardware(m_mainActivity, m_payload);
+                break;
+
+            case ACTION_CODE_DELETE_DEVICE:
+                m_mainActivity.deleteDevice(m_device.getDeviceName());
                 break;
         }
 

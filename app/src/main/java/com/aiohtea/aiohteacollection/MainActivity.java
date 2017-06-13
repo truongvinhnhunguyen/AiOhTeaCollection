@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         m_listView.setOnItemClickListener(this);
 
+        connEstablish();
+
 
 
         // ================== Class to listen Floating Action Button ===============================
@@ -115,17 +117,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      }
 
     // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+     void connRefresh(){
+         int size = m_connList.size();
+
+         for(int i=0; i < size; i++) {
+             m_connList.get(i).refresh(this);
+         }
+
+         refreshDeviceList();
+     }
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+     public void connEstablish(){
+         int size = m_connList.size();
+
+         for(int i=0; i < size; i++) {
+             m_connList.get(i).connect(this);
+             myToast(this, "Establishing conn:" + m_connList.get(i).getconnName());
+         }
+
+         refreshDeviceList();
+     }
+
+    // --------------------------------------------------------------------------------------------
     // void onResume()
     // --------------------------------------------------------------------------------------------
     @Override
     public void onResume(){
         super.onResume();
-
-        int size = m_connList.size();
-
-        for(int i=0; i < size; i++) {
-            m_connList.get(i).connect(this);
-        }
+        connRefresh();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -134,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onStop(){
         super.onStop();
-
 
         int size = m_connList.size();
 
@@ -183,10 +205,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case 1: // Floating button returns for adding a new device to list
                 if (resultCode == DeviceListItem.SWITCH_DEV_TYPE) {
                     String switchId = data.getStringExtra("SW_NAME");
+                    String switchPassword = data.getStringExtra("SW_PASSWORD");
                     String switchDesc = data.getStringExtra("SW_DESC");
 
                     DeviceListItem item =
-                            new SwitchListItem(switchId, switchDesc, DEFAULT_CONN_NAME);
+                            new SwitchListItem(switchId, switchPassword, switchDesc, DEFAULT_CONN_NAME);
                     addDeviceToList(item);
                 }
                 break;
@@ -194,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case 2: // "Setup device..." overflow menu
                 if(resultCode == 2){ //Add to list
                     String swName = data.getStringExtra("SW_NAME");
-
-                    DeviceListItem item = new SwitchListItem(swName, "Automatically added", DEFAULT_CONN_NAME);
+                    String switchPassword = data.getStringExtra("SW_PASSWORD");
+                    DeviceListItem item = new SwitchListItem(swName, switchPassword, "Automatically added", DEFAULT_CONN_NAME);
                     addDeviceToList(item);
                 }
 
@@ -222,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 break;
         }
+
+        refreshDeviceList();
+
     }
 
     // --------------------------------------------------------------------------------------------
@@ -280,16 +306,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     // --------------------------------------------------------------------------------------------
-    // public void addDeviceToList(DeviceListItem item)
     // --------------------------------------------------------------------------------------------
-    public void addDeviceToList(DeviceListItem item){
-
-        m_devList.add(item);
-        refreshDeviceList();
-
-        // Write to disk
-        item.deviceStore(this);
-
+    void updateDeviceListStorage(){
         SharedPreferences settings = getSharedPreferences
                 (getString(R.string.app_name) , Context.MODE_PRIVATE);
 
@@ -306,6 +324,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         editor.putStringSet("SW_NAME_LIST", nameList);
 
         editor.commit();
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // public void addDeviceToList(DeviceListItem item)
+    // --------------------------------------------------------------------------------------------
+    public void addDeviceToList(DeviceListItem item){
+
+        m_devList.add(item);
+        refreshDeviceList();
+
+        // Write to disk
+        item.deviceStore(this);
+        updateDeviceListStorage();
+    }
+
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+    public void deleteDevice(String deviceName){
+        int size = m_devList.size();
+
+        for (int i=0; i<size; i++){
+            DeviceListItem dev = m_devList.get(i);
+            if(deviceName.equals(dev.getDeviceName())){
+                dev = m_devList.remove(i);
+                dev.commRelease(this);
+                dev.deviceClear(this);
+                updateDeviceListStorage();
+                refreshDeviceList();
+                return;
+            }
+        }
     }
 
     // --------------------------------------------------------------------------------------------

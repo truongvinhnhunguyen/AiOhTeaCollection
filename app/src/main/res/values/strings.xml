@@ -12,18 +12,24 @@
     <string name="switch_desc_box">Switch Description</string>
     <string name="switch_desc_guide">Such as \"Irrigation system\"</string>
     <string name="switch_id_box">Switch Name</string>
+    <string name="switch_password_box">Switch Password</string>
     <string name="action_about">About...</string>
     <string name="about_text">IoT should make our life easy and enjoyable\n
         like having tea.</string>
     <string name="wait_msg">Processing..., please wait!</string>
 
+
+    <string name="dev_details_menu_item">Device\'s details...</string>
+    <string name="delete_dev_menu_item">Delete device...</string>
+
     <!--> DEVIVE INFO </!-->
     <string name="dev_offline_notsynced">"Device is offline or not synced!"</string>
 
     <!--> OTHER INFO </!-->
-    <string name="confirm_dialog_title">"Question"</string>
+    <string name="confirm_dialog_title">"Confirmation"</string>
     <string name="confirm_1">"Do you want to ACTIVATE device's timers?"</string>
     <string name="confirm_2">"Do you want to DEACTIVATE device's timers?"</string>
+    <string name="confirm_3">"Do you want to DELETE device: "</string>
 
 
     <!--> SWITCH STATUS</!-->
@@ -43,6 +49,7 @@
 
     <!--> SWITCH SETUP</!-->
     <string name="setup_switch_guide_1">Should be an easy to remember name</string>
+    <string name="setup_switch_guide_1_1">Password to access the switch</string>
     <string name="setup_switch_guide_2">WiFi access point name where the switch will connect to</string>
     <string name="setup_switch_guide_3">WiFi password to access to WiFi access point</string>
 

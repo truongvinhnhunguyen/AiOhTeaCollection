@@ -22,8 +22,8 @@ public class SwitchListItem extends DeviceListItem {
         m_deviceType = SWITCH_DEV_TYPE;
     }
 
-    public SwitchListItem(String deviceName, String devicceDesc, String connName){
-        super(deviceName, devicceDesc, connName);
+    public SwitchListItem(String deviceName, String devicePassword, String devicceDesc, String connName){
+        super(deviceName, devicePassword, devicceDesc, connName);
         m_deviceType = SWITCH_DEV_TYPE;
     }
 
@@ -79,8 +79,8 @@ public class SwitchListItem extends DeviceListItem {
         if(conn == null)
             return;
 
-        if((conn.subscribe("AiOhTea/" + m_deviceName + "/Status")!= 0)
-                    || conn.subscribe("AiOhTea/" + m_deviceName + "/Settings")!=0){
+        if((conn.subscribe(getMqttTopic(MQTT_STATUS_TOPIC))!= 0)
+                    || conn.subscribe(getMqttTopic(MQTT_SETTINGS_TOPIC))!=0){
             MainActivity.myToast (mainActivity, mainActivity.getString(R.string.sw_subcribe_err));
             return;
         }
@@ -140,7 +140,7 @@ public class SwitchListItem extends DeviceListItem {
             }
 
             Date d = new Date(Long.valueOf(s).longValue()*1000);
-            DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
+            DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
             m_statusChangedTime = df.format(d);
 
@@ -167,7 +167,7 @@ public class SwitchListItem extends DeviceListItem {
             return mainActivity.getString(R.string.sw_cmd_err) + ": No connection";
 
 
-        int error = conn.publish("AiOhTea/" + m_deviceName + "/Cmd", payload);
+        int error = conn.publish(getMqttTopic(MQTT_CMD_TOPIC), payload);
 
         String result;
 

@@ -16,13 +16,19 @@ public class SwitchAddingActivity extends AppCompatActivity {
 
     public void addSwitchOnClick(View newSwitchView){
 
-        EditText switchIdBox = (EditText) findViewById(R.id.switch_id_box);
-        EditText switchDescBox = (EditText) findViewById(R.id.switch_desc_box);
+        EditText etx;
+
 
         Intent resultIntent = new Intent();
 
-        resultIntent.putExtra("SW_NAME", switchIdBox.getText().toString());
-        resultIntent.putExtra("SW_DESC", switchDescBox.getText().toString());
+        etx = (EditText) findViewById(R.id.switch_id_box);
+        resultIntent.putExtra("SW_NAME", etx.getText().toString());
+
+        etx = (EditText) findViewById(R.id.switch_password_box);
+        resultIntent.putExtra("SW_PASSWORD", etx.getText().toString());
+
+        etx = (EditText) findViewById(R.id.switch_desc_box);
+        resultIntent.putExtra("SW_DESC", etx.getText().toString());
 
 
         setResult(DeviceListItem.SWITCH_DEV_TYPE, resultIntent);

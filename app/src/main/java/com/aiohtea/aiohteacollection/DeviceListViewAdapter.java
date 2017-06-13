@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -49,6 +51,37 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         @Override
         public void onClick(View v) {
 
+            int id = v.getId();
+
+            // 3 Dots icon clicked
+            if(id == R.id.details_button){
+                PopupMenu popupMenu = new PopupMenu(m_activity, v);
+                popupMenu.getMenuInflater().inflate(R.menu.dev_popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getItemId()) {
+                            case R.id.device_popup_1:
+                                MainActivity.myToast(m_activity, "Under implementation");
+                                break;
+
+                            case R.id.device_popup_2:
+                                String msg = m_activity.getString(R.string.confirm_3)
+                                        + m_clickedDevice.getDeviceName() + "?";
+                                MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDevice);
+                                ask.show();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+
+                return;
+            }
+
+
             int devStatus = m_clickedDevice.getDeviceStatus();
 
             if((devStatus == DeviceListItem.DEV_NOT_SYNCED)
@@ -57,7 +90,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                 return;
             }
 
-            int id = v.getId();
+
 
             switch (id) {
                 // Device icon clicked
@@ -88,16 +121,10 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                         msg = m_activity.getString(R.string.confirm_2);
                     }
 
-                    // m_clickedDevice.commandHardware(m_activity, cmd);
                     MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDevice, cmd);
                     ask.show();
 
                     //MainActivity.myToast(m_activity, "TIMER HELLO!");
-                    break;
-
-                // 3 Dots icon clicked
-                case R.id.details_button:
-                    MainActivity.myToast(m_activity, "3 DOTS HELLO!");
                     break;
             }
         }
