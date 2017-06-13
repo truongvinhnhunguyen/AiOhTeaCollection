@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +21,7 @@ import java.net.InetSocketAddress;
 import java.net.InterfaceAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -35,6 +38,17 @@ public class SwitchSetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.switch_setup);
+
+        Intent intent = getIntent();
+
+        String connNameListString = intent.getStringExtra("SW_CONN_NAME_LIST");
+
+        ArrayList<String> connNameList = MainActivity.parseNameListString(connNameListString);
+
+        Spinner spinner = (Spinner) findViewById(R.id.conn_name_spinner);
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, connNameList);
+        spinner.setAdapter(adapter);
     }
 
     public void setupSwitchOnClick(View newSwitchView) throws ExecutionException, InterruptedException {

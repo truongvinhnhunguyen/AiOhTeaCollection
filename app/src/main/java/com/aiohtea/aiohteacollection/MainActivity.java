@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,17 +31,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME = "CloudMQTT";
-    public final static  String DEFAULT_CONN_URI = "tcp://m10.cloudmqtt.com:14110";
-    public final static  String DEFAULT_CONN_USER = "nywjllog";
-    public final static  String DEFAULT_CONN_PASS = "DXwwL_1Bye8x";
-/*
+    public final static String DEFAULT_CONN_NAME_1 = "CloudMQTT";
+    public final static  String DEFAULT_CONN_URI_1 = "tcp://m10.cloudmqtt.com:14110";
+    public final static  String DEFAULT_CONN_USER_1 = "nywjllog";
+    public final static  String DEFAULT_CONN_PASS_1 = "DXwwL_1Bye8x";
+
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME = "HiveMQ";
-    public final static String DEFAULT_CONN_URI = "tcp://broker.hivemq.com:1883";
-    public final static String DEFAULT_CONN_USER = "";
-    public final static String DEFAULT_CONN_PASS = "";
-    */
+    public final static String DEFAULT_CONN_NAME_2 = "HiveMQ";
+    public final static String DEFAULT_CONN_URI_2 = "tcp://broker.hivemq.com:1883";
+    public final static String DEFAULT_CONN_USER_2 = "";
+    public final static String DEFAULT_CONN_PASS_2 = "";
+
 
     /*
      * =============================================================================================
@@ -68,8 +69,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if(m_connList.size() == 0) {
             // MAKE A DEFAULT CONNECTION
-            MyMqttConnection conn = new MyMqttConnection(DEFAULT_CONN_NAME, DEFAULT_CONN_URI,
-                    DEFAULT_CONN_USER, DEFAULT_CONN_PASS);
+            MyMqttConnection conn = new MyMqttConnection(DEFAULT_CONN_NAME_1, DEFAULT_CONN_URI_1,
+                    DEFAULT_CONN_USER_1, DEFAULT_CONN_PASS_1);
+            addConnectionToList(conn);
+
+            conn = new MyMqttConnection(DEFAULT_CONN_NAME_2, DEFAULT_CONN_URI_2,
+                    DEFAULT_CONN_USER_2, DEFAULT_CONN_PASS_2);
             addConnectionToList(conn);
             // END MAKE A DEFAULT CONNECTION
         }
@@ -166,6 +171,45 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Put Connection names into a string that can be passed to other Activity via Intent Str Extra
+    // --------------------------------------------------------------------------------------------
+    public String connNameListToString(){
+        String s = "";
+
+        int size = m_connList.size();
+
+        for (int i=0; i<size; i++){
+            s += m_connList.get(i).getconnName();
+            s += '#';
+        }
+
+        return s;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+    static ArrayList<String> parseNameListString(String nameListString){
+        ArrayList <String> ret = new ArrayList();
+
+        int len = nameListString.length();
+
+        String s = "";
+        for (int i=0; i<len; i++){
+            char c = nameListString.charAt(i);
+
+            if(c != '#'){
+                s += c;
+            } else {
+                ret.add(s);
+                s = "";
+            }
+        }
+
+        return ret;
+    }
+
     @Override
     // --------------------------------------------------------------------------------------------
     // Process Overflow menu (3 vetical dots menu) on App Bar
@@ -176,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
             case R.id.action_setingup_devices:
                 intent = new Intent(this, SwitchSetupActivity.class);
+                intent.putExtra("SW_CONN_NAME_LIST", connNameListToString());
                 startActivityForResult(intent, 2);
                 return true;
 
@@ -204,12 +249,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch(requestCode) {
             case 1: // Floating button returns for adding a new device to list
                 if (resultCode == DeviceListItem.SWITCH_DEV_TYPE) {
-                    String switchId = data.getStringExtra("SW_NAME");
-                    String switchPassword = data.getStringExtra("SW_PASSWORD");
-                    String switchDesc = data.getStringExtra("SW_DESC");
+                    String swName = data.getStringExtra("SW_NAME");
+                    String swPassword = data.getStringExtra("SW_PASSWORD");
+                    String swDesc = data.getStringExtra("SW_DESC");
+                    String swConnName = data.getStringExtra("SW_CONN_NAME");
 
                     DeviceListItem item =
-                            new SwitchListItem(switchId, switchPassword, switchDesc, DEFAULT_CONN_NAME);
+                            new SwitchListItem(swName, swPassword, swDesc, swConnName);
                     addDeviceToList(item);
                 }
                 break;
@@ -217,8 +263,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case 2: // "Setup device..." overflow menu
                 if(resultCode == 2){ //Add to list
                     String swName = data.getStringExtra("SW_NAME");
-                    String switchPassword = data.getStringExtra("SW_PASSWORD");
-                    DeviceListItem item = new SwitchListItem(swName, switchPassword, "Automatically added", DEFAULT_CONN_NAME);
+                    String swPassword = data.getStringExtra("SW_PASSWORD");
+                    String swConnName = data.getStringExtra("SW_CONN_NAME");
+
+                    DeviceListItem item =
+                            new SwitchListItem(swName, swPassword, "Automatically added", swConnName);
                     addDeviceToList(item);
                 }
 
@@ -365,9 +414,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         SharedPreferences settings = this.getSharedPreferences
                 (getString(R.string.app_name), MODE_PRIVATE);
 
-        // Load Switch
-        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
-                ("MQTT_CONN_NAME_LIST", new HashSet<String>());
+
+        /*
+        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet("MQTT_CONN_NAME_LIST", new HashSet<String>());
+
 
         int numConn = nameSet.size();
         Log.d("MA: Numdev stored", Integer.toString(numConn));
@@ -376,10 +426,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         String[] nameList = new String[numConn];
         nameSet.toArray(nameList);
+        */
 
+
+        ArrayList<String> connNameList = parseNameListString(settings.getString("MQTT_CONN_NAME_LIST", ""));
+
+        int numConn = connNameList.size();
 
         for(int i = 0; i < numConn; i++){
-            MyMqttConnection conn = new MyMqttConnection (nameList[i]);
+            MyMqttConnection conn = new MyMqttConnection (connNameList.get(i));
             conn.connLoad(this);
             m_connList.add(conn);
         }
@@ -412,6 +467,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         SharedPreferences.Editor editor = settings.edit();
 
+        /*
         HashSet<String> nameList = new HashSet<String>();
 
         for(int i=0; i < m_connList.size(); i++){
@@ -421,6 +477,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         editor.putStringSet("MQTT_CONN_NAME_LIST", nameList);
+        */
+
+        String connListString = connNameListToString();
+        editor.putString("MQTT_CONN_NAME_LIST", connListString);
 
         editor.commit();
     }
