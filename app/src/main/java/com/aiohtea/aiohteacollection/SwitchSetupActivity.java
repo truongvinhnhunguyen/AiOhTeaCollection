@@ -1,24 +1,23 @@
 package com.aiohtea.aiohteacollection;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.net.InterfaceAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -32,7 +31,9 @@ public class SwitchSetupActivity extends AppCompatActivity {
 
     private String m_swName;
     private String m_swPassword;
+    private String m_swSelectedConnName;
     private Boolean m_addToList;
+    private ArrayList<String> m_connNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,43 @@ public class SwitchSetupActivity extends AppCompatActivity {
 
         String connNameListString = intent.getStringExtra("SW_CONN_NAME_LIST");
 
-        ArrayList<String> connNameList = MainActivity.parseNameListString(connNameListString);
+        m_connNameList = MainActivity.parseNameListString(connNameListString);
 
-        Spinner spinner = (Spinner) findViewById(R.id.conn_name_spinner);
-        ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, connNameList);
-        spinner.setAdapter(adapter);
+        // Display default conn name
+        ((TextView)findViewById(R.id.sw_conn_name)).setText(m_connNameList.get(0));
+
+        // Double click on logo
+        ((ImageView)findViewById(R.id.sw_logo_icon)).setOnClickListener(new MyDoubleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+            }
+
+            @Override
+            public void onDoubleClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(SwitchSetupActivity.this, v);
+                popupMenu.getMenuInflater().inflate(R.menu.dev_gen_popup_menu, popupMenu.getMenu());
+                Menu menu = popupMenu.getMenu();
+                menu.clear();
+
+                int size = m_connNameList.size();
+
+                for(int i=0; i<size; i++) {
+                    menu.add(m_connNameList.get(i));
+                }
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        m_swSelectedConnName = item.getTitle().toString();
+
+                        ((TextView)findViewById(R.id.sw_conn_name)).setText(m_swSelectedConnName);
+
+                        return true;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
     }
 
     public void setupSwitchOnClick(View newSwitchView) throws ExecutionException, InterruptedException {
@@ -86,8 +118,12 @@ public class SwitchSetupActivity extends AppCompatActivity {
         editBox = (EditText) findViewById(R.id.wifi_password_box);
         str = editBox.getText().toString();
 
+        MyMqttConnection conn = new MyMqttConnection(((TextView)findViewById(R.id.sw_conn_name)).getText().toString());
+        conn.connLoad(this);
+
         if(!str.matches("")) {
-            setupMsg += str + "&m10.cloudmqtt.com&14110&";
+            // setupMsg += str + "&m10.cloudmqtt.com&14110&";
+            setupMsg += str + "&"+conn.getServerAddress()+"&"+conn.getSeverPort()+"&";
         }else {
             MainActivity.myToast(this, getString(R.string.wifi_password_box)
                     + " " + getString(R.string.can_not_be_empty));
@@ -95,7 +131,9 @@ public class SwitchSetupActivity extends AppCompatActivity {
             return;
         }
 
-        setupMsg += m_swName + "." + m_swPassword + "&nywjllog&DXwwL_1Bye8x&";
+        //setupMsg += m_swName + "." + m_swPassword + "&nywjllog&DXwwL_1Bye8x&";
+
+        setupMsg += m_swName + "." + m_swPassword + "&"+conn.getMqttUser()+"&"+conn.getMqttPassword()+"&";
 
         Log.d("SWITCH_SETUP", setupMsg);
 
@@ -204,6 +242,7 @@ public class SwitchSetupActivity extends AppCompatActivity {
                     resultCode = 2; // No error, add to list
                     resultIntent.putExtra("SW_NAME", m_swName);
                     resultIntent.putExtra("SW_PASSWORD", m_swPassword);
+                    resultIntent.putExtra("SW_CONN_NAME", m_swSelectedConnName);
 
                 }else{ // No error, don't add to list
                     resultCode = 1;

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final static String DEFAULT_CONN_PASS_2 = "";
 
 
+
     /*
      * =============================================================================================
      * AREA TO DEFINE OVERRIDE FUNCTIONS
@@ -88,11 +89,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         m_listView.setLongClickable(true);
         m_listView.setOnItemLongClickListener (new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-            int pos, long id) {
-                // TODO Auto-generated method stub
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 
-                Log.v("long clicked","pos: " + pos);
+                myToast(MainActivity.this, m_devList.get(pos).getConnName());
 
                 return true;
             }
@@ -112,8 +111,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onClick(View view) {
-              Intent intent = new Intent(m_t, SwitchAddingActivity.class);
-              startActivityForResult(intent, 1);
+                Intent intent = new Intent(m_t, SwitchAddingActivity.class);
+                intent.putExtra("SW_CONN_NAME_LIST", connNameListToString());
+                startActivityForResult(intent, 1);
             }
         }
 
@@ -171,44 +171,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    // --------------------------------------------------------------------------------------------
-    // Put Connection names into a string that can be passed to other Activity via Intent Str Extra
-    // --------------------------------------------------------------------------------------------
-    public String connNameListToString(){
-        String s = "";
 
-        int size = m_connList.size();
-
-        for (int i=0; i<size; i++){
-            s += m_connList.get(i).getconnName();
-            s += '#';
-        }
-
-        return s;
-    }
-
-    // --------------------------------------------------------------------------------------------
-    //
-    // --------------------------------------------------------------------------------------------
-    static ArrayList<String> parseNameListString(String nameListString){
-        ArrayList <String> ret = new ArrayList();
-
-        int len = nameListString.length();
-
-        String s = "";
-        for (int i=0; i<len; i++){
-            char c = nameListString.charAt(i);
-
-            if(c != '#'){
-                s += c;
-            } else {
-                ret.add(s);
-                s = "";
-            }
-        }
-
-        return ret;
-    }
 
     @Override
     // --------------------------------------------------------------------------------------------
@@ -255,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swConnName = data.getStringExtra("SW_CONN_NAME");
 
                     DeviceListItem item =
-                            new SwitchListItem(swName, swPassword, swDesc, swConnName);
+                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName, swPassword, swDesc, swConnName);
                     addDeviceToList(item);
                 }
                 break;
@@ -267,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swConnName = data.getStringExtra("SW_CONN_NAME");
 
                     DeviceListItem item =
-                            new SwitchListItem(swName, swPassword, "Automatically added", swConnName);
+                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName, swPassword, "Automatically added", swConnName);
                     addDeviceToList(item);
                 }
 
@@ -328,51 +291,81 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
 
     // --------------------------------------------------------------------------------------------
+    // Put Connection names into a string that can be passed to other Activity via Intent Str Extra
+    // --------------------------------------------------------------------------------------------
+    public String connNameListToString(){
+        String s = "";
+
+        int size = m_connList.size();
+
+        for (int i=0; i<size; i++){
+            s += m_connList.get(i).getconnName();
+            s += '#';
+        }
+
+        return s;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Put Device names into a string that can be passed to other Activity via Intent Str Extra
+    // --------------------------------------------------------------------------------------------
+    public String devIdListToString(){
+        String s = "";
+
+        int size = m_devList.size();
+
+        for (int i=0; i<size; i++){
+            s += m_devList.get(i).getDeviceId();
+            s += '#';
+        }
+
+        return s;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    //
+    // --------------------------------------------------------------------------------------------
+    static ArrayList<String> parseNameListString(String nameListString){
+        ArrayList <String> ret = new ArrayList();
+
+        int len = nameListString.length();
+
+        String s = "";
+        for (int i=0; i<len; i++){
+            char c = nameListString.charAt(i);
+
+            if(c != '#'){
+                s += c;
+            } else {
+                ret.add(s);
+                s = "";
+            }
+        }
+
+        return ret;
+    }
+
+
+
+
+    // --------------------------------------------------------------------------------------------
     // Load devices
     // --------------------------------------------------------------------------------------------
     void deviceLoad(){
         SharedPreferences settings = this.getSharedPreferences
                 (getString(R.string.app_name), MODE_PRIVATE);
 
-        // Load Switch
-        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet
-                ("SW_NAME_LIST", new HashSet<String>());
+        ArrayList<String> devNameList = parseNameListString(settings.getString("SW_ID_LIST", ""));
 
-        int numDev = nameSet.size();
-        Log.d("MA: Numdev stored", Integer.toString(numDev));
-
-        if (numDev == 0) return;
-
-        String[] nameList = new String[numDev];
-        nameSet.toArray(nameList);
+        int numDev = devNameList.size();
 
 
         for(int i = 0; i < numDev; i++){
-            DeviceListItem item = new SwitchListItem(nameList[i]);
+            DeviceListItem item = new SwitchListItem(devNameList.get(i));
             item.deviceLoad(this);
             m_devList.add(item);
         }
-    }
 
-    // --------------------------------------------------------------------------------------------
-    // --------------------------------------------------------------------------------------------
-    void updateDeviceListStorage(){
-        SharedPreferences settings = getSharedPreferences
-                (getString(R.string.app_name) , Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
-
-        HashSet<String> nameList = new HashSet<String>();
-
-        for(int i=0; i < m_devList.size(); i++){
-            nameList.add(m_devList.get(i).getDeviceName());
-
-            Log.d("MA.addDeviceToList: ", m_devList.get(i).getDeviceName());
-        }
-
-        editor.putStringSet("SW_NAME_LIST", nameList);
-
-        editor.commit();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -414,21 +407,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         SharedPreferences settings = this.getSharedPreferences
                 (getString(R.string.app_name), MODE_PRIVATE);
 
-
-        /*
-        HashSet<String> nameSet = (HashSet<String>) settings.getStringSet("MQTT_CONN_NAME_LIST", new HashSet<String>());
-
-
-        int numConn = nameSet.size();
-        Log.d("MA: Numdev stored", Integer.toString(numConn));
-
-        if (numConn == 0) return;
-
-        String[] nameList = new String[numConn];
-        nameSet.toArray(nameList);
-        */
-
-
         ArrayList<String> connNameList = parseNameListString(settings.getString("MQTT_CONN_NAME_LIST", ""));
 
         int numConn = connNameList.size();
@@ -453,6 +431,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
+    void updateDeviceListStorage(){
+        SharedPreferences settings = getSharedPreferences
+                (getString(R.string.app_name) , Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+
+
+        String devListString = devIdListToString();
+        editor.putString("SW_ID_LIST", devListString);
+
+        editor.commit();
+    }
+
+    // --------------------------------------------------------------------------------------------
     // public void addConnectionToList(MyMqttConnection conn)
     // --------------------------------------------------------------------------------------------
     public void addConnectionToList(MyMqttConnection conn){
@@ -466,18 +459,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 (getString(R.string.app_name) , Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = settings.edit();
-
-        /*
-        HashSet<String> nameList = new HashSet<String>();
-
-        for(int i=0; i < m_connList.size(); i++){
-            nameList.add(m_connList.get(i).getconnName());
-
-            Log.d("MA.addConnToList:", m_connList.get(i).getconnName());
-        }
-
-        editor.putStringSet("MQTT_CONN_NAME_LIST", nameList);
-        */
 
         String connListString = connNameListToString();
         editor.putString("MQTT_CONN_NAME_LIST", connListString);
@@ -545,9 +526,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         for(int i=0; i < size; i++){
             DeviceListItem item = m_devList.get(i);
 
-            if(connName.equals(item.getConnName()) && topic.contains(item.getDeviceID())){
+            if(connName.equals(item.getConnName()) && topic.contains(item.getDeviceTopicID())){
                 item.mqttMessageArrive(this, topic.substring(topic.lastIndexOf("/")+1), payload);
-                break;
+                //break;
             }
         }
     }

@@ -23,7 +23,7 @@ public class MyMqttConnection {
 
     // Stored properties
     private String m_connName;
-    private String m_mqttServerUri;
+    private String m_mqttServerUri; // such as: tcp://m10.cloudmqtt.com:14110
     private String m_mqttUser;
     private String m_mqttPassword;
 
@@ -196,10 +196,10 @@ public class MyMqttConnection {
     // --------------------------------------------------------------------------------------------
     // Load connection data
     // --------------------------------------------------------------------------------------------
-    void connLoad(MainActivity mainActivity){
+    void connLoad(Context ctx){
 
-        SharedPreferences settings = mainActivity.getSharedPreferences
-                (mainActivity.getString(R.string.app_name), Context.MODE_PRIVATE);
+        SharedPreferences settings = ctx.getSharedPreferences
+                (ctx.getString(R.string.app_name), Context.MODE_PRIVATE);
 
         m_mqttServerUri = settings.getString(m_connName + "_m_mqttServerUri", "");
         m_mqttUser = settings.getString(m_connName + "_m_mqttUser", "");
@@ -230,6 +230,31 @@ public class MyMqttConnection {
         editor.commit();
     }
 
+    // --------------------------------------------------------------------------------------------
+    // tcp://m10.cloudmqtt.com:14110 => m10.cloudmqtt.com
+    // --------------------------------------------------------------------------------------------
+    public String getServerAddress(){
+        return m_mqttServerUri.substring(m_mqttServerUri.lastIndexOf('/')+1, m_mqttServerUri.lastIndexOf(':'));
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // tcp://m10.cloudmqtt.com:14110 => 14110
+    // --------------------------------------------------------------------------------------------
+    public String getSeverPort(){
+        return m_mqttServerUri.substring(m_mqttServerUri.lastIndexOf(':')+1, m_mqttServerUri.length());
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
+    public String getMqttUser(){
+        return m_mqttUser;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------
+    public String getMqttPassword() {
+        return m_mqttPassword;
+    }
     // --------------------------------------------------------------------------------------------
     // For listening switch status
     // WARNING MAY GET MEMORY CONFILT WHILE MQTT LIB RUNNING IN DIFFERENT THREAD WITH MAIN_ATIVITY

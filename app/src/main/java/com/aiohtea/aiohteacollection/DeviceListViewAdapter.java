@@ -1,8 +1,6 @@
 package com.aiohtea.aiohteacollection;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             // 3 Dots icon clicked
             if(id == R.id.details_button){
                 PopupMenu popupMenu = new PopupMenu(m_activity, v);
-                popupMenu.getMenuInflater().inflate(R.menu.dev_popup_menu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.dev_gen_popup_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {

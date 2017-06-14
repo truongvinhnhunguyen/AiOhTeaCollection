@@ -17,13 +17,13 @@ public class SwitchListItem extends DeviceListItem {
     private String m_statusChangedTime = "00:00 - 11-Sep-1970";
 
 
-    public SwitchListItem(String deviceName){
-        super(deviceName);
+    public SwitchListItem(String deviceId){
+        super(deviceId);
         m_deviceType = SWITCH_DEV_TYPE;
     }
 
-    public SwitchListItem(String deviceName, String devicePassword, String devicceDesc, String connName){
-        super(deviceName, devicePassword, devicceDesc, connName);
+    public SwitchListItem(String deviceId, String deviceName, String devicePassword, String devicceDesc, String connName){
+        super(deviceId, deviceName, devicePassword, devicceDesc, connName);
         m_deviceType = SWITCH_DEV_TYPE;
     }
 

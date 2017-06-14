@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,12 +15,28 @@
     app:layout_collapseParallaxMultiplier="1.0">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/sw_logo_icon"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="110dp"
         android:contentDescription="@string/app_name"
         android:paddingTop="10dp"
-        app:srcCompat="@mipmap/aiohtea_sw_on" />
+        app:srcCompat="@mipmap/aiohtea_sw_logo" />
+
+    <TextView
+        android:id="@+id/sw_conn_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:lineSpacingExtra="8sp"
+        android:text="conn name"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
     <TextView
         android:id="@+id/textView3"
