@@ -2,6 +2,7 @@ package com.aiohtea.aiohteacollection;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,8 +51,6 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
             int id = v.getId();
 
-
-
             // 3 Dots icon clicked
             if(id == R.id.details_button){
                 PopupMenu popupMenu = new PopupMenu(m_activity, v);
@@ -59,16 +58,18 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
+
                         DeviceListItem clickedDevice = m_activity.getDeviveByDeviceId(m_clickedDeviceId);
+
                         switch(item.getItemId()) {
                             case R.id.device_popup_1:
-                                MainActivity.myToast(m_activity, "Under implementation");
+                                MainActivity.myToast(m_activity, "Comming soon!");
                                 break;
 
                             case R.id.device_popup_2:
                                 String msg = m_activity.getString(R.string.confirm_3)
                                         + clickedDevice.getDeviceName() + "?";
-                                MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, clickedDevice);
+                                MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDeviceId);
                                 ask.show();
                                 break;
                         }
@@ -122,7 +123,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                         msg = m_activity.getString(R.string.confirm_2);
                     }
 
-                    MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, clickedDevice, cmd);
+                    MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDeviceId, cmd);
                     ask.show();
 
                     break;
@@ -160,16 +161,6 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder.m_offAt = (TextView) convertView.findViewById(R.id.off_at_value);
             holder.m_timerButton = (ImageView) convertView.findViewById(R.id.timer_button);
 
-            // Register onClickListener
-            holder.m_itemIcon.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
-            holder.m_detailsButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
-            holder.m_timerButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
-
-            holder.m_onEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
-            holder.m_offEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
-            holder.m_onAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
-            holder.m_offAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
-
             convertView.setTag(holder);
 
         } else {
@@ -186,6 +177,20 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
         holder.m_onAt.setText(rowItem.getOnAtText());
         holder.m_offAt.setText(rowItem.getOffAtText());
         holder.m_timerButton.setImageResource(rowItem.getTimerStatusImgRscId());
+
+        // Register onClickListener
+        String devId = rowItem.getDeviceId();
+
+        holder.m_itemIcon.setOnClickListener(new DeviceListItemOnClickListener(devId));
+        holder.m_detailsButton.setOnClickListener(new DeviceListItemOnClickListener(devId));
+        holder.m_timerButton.setOnClickListener(new DeviceListItemOnClickListener(devId));
+
+        holder.m_onEvery.setOnClickListener(new DeviceListItemOnClickListener (devId));
+        holder.m_offEvery.setOnClickListener(new DeviceListItemOnClickListener (devId));
+        holder.m_onAt.setOnClickListener(new DeviceListItemOnClickListener (devId));
+        holder.m_offAt.setOnClickListener(new DeviceListItemOnClickListener (devId));
+
+        // Log.d("FIND_DEV_BY_ID", "REG: "+ devId);
 
         return convertView;
     }

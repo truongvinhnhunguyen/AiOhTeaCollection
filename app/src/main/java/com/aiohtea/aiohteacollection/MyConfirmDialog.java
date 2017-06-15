@@ -15,7 +15,7 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
     int m_actionCode = 0;
 
     MainActivity m_mainActivity;
-    DeviceListItem m_device;
+    String m_deviceId;
 
     // For ACTION_CODE_COMMAND_HW
     byte[] m_payload;
@@ -43,14 +43,14 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
      *  MyConfirmDialog(MainActivity mainActivity, DeviceListItem device, byte[] payload)
      *  Use this constructor for confirmation of sending command to hardware
      * @param mainActivity
-     * @param device
+     * @param deviceId
      * @param payload
      */
-    MyConfirmDialog(MainActivity mainActivity, String msg, DeviceListItem device, byte[] payload){
+    MyConfirmDialog(MainActivity mainActivity, String msg, String deviceId, byte[] payload){
         this(mainActivity, msg);
 
         m_actionCode = this.ACTION_CODE_COMMAND_HW;
-        m_device = device;
+        m_deviceId = deviceId;
         m_payload = payload;
     }
 
@@ -58,13 +58,13 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
      *
      * @param mainActivity
      * @param msg
-     * @param device
+     * @param deviceId
      */
-    MyConfirmDialog(MainActivity mainActivity, String msg, DeviceListItem device){
+    MyConfirmDialog(MainActivity mainActivity, String msg, String deviceId){
         this(mainActivity, msg);
 
         m_actionCode = this.ACTION_CODE_DELETE_DEVICE;
-        m_device = device;
+        m_deviceId = deviceId;
     }
 
 
@@ -74,11 +74,11 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
 
         switch (m_actionCode){
             case ACTION_CODE_COMMAND_HW:
-                m_device.commandHardware(m_mainActivity, m_payload);
+                m_mainActivity.getDeviveByDeviceId(m_deviceId).commandHardware(m_mainActivity, m_payload);
                 break;
 
             case ACTION_CODE_DELETE_DEVICE:
-                m_mainActivity.deleteDevice(m_device.getDeviceId());
+                m_mainActivity.deleteDevice(m_deviceId);
                 break;
         }
 

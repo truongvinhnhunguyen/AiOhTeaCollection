@@ -227,10 +227,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swDesc = data.getStringExtra("SW_DESC");
                     String swConnName = data.getStringExtra("SW_CONN_NAME");
 
-                    DeviceListItem item =
-                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName,
-                                    swPassword, swDesc, swConnName);
+                    String swId = Long.toString(System.currentTimeMillis());
+                    DeviceListItem item = new SwitchListItem(swId, swName, swPassword, swDesc, swConnName);
                     addDeviceToList(item);
+
+                    // Log.d("FIND_DEV_BY_ID", "ADD: "+ swId);
+
                 }
                 break;
 
@@ -386,11 +388,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void addDeviceToList(DeviceListItem item){
 
         m_devList.add(item);
-        refreshDeviceList();
 
         // Write to disk
         item.deviceStore(this);
         updateDeviceListStorage();
+
+        refreshDeviceList();
     }
 
     // --------------------------------------------------------------------------------------------
@@ -519,11 +522,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             DeviceListItem dev = m_devList.get(i);
             String devId = dev.getDeviceId();
 
+            // Log.d("FIND_DEV_BY_ID", "ID: "+devId);
+
             if(devId.equals(id)){
                 return dev;
             }
         }
 
+        // Log.d("FIND_DEV_BY_ID", id + " not found. Size:" + size);
         return null;
     }
 
