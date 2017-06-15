@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class TimerSettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     HardwareSettings m_hw;
-    String m_deviceName;
+    String m_deviceId;
     TimerSettingsActivity m_this;
 
 
@@ -43,7 +43,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
 
         String hwSettingString = intent.getStringExtra("HW_SETTINGS");
         m_hw = new HardwareSettings(hwSettingString);
-        m_deviceName = intent.getStringExtra("HW_SETTINGS_DEV_NAME");
+        m_deviceId = intent.getStringExtra("HW_SETTINGS_DEV_ID");
 
         display();
 
@@ -133,7 +133,7 @@ public class TimerSettingsActivity extends AppCompatActivity implements View.OnC
             Intent resultIntent = new Intent();
 
             resultIntent.putExtra("HW_SETTINGS", m_hw.constructTimerSettingPayload());
-            resultIntent.putExtra("HW_SETTINGS_DEV_NAME", m_deviceName);
+            resultIntent.putExtra("HW_SETTINGS_DEV_ID", m_deviceId);
 
             setResult(1, resultIntent);
 

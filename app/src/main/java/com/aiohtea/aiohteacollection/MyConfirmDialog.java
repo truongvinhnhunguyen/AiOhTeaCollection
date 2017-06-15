@@ -78,7 +78,7 @@ public class MyConfirmDialog implements DialogInterface.OnClickListener {
                 break;
 
             case ACTION_CODE_DELETE_DEVICE:
-                m_mainActivity.deleteDevice(m_device.getDeviceName());
+                m_mainActivity.deleteDevice(m_device.getDeviceId());
                 break;
         }
 

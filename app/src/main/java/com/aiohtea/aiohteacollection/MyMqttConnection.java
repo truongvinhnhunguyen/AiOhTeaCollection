@@ -90,14 +90,14 @@ public class MyMqttConnection {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // Connected
-                    MainActivity.myToast(m_mainActivity, "Successfully connected");
+                    // MainActivity.myToast(m_mainActivity, "Successfully connected: " + m_connName);
                     m_mainActivity.commInit();
                 };
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    MainActivity.myToast(m_mainActivity, "Connection failure");
+                    MainActivity.myToast(m_mainActivity, "Connection failure: " + m_connName);
                 }
             }
 
@@ -144,8 +144,13 @@ public class MyMqttConnection {
 
     // --------------------------------------------------------------------------------------------
     // Return 0 -> subscribe successfully
+    // Return 1 -> no connection, subscribe failed
     // --------------------------------------------------------------------------------------------
     public int subscribe (String topic){
+
+        if(!m_client.isConnected()){
+            return 1; // No connection
+        }
 
         Log.d("MyMqttConn.subscribe", "Start subscribing: " + topic);
 
@@ -181,7 +186,6 @@ public class MyMqttConnection {
                 MqttMessage message = new MqttMessage(payload);
 
                 IMqttDeliveryToken token = m_client.publish(topic, message);
-                //token.waitForCompletion(5000);
 
                 return 0;
 

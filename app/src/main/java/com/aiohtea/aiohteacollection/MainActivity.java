@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final static String DEFAULT_CONN_USER_2 = "";
     public final static String DEFAULT_CONN_PASS_2 = "";
 
+    // DEFAULT CONNECTION
+    public final static String DEFAULT_CONN_NAME_3 = "Eclipse";
+    public final static String DEFAULT_CONN_URI_3 = "tcp://iot.eclipse.org:1883";
+    public final static String DEFAULT_CONN_USER_3 = "";
+    public final static String DEFAULT_CONN_PASS_3 = "";
+
 
 
     /*
@@ -76,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             conn = new MyMqttConnection(DEFAULT_CONN_NAME_2, DEFAULT_CONN_URI_2,
                     DEFAULT_CONN_USER_2, DEFAULT_CONN_PASS_2);
+            addConnectionToList(conn);
+
+            conn = new MyMqttConnection(DEFAULT_CONN_NAME_3, DEFAULT_CONN_URI_3,
+                    DEFAULT_CONN_USER_3, DEFAULT_CONN_PASS_3);
             addConnectionToList(conn);
             // END MAKE A DEFAULT CONNECTION
         }
@@ -141,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
          for(int i=0; i < size; i++) {
              m_connList.get(i).connect(this);
-             myToast(this, "Establishing conn:" + m_connList.get(i).getconnName());
+             // myToast(this, "Establishing conn:" + m_connList.get(i).getconnName());
          }
 
          refreshDeviceList();
@@ -218,7 +228,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swConnName = data.getStringExtra("SW_CONN_NAME");
 
                     DeviceListItem item =
-                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName, swPassword, swDesc, swConnName);
+                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName,
+                                    swPassword, swDesc, swConnName);
                     addDeviceToList(item);
                 }
                 break;
@@ -230,7 +241,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     String swConnName = data.getStringExtra("SW_CONN_NAME");
 
                     DeviceListItem item =
-                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName, swPassword, "Automatically added", swConnName);
+                            new SwitchListItem(Long.toString(System.currentTimeMillis()), swName,
+                                    swPassword, "Automatically added", swConnName);
                     addDeviceToList(item);
                 }
 
@@ -246,12 +258,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (resultCode == 1)
                 {
                     String cmd = data.getStringExtra("HW_SETTINGS");
-                    String devName = data.getStringExtra("HW_SETTINGS_DEV_NAME");
+                    String devId = data.getStringExtra("HW_SETTINGS_DEV_ID");
 
-                    myToast(this, "Timer setting to device: " + devName);
+                    myToast(this, "Timer setting to device: " + devId);
                     Log.d("TIMER_CMD", cmd);
 
-                    SwitchListItem dev = (SwitchListItem)getDeviveByName(devName);
+                    SwitchListItem dev = (SwitchListItem)getDeviveByDeviceId(devId);
                     dev.commandHardware(this, cmd.getBytes());
                 }
 
@@ -384,12 +396,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // --------------------------------------------------------------------------------------------
     //
     // --------------------------------------------------------------------------------------------
-    public void deleteDevice(String deviceName){
+    public void deleteDevice(String deviceId){
         int size = m_devList.size();
 
         for (int i=0; i<size; i++){
             DeviceListItem dev = m_devList.get(i);
-            if(deviceName.equals(dev.getDeviceName())){
+            if(deviceId.equals(dev.getDeviceId())){
                 dev = m_devList.remove(i);
                 dev.commRelease(this);
                 dev.deviceClear(this);
@@ -496,18 +508,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // --------------------------------------------------------------------------------------------
     /**
      *
-     * @param name
+     * @param id
      * @return
      */
      // --------------------------------------------------------------------------------------------
-    public DeviceListItem getDeviveByName(String name) {
+    public DeviceListItem getDeviveByDeviceId(String id) {
         int size = m_devList.size();
 
         for(int i=0; i<size; i++){
             DeviceListItem dev = m_devList.get(i);
-            String devName = dev.getDeviceName();
+            String devId = dev.getDeviceId();
 
-            if(devName.equals(name)){
+            if(devId.equals(id)){
                 return dev;
             }
         }

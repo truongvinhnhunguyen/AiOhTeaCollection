@@ -39,16 +39,18 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
     // Class to implement onClick behavior when user click on TIMER VALUE AREA
     private class DeviceListItemOnClickListener implements View.OnClickListener {
 
-        private DeviceListItem m_clickedDevice;
+        private String m_clickedDeviceId;
 
-        DeviceListItemOnClickListener (DeviceListItem clickedDevice){
-            m_clickedDevice = clickedDevice;
+        DeviceListItemOnClickListener (String clickedDeviceId){
+            m_clickedDeviceId = clickedDeviceId;
         }
 
         @Override
         public void onClick(View v) {
 
             int id = v.getId();
+
+
 
             // 3 Dots icon clicked
             if(id == R.id.details_button){
@@ -57,6 +59,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
+                        DeviceListItem clickedDevice = m_activity.getDeviveByDeviceId(m_clickedDeviceId);
                         switch(item.getItemId()) {
                             case R.id.device_popup_1:
                                 MainActivity.myToast(m_activity, "Under implementation");
@@ -64,8 +67,8 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
 
                             case R.id.device_popup_2:
                                 String msg = m_activity.getString(R.string.confirm_3)
-                                        + m_clickedDevice.getDeviceName() + "?";
-                                MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDevice);
+                                        + clickedDevice.getDeviceName() + "?";
+                                MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, clickedDevice);
                                 ask.show();
                                 break;
                         }
@@ -78,8 +81,9 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                 return;
             }
 
+            DeviceListItem clickedDevice = m_activity.getDeviveByDeviceId(m_clickedDeviceId);
 
-            int devStatus = m_clickedDevice.getDeviceStatus();
+            int devStatus = clickedDevice.getDeviceStatus();
 
             if((devStatus == DeviceListItem.DEV_NOT_SYNCED)
                     ||(devStatus == DeviceListItem.DEV_OFFLINE)){
@@ -92,7 +96,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             switch (id) {
                 // Device icon clicked
                 case R.id.item_icon:
-                    m_clickedDevice.iconClicked(m_activity);
+                    clickedDevice.iconClicked(m_activity);
                     break;
 
                 // Timer value areas clicked
@@ -102,8 +106,8 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                 case R.id.off_at_value:
 
                     Intent intent = new Intent(m_activity, TimerSettingsActivity.class);
-                    intent.putExtra("HW_SETTINGS", m_clickedDevice.getHwSettingPayloadString());
-                    intent.putExtra("HW_SETTINGS_DEV_NAME", m_clickedDevice.getDeviceName());
+                    intent.putExtra("HW_SETTINGS", clickedDevice.getHwSettingPayloadString());
+                    intent.putExtra("HW_SETTINGS_DEV_ID", clickedDevice.getDeviceId());
 
                     m_activity.startActivityForResult(intent, 3);
                     break;
@@ -113,15 +117,14 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                     byte[] cmd = {'2'};
                     String msg = m_activity.getString(R.string.confirm_1);
 
-                    if(m_clickedDevice.isTimerActive()){
+                    if(clickedDevice.isTimerActive()){
                         cmd[0] = '3';
                         msg = m_activity.getString(R.string.confirm_2);
                     }
 
-                    MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, m_clickedDevice, cmd);
+                    MyConfirmDialog ask = new MyConfirmDialog(m_activity, msg, clickedDevice, cmd);
                     ask.show();
 
-                    //MainActivity.myToast(m_activity, "TIMER HELLO!");
                     break;
             }
         }
@@ -158,14 +161,14 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
             holder.m_timerButton = (ImageView) convertView.findViewById(R.id.timer_button);
 
             // Register onClickListener
-            holder.m_itemIcon.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
-            holder.m_detailsButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
-            holder.m_timerButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem));
+            holder.m_itemIcon.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
+            holder.m_detailsButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
+            holder.m_timerButton.setOnClickListener(new DeviceListItemOnClickListener(rowItem.getDeviceId()));
 
-            holder.m_onEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
-            holder.m_offEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
-            holder.m_onAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
-            holder.m_offAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem));
+            holder.m_onEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
+            holder.m_offEvery.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
+            holder.m_onAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
+            holder.m_offAt.setOnClickListener(new DeviceListItemOnClickListener (rowItem.getDeviceId()));
 
             convertView.setTag(holder);
 

@@ -5,19 +5,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="120dp"
         android:contentDescription="@string/app_name"
-        android:paddingTop="50dp"
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
         app:srcCompat="@mipmap/aiohtea_logo_rectangle_s" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="V1.0.2017.06.15"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold|italic" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 
     <TextView
         android:id="@+id/textView3"

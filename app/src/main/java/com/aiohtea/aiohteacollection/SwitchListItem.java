@@ -81,7 +81,8 @@ public class SwitchListItem extends DeviceListItem {
 
         if((conn.subscribe(getMqttTopic(MQTT_STATUS_TOPIC))!= 0)
                     || conn.subscribe(getMqttTopic(MQTT_SETTINGS_TOPIC))!=0){
-            MainActivity.myToast (mainActivity, mainActivity.getString(R.string.sw_subcribe_err));
+            //MainActivity.myToast (mainActivity,
+                    //mainActivity.getString(R.string.sw_subcribe_err) + ":" + m_deviceName + "." + m_connnName);
             return;
         }
 
