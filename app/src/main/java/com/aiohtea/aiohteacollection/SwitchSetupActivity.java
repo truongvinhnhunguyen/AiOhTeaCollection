@@ -45,9 +45,10 @@ public class SwitchSetupActivity extends AppCompatActivity {
         String connNameListString = intent.getStringExtra("SW_CONN_NAME_LIST");
 
         m_connNameList = MainActivity.parseNameListString(connNameListString);
+        m_swSelectedConnName = m_connNameList.get(0);
 
         // Display default conn name
-        ((TextView)findViewById(R.id.sw_conn_name)).setText(m_connNameList.get(0));
+        ((TextView)findViewById(R.id.sw_conn_name)).setText(m_swSelectedConnName);
 
         // Double click on logo
         ((ImageView)findViewById(R.id.sw_logo_icon)).setOnClickListener(new MyDoubleClickListener() {

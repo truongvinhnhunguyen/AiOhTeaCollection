@@ -19,8 +19,7 @@
     <string name="delete_dev_menu_item">Xóa thiết bị...</string>
 
     <!--> DEVIVE INFO </!-->
-    <string name="dev_offline_notsynced">"Thiết bị không nối mạng hoặc ứng dụng chưa liên lạc được
-        với thiết bị!"</string>
+    <string name="dev_offline_notsynced">"Thiết bị không nối mạng hoặc ứng dụng chưa liên lạc được với thiết bị!"</string>
 
     <!--> OTHER INFO </!-->
     <string name="confirm_dialog_title">"Xác nhận"</string>

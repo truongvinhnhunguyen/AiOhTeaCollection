@@ -14,8 +14,7 @@
     <string name="switch_id_box">Switch Name</string>
     <string name="switch_password_box">Switch Password</string>
     <string name="action_about">About...</string>
-    <string name="about_text">IoT should make our life easy and enjoyable\n
-        like having tea.</string>
+    <string name="about_text">IoT makes life easy and enjoyable like having tea.</string>
     <string name="wait_msg">Processing..., please wait!</string>
 
 
