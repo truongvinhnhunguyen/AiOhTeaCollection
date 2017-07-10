@@ -1,15 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aiohtea.aiohteacollection.MainActivity">
     <item
         android:id="@+id/action_setingup_devices"
         android:checkable="false"
-        android:orderInCategory="100"
         android:title="@string/action_setingup_devices" />
+
+    <item
+        android:id="@+id/action_custom_conn"
+        android:enabled="true"
+        android:title="@string/custom_conn_menu_item"
+        android:visible="true" />
+
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="100"
-        android:title="@string/action_about"
-        app:showAsAction="never" />
+        android:title="@string/action_about" />
+
 </menu>

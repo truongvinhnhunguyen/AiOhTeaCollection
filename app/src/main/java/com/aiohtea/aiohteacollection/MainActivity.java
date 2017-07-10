@@ -31,23 +31,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME_1 = "CloudMQTT";
-    public final static  String DEFAULT_CONN_URI_1 = "tcp://m10.cloudmqtt.com:14110";
-    public final static  String DEFAULT_CONN_USER_1 = "nywjllog";
-    public final static  String DEFAULT_CONN_PASS_1 = "DXwwL_1Bye8x";
+    public final static String DEFAULT_CONN_NAME_1 = "Eclipse";
+    public final static String DEFAULT_CONN_URL_1 = "tcp://iot.eclipse.org:1883";
+    public final static String DEFAULT_CONN_USER_1 = "";
+    public final static String DEFAULT_CONN_PASS_1 = "";
+
+    // DEFAULT CONNECTION (aiohtee@gmail.com)
+    public final static String DEFAULT_CONN_NAME_2 = "CloudMQTT 1";
+    public final static  String DEFAULT_CONN_URL_2 = "tcp://m10.cloudmqtt.com:15730";
+    public final static  String DEFAULT_CONN_USER_2 = "doopmmgi";
+    public final static  String DEFAULT_CONN_PASS_2 = "qKpKXAgW4N2X";
+
+    // DEFAULT CONNECTION (truongvinhnhunguyen@gmail.com)
+    public final static String DEFAULT_CONN_NAME_3 = "CloudMQTT 2";
+    public final static  String DEFAULT_CONN_URL_3 = "tcp://m10.cloudmqtt.com:14110";
+    public final static  String DEFAULT_CONN_USER_3 = "nywjllog";
+    public final static  String DEFAULT_CONN_PASS_3 = "DXwwL_1Bye8x";
+
 
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME_2 = "HiveMQ";
-    public final static String DEFAULT_CONN_URI_2 = "tcp://broker.hivemq.com:1883";
-    public final static String DEFAULT_CONN_USER_2 = "";
-    public final static String DEFAULT_CONN_PASS_2 = "";
-
-    // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME_3 = "Eclipse";
-    public final static String DEFAULT_CONN_URI_3 = "tcp://iot.eclipse.org:1883";
-    public final static String DEFAULT_CONN_USER_3 = "";
-    public final static String DEFAULT_CONN_PASS_3 = "";
-
+    public final static String DEFAULT_CONN_NAME_4 = "Custom (HiveMQ)";
+    public final static String DEFAULT_CONN_URL_4 = "tcp://broker.hivemq.com:1883";
+    public final static String DEFAULT_CONN_USER_4 = "";
+    public final static String DEFAULT_CONN_PASS_4 = "";
 
 
     /*
@@ -76,17 +82,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if(m_connList.size() == 0) {
             // MAKE A DEFAULT CONNECTION
-            MyMqttConnection conn = new MyMqttConnection(DEFAULT_CONN_NAME_1, DEFAULT_CONN_URI_1,
+            MyMqttConnection conn = new MyMqttConnection(DEFAULT_CONN_NAME_1, DEFAULT_CONN_URL_1,
                     DEFAULT_CONN_USER_1, DEFAULT_CONN_PASS_1);
             addConnectionToList(conn);
 
-            conn = new MyMqttConnection(DEFAULT_CONN_NAME_2, DEFAULT_CONN_URI_2,
+            conn = new MyMqttConnection(DEFAULT_CONN_NAME_2, DEFAULT_CONN_URL_2,
                     DEFAULT_CONN_USER_2, DEFAULT_CONN_PASS_2);
             addConnectionToList(conn);
 
-            conn = new MyMqttConnection(DEFAULT_CONN_NAME_3, DEFAULT_CONN_URI_3,
+            conn = new MyMqttConnection(DEFAULT_CONN_NAME_3, DEFAULT_CONN_URL_3,
                     DEFAULT_CONN_USER_3, DEFAULT_CONN_PASS_3);
             addConnectionToList(conn);
+
+            conn = new MyMqttConnection(DEFAULT_CONN_NAME_4, DEFAULT_CONN_URL_4,
+                    DEFAULT_CONN_USER_4, DEFAULT_CONN_PASS_4);
+            addConnectionToList(conn);
+
             // END MAKE A DEFAULT CONNECTION
         }
 

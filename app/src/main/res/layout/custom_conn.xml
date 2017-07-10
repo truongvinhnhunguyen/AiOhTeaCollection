@@ -2,7 +2,6 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,9 +9,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ScrollViewSize">
+    android:orientation="vertical"
+    app:layout_collapseParallaxMultiplier="1.0">
 
     <ImageView
         android:id="@+id/sw_logo_icon"
@@ -20,31 +20,27 @@
         android:layout_height="100dp"
         android:contentDescription="@string/app_name"
         android:paddingTop="10dp"
-        app:srcCompat="@mipmap/aiohtea_sw_logo" />
+        app:srcCompat="@mipmap/aiohtea_conn_logo" />
+
 
     <TextView
-        android:id="@+id/sw_conn_name"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:lineSpacingExtra="8sp"
-        android:text="conn name"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        tools:ignore="HardcodedText" />
-
+        android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/add_conn_guide"
+        android:textAlignment="center" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="5dp" />
+        android:layout_height="10dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="10sp"
-        android:text="@string/switch_id_box"
+        android:text="@string/conn_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -53,30 +49,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
-        android:text="@string/setup_switch_guide_1"
+        android:text="@string/conn_name_guide"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="italic" />
 
     <EditText
-        android:id="@+id/switch_id_box"
+        android:id="@+id/conn_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/switch_id_box"
+        android:hint="@string/conn_name"
         android:inputType="textPersonName|textFilter"
         android:maxLength="32"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="14sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
+        android:textSize="16sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="10sp"
-        android:text="@string/switch_password_box"
+        android:text="@string/conn_url"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -85,7 +77,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
-        android:text="@string/setup_switch_guide_1_1"
+        android:text="@string/conn_url_guide"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/conn_uri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/conn_url"
+        android:inputType="textPersonName|textFilter"
+        android:maxLength="160"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/conn_user"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/conn_user_guide"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/conn_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/conn_user"
+        android:inputType="textPersonName|textFilter"
+        android:maxLength="32"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10sp"
+        android:text="@string/conn_password"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/conn_password"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textStyle="italic" />
 
@@ -94,101 +142,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/switch_password_box"
+        android:hint="@string/conn_password"
         android:inputType="textPassword|textVisiblePassword"
         android:maxLength="32"
         android:textColor="@android:color/holo_blue_dark"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="8sp"
-        android:text="@string/wifi_ssid_box"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="8sp"
-        android:text="@string/setup_switch_guide_2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="italic" />
-
-    <EditText
-        android:id="@+id/wifi_ssid_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/wifi_ssid_box"
-        android:inputType="textPersonName"
-        android:textSize="14sp" />
-
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="8sp"
-        android:text="@string/wifi_password_box"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="8sp"
-        android:text="@string/setup_switch_guide_3"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="italic" />
-
-    <EditText
-        android:id="@+id/wifi_password_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/wifi_password_box"
-        android:inputType="textPassword|textVisiblePassword"
-        android:textSize="14sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/option_check_box" />
-
-
+        android:layout_height="10dp" />
 
     <Button
-        android:id="@+id/switch_setup"
+        android:id="@+id/custom_conn_adding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="setupSwitchOnClick"
+        android:onClick="customConnAddingOnClick"
         android:paddingTop="10dp"
-        android:text="@string/setup_switch" />
-
+        android:text="@string/custom_conn_button" />
 </LinearLayout>
-    </ScrollView>
+</ScrollView>

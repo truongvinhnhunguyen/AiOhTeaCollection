@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <string name="add_conn_guide">Enter connecttion parameters,\nthen press CUSTOM CONNECTION button</string>
+    <string name="conn_name">Connection Name</string>
+    <string name="conn_name_guide">Should be an easy to remember name</string>
+    <string name="conn_url">Connection URL</string>
+    <string name="conn_url_guide">Ex, tcp://iot.eclipse.org:1883</string>
+    <string name="conn_user">Connection User name</string>
+    <string name="conn_user_guide">Broker\'s user name. Leave blank if not required</string>
+    <string name="conn_password">Connection Password</string>
+    <string name="conn_password_guide">Broker\'s password. Leave blank if not required</string>
+    <string name="custom_conn_button">CUSTOM CONNECTION</string>
+
     <string name="app_name">AiOhTea Collection</string>
     <string name="action_setingup_devices">Setup device...</string>
     <string name="button">Button</string>
@@ -17,6 +28,7 @@
     <string name="about_text">IoT makes life easy and enjoyable like having tea.</string>
     <string name="wait_msg">Processing..., please wait!</string>
 
+    <string name="custom_conn_menu_item">Custom connection...</string>
 
     <string name="dev_details_menu_item">Device\'s details...</string>
     <string name="delete_dev_menu_item">Delete device...</string>
