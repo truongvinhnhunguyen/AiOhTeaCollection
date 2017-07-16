@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aiohtea.aiohteacollection">
+    package="com.aiohtea.aiohteacollection"
+    android:versionCode="2">
 
     <application
         android:allowBackup="false"
@@ -21,6 +22,7 @@
         </activity>
 
         <activity android:name=".SwitchAddingActivity"
+            android:label="@string/action_adding_switch"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -31,6 +33,7 @@
         </activity>
 
         <activity android:name=".SwitchSetupActivity"
+            android:label="@string/action_setingup_devices"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -41,6 +44,7 @@
         </activity>
 
         <activity android:name=".AboutActivity"
+            android:label="@string/action_about"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -50,6 +54,7 @@
         </activity>
 
         <activity android:name=".TimerSettingsActivity"
+            android:label="@string/action_setting_timers"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -59,6 +64,7 @@
         </activity>
 
         <activity android:name=".CustomConnActivity"
+            android:label="@string/action_custom_conn"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -74,6 +80,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--uses-permission android:name="android.permission.READ_PHONE_STATE" /-->
 
 </manifest>

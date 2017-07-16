@@ -52,6 +52,7 @@ public class MyMqttConnection {
         m_mqttUser = mqttUser;
         m_mqttPassword = mqttPassword;
 
+        connStore(mainActivity);
         return connect(mainActivity);
     }
 

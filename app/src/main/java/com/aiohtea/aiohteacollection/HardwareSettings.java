@@ -12,7 +12,9 @@ public class HardwareSettings {
     final static public int NUM_TIMERS = 4;
     final static public long MAX_SECS_IN_DAY = 86400;
 
-    String m_deviceFwVer = "V1.0";
+
+
+    String m_deviceFwVer = "----";
     char m_timerActive = '0'; // 0: Inactive; 1: Active
     long[] m_startTimer = {86401L, 86401L, 86401L, 86401L}; // Secs in day (UTC timezone)
     long[] m_stopTimer = {86401L, 86401L, 86401L, 86401L};
@@ -21,10 +23,25 @@ public class HardwareSettings {
 
     long m_appTzOffset = 0;
 
+    /**
+     *
+     * @return
+     */
+    public String getFwVer() {
+        return m_deviceFwVer;
+    }
+
+    /**
+     *
+     * @return
+     */
     public boolean isTimerActive(){
         return m_timerActive != '0';
     }
 
+    /**
+     *
+     */
     public HardwareSettings(){
         m_appTzOffset = TimeZone.getDefault().getRawOffset()/1000; // App timezone offset in seconds
     }

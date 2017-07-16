@@ -9,10 +9,10 @@
     <string name="conn_user_guide">Bỏ trống nếu không cần đăng nhập</string>
     <string name="conn_password">Mật khẩu đăng nhập vào MQTT broker</string>
     <string name="conn_password_guide">Bỏ trống nếu không cần đăng nhập</string>
-    <string name="custom_conn_button">TÙY BIẾN KẾT NỐI</string>
+    <string name="custom_conn_button">THAY ĐỔI MQTT BROKER</string>
 
     <string name="app_name">AiohTeaCollection</string>
-    <string name="action_setingup_devices">Cài đặt thiết bị...</string>
+    <string name="action_setingup_devices">Cài đặt thiết bị</string>
     <string name="button">Button</string>
     <string name="add_switch">THÊM CÔNG TẮC</string>
     <string name="add_switch_guide">Nhập ID và Mô tả của công tắc đã được nối mạng. Sau đó, nhấn nút THÊM CÔNG TẮC để thêm vào danh sách thiết bị của bạn.</string>
@@ -21,15 +21,14 @@
 
     <string name="switch_id_box">Tên của công tắc</string>
     <string name="switch_password_box">Mật khẩu của công tắc</string>
-    <string name="action_about">About...</string>
     <string name="about_text">IoT làm cuộc sống chúng ta trở nên dễ dàng và thú vị\n
         như thưởng thức một tách trà.</string>
     <string name="wait_msg">Đang xử lý..., vui lòng chờ!</string>
 
-    <string name="custom_conn_menu_item">Tùy biến kết nối...</string>
+    <string name="custom_conn_menu_item">Tùy biến kết nối</string>
 
-    <string name="dev_details_menu_item">Chi tiết thiết bị...</string>
-    <string name="delete_dev_menu_item">Xóa thiết bị...</string>
+    <string name="dev_details_menu_item">Chi tiết thiết bị</string>
+    <string name="delete_dev_menu_item">Xóa thiết bị</string>
 
     <!--> DEVIVE INFO </!-->
     <string name="dev_offline_notsynced">"Thiết bị không nối mạng hoặc ứng dụng chưa liên lạc được với thiết bị!"</string>
@@ -87,5 +86,8 @@
 
     <string name="timer_settings_guide">Thiết bị sẽ chạy/ngừng ở một thời điểm chỉ định
     Nếu thiết bị được điều khiển chạy/ngừng trước đó, định thời tương ứng sẽ bị bỏ qua</string>
+    <string name="action_adding_switch">Thêm công tắc</string>
+    <string name="action_setting_timers">Cài đặt hẹn giờ</string>
+    <string name="action_custom_conn">Tùy biến kết nối</string>
 
 </resources>

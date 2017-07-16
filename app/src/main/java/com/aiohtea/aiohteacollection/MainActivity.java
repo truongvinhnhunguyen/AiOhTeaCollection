@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     DEFAULT_CONN_USER_3, DEFAULT_CONN_PASS_3);
             addConnectionToList(conn);
 
-            addConnectionToList(conn);
 
             // END MAKE A DEFAULT CONNECTION
         }
@@ -118,7 +117,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
 
-                myToast(MainActivity.this, m_devList.get(pos).getConnName());
+                DeviceListItem longClickedItem = m_devList.get(pos);
+
+                String displayedMsg = "CONN: " + longClickedItem.getConnName() + "\nFW VER: " +
+                        longClickedItem.getHwSettings().getFwVer();
+
+
+                myToast(MainActivity.this, displayedMsg);
 
                 return true;
             }
@@ -293,14 +298,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
 
             case CUSTOM_CONN_ACTIVITY:
-                String uri = data.getStringExtra("CONN_URI");
-                String username = data.getStringExtra("CONN_USER");
-                String password = data.getStringExtra("CONN_PASSWORD");
+                if(requestCode == 1) {
+                    String uri = data.getStringExtra("CONN_URI");
+                    String username = data.getStringExtra("CONN_USER");
+                    String password = data.getStringExtra("CONN_PASSWORD");
 
-                myToast(this, uri+"-"+username+"-"+password);
+                    m_connList.get(0).changeConnParams(uri, username, password, this);
 
-
-
+                    myToast(this, uri + "-" + username + "-" + password);
+                }
                 break;
         }
 

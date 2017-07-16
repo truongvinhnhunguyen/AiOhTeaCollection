@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="add_conn_guide">Switches and the app communicate to each other via a MQTT broker. User is not required to setup connection to a MQTT broker if using a default broker.</string>
+    <string name="APP_VER" translatable="false">V1.1.2017.07.15</string>
+
+    <string name="add_conn_guide">Switches and the app communicate to each other via a MQTT broker. User is not required to setup connection to other MQTT broker if using a default broker.</string>
     <string name="conn_name">Connection Name</string>
     <string name="conn_name_guide">Should be an easy to remember name</string>
     <string name="conn_url">URL to MQTT broker</string>
@@ -10,10 +12,10 @@
     <string name="conn_user_guide">Leave blank if not required</string>
     <string name="conn_password">Password required by MQTT broker</string>
     <string name="conn_password_guide">Leave blank if not required</string>
-    <string name="custom_conn_button">CUSTOM CONNECTION</string>
+    <string name="custom_conn_button">CHANGE MQTT BROKER</string>
 
     <string name="app_name">AiOhTea Collection</string>
-    <string name="action_setingup_devices">Setup device...</string>
+    <string name="action_setingup_devices">Setup device</string>
     <string name="button">Button</string>
     <string name="add_switch">ADD SWITCH</string>
     <string name="add_switch_guide">
@@ -24,14 +26,14 @@
     <string name="switch_desc_guide">Such as \"Irrigation system\"</string>
     <string name="switch_id_box">Switch Name</string>
     <string name="switch_password_box">Switch Password</string>
-    <string name="action_about">About...</string>
+    <string name="action_about" translatable="false">About</string>
     <string name="about_text">IoT makes life easy and enjoyable like having tea.</string>
     <string name="wait_msg">Processing..., please wait!</string>
 
-    <string name="custom_conn_menu_item">Custom connection...</string>
+    <string name="custom_conn_menu_item">Custom connection</string>
 
-    <string name="dev_details_menu_item">Device\'s details...</string>
-    <string name="delete_dev_menu_item">Delete device...</string>
+    <string name="dev_details_menu_item">Device\'s details</string>
+    <string name="delete_dev_menu_item">Delete device</string>
 
     <!--> DEVIVE INFO </!-->
     <string name="dev_offline_notsynced">"Device is offline or not synced!"</string>
@@ -91,4 +93,7 @@
 
     <string name="timer_settings_guide">The device will be started/stopped at specific times.
     If the device has been started/stopped manually before, corresponding timer will be bypassed.</string>
+    <string name="action_adding_switch">Add Switch</string>
+    <string name="action_setting_timers">Set timers</string>
+    <string name="action_custom_conn">Custom connection</string>
 </resources>

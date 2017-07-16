@@ -21,6 +21,8 @@ public class CustomConnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_conn);
+
+        findViewById(R.id.conn_uri).requestFocus();
     }
 
     /**
@@ -52,7 +54,7 @@ public class CustomConnActivity extends AppCompatActivity {
         resultIntent.putExtra("CONN_PASSWORD", etx.getText().toString());
 
 
-        setResult(0, resultIntent);
+        setResult(1, resultIntent);
 
         finish();
 

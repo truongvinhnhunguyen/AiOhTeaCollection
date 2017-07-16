@@ -32,6 +32,14 @@ abstract public class DeviceListItem {
     protected String m_deviceDesc;
     protected String m_connnName;
 
+    /**
+     *
+     * @return
+     */
+    public HardwareSettings getHwSettings() {
+        return m_hwSettings;
+    }
+
     // Hardware settings
     HardwareSettings m_hwSettings;
     
