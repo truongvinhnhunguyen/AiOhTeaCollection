@@ -46,6 +46,15 @@ public class MyMqttConnection {
         m_client = null;
     }
 
+    int changeConnParams(String mqttServerUri, String mqttUser, String mqttPassword, MainActivity mainActivity){
+
+        m_mqttServerUri = mqttServerUri;
+        m_mqttUser = mqttUser;
+        m_mqttPassword = mqttPassword;
+
+        return connect(mainActivity);
+    }
+
     // --------------------------------------------------------------------------------------------
     // getconnName()
     // --------------------------------------------------------------------------------------------

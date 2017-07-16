@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="add_conn_guide">Nhập các thông số của kết nối,\nsau đó nhấn nút TÙY BIẾN KẾT NỐI</string>
+    <string name="add_conn_guide">Các công tắc và ứng dụng liên kết nhau thông qua một MQTT broker. Người dùng không nhất thiết phải thiết lập kết nối đến MQTT broker khác nếu sử dụng kết nối mặc định.</string>
     <string name="conn_name">Tên kết nối</string>
     <string name="conn_name_guide">Nên đặt tên dễ nhớ</string>
-    <string name="conn_url">URL đến máy chủ</string>
+    <string name="conn_url">URL đến MQTT broker</string>
     <string name="conn_url_guide">Ví dụ, tcp://iot.eclipse.org:1883</string>
-    <string name="conn_user">Tên đăng nhập</string>
+    <string name="conn_user">Tên đăng nhập vào MQTT broker</string>
     <string name="conn_user_guide">Bỏ trống nếu không cần đăng nhập</string>
-    <string name="conn_password">Mật khẩu</string>
+    <string name="conn_password">Mật khẩu đăng nhập vào MQTT broker</string>
     <string name="conn_password_guide">Bỏ trống nếu không cần đăng nhập</string>
     <string name="custom_conn_button">TÙY BIẾN KẾT NỐI</string>
 

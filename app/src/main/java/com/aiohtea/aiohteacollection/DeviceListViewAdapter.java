@@ -110,7 +110,7 @@ public class DeviceListViewAdapter extends ArrayAdapter<DeviceListItem> {
                     intent.putExtra("HW_SETTINGS", clickedDevice.getHwSettingPayloadString());
                     intent.putExtra("HW_SETTINGS_DEV_ID", clickedDevice.getDeviceId());
 
-                    m_activity.startActivityForResult(intent, 3);
+                    m_activity.startActivityForResult(intent, MainActivity.TIMER_SETTING_ACTIVITY);
                     break;
 
                 // Timer button clicked

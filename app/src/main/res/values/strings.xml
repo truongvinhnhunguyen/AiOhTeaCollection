@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <string name="add_conn_guide">Enter connecttion parameters,\nthen press CUSTOM CONNECTION button</string>
+    <string name="add_conn_guide">Switches and the app communicate to each other via a MQTT broker. User is not required to setup connection to a MQTT broker if using a default broker.</string>
     <string name="conn_name">Connection Name</string>
     <string name="conn_name_guide">Should be an easy to remember name</string>
-    <string name="conn_url">Connection URL</string>
+    <string name="conn_url">URL to MQTT broker</string>
     <string name="conn_url_guide">Ex, tcp://iot.eclipse.org:1883</string>
-    <string name="conn_user">Connection User name</string>
-    <string name="conn_user_guide">Broker\'s user name. Leave blank if not required</string>
-    <string name="conn_password">Connection Password</string>
-    <string name="conn_password_guide">Broker\'s password. Leave blank if not required</string>
+    <string name="conn_user">Username required by MQTT broker</string>
+    <string name="conn_user_guide">Leave blank if not required</string>
+    <string name="conn_password">Password required by MQTT broker</string>
+    <string name="conn_password_guide">Leave blank if not required</string>
     <string name="custom_conn_button">CUSTOM CONNECTION</string>
 
     <string name="app_name">AiOhTea Collection</string>

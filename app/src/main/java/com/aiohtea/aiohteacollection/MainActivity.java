@@ -30,8 +30,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView m_listView;
 
 
+    // Returning code
+    final public static int ADD_DEVICE_ACTIVITY = 1;
+    final public static int SETUP_DEVICE_ACTIVITY = 2;
+    final public static int TIMER_SETTING_ACTIVITY = 3;
+    final public static int CUSTOM_CONN_ACTIVITY = 4;
+
+
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME_1 = "Eclipse";
+    public final static String DEFAULT_CONN_NAME_1 = "Default";
     public final static String DEFAULT_CONN_URL_1 = "tcp://iot.eclipse.org:1883";
     public final static String DEFAULT_CONN_USER_1 = "";
     public final static String DEFAULT_CONN_PASS_1 = "";
@@ -48,12 +55,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public final static  String DEFAULT_CONN_USER_3 = "nywjllog";
     public final static  String DEFAULT_CONN_PASS_3 = "DXwwL_1Bye8x";
 
-
+    /*
     // DEFAULT CONNECTION
-    public final static String DEFAULT_CONN_NAME_4 = "Custom (HiveMQ)";
+    public final static String DEFAULT_CONN_NAME_4 = "HiveMQ";
     public final static String DEFAULT_CONN_URL_4 = "tcp://broker.hivemq.com:1883";
     public final static String DEFAULT_CONN_USER_4 = "";
     public final static String DEFAULT_CONN_PASS_4 = "";
+    */
 
 
     /*
@@ -94,8 +102,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     DEFAULT_CONN_USER_3, DEFAULT_CONN_PASS_3);
             addConnectionToList(conn);
 
-            conn = new MyMqttConnection(DEFAULT_CONN_NAME_4, DEFAULT_CONN_URL_4,
-                    DEFAULT_CONN_USER_4, DEFAULT_CONN_PASS_4);
             addConnectionToList(conn);
 
             // END MAKE A DEFAULT CONNECTION
@@ -134,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
                 Intent intent = new Intent(m_t, SwitchAddingActivity.class);
                 intent.putExtra("SW_CONN_NAME_LIST", connNameListToString());
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, ADD_DEVICE_ACTIVITY);
             }
         }
 
@@ -193,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-
     @Override
     // --------------------------------------------------------------------------------------------
     // Process Overflow menu (3 vetical dots menu) on App Bar
@@ -205,12 +210,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.action_setingup_devices:
                 intent = new Intent(this, SwitchSetupActivity.class);
                 intent.putExtra("SW_CONN_NAME_LIST", connNameListToString());
-                startActivityForResult(intent, 2);
+                startActivityForResult(intent, SETUP_DEVICE_ACTIVITY);
                 return true;
 
             case R.id.action_about:
                 intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.action_custom_conn:
+                intent = new Intent(this, CustomConnActivity.class);
+                startActivityForResult(intent, CUSTOM_CONN_ACTIVITY);
                 return true;
 
             default:
@@ -221,8 +231,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+
+
     // --------------------------------------------------------------------------------------------
-    // This function is call from returning of Activities/View called by MainActivity
+    // This function is called from returning of Activities/View called by MainActivity
     // such as Floating button to add new device; set up device item from overflow menu
     // --------------------------------------------------------------------------------------------
     @Override
@@ -231,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode) {
-            case 1: // Floating button returns for adding a new device to list
+            case ADD_DEVICE_ACTIVITY: // Floating button returns for adding a new device to list
                 if (resultCode == DeviceListItem.SWITCH_DEV_TYPE) {
                     String swName = data.getStringExtra("SW_NAME");
                     String swPassword = data.getStringExtra("SW_PASSWORD");
@@ -247,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
 
-            case 2: // "Setup device..." overflow menu
+            case SETUP_DEVICE_ACTIVITY: // "Setup device..." overflow menu
                 if(resultCode == 2){ //Add to list
                     String swName = data.getStringExtra("SW_NAME");
                     String swPassword = data.getStringExtra("SW_PASSWORD");
@@ -266,8 +278,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     myToast(this, "Setup successfully!!");
                 break;
 
-            case 3: // Timer settings
-
+            case TIMER_SETTING_ACTIVITY: // Timer settings
                 if (resultCode == 1)
                 {
                     String cmd = data.getStringExtra("HW_SETTINGS");
@@ -279,6 +290,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     SwitchListItem dev = (SwitchListItem)getDeviveByDeviceId(devId);
                     dev.commandHardware(this, cmd.getBytes());
                 }
+                break;
+
+            case CUSTOM_CONN_ACTIVITY:
+                String uri = data.getStringExtra("CONN_URI");
+                String username = data.getStringExtra("CONN_USER");
+                String password = data.getStringExtra("CONN_PASSWORD");
+
+                myToast(this, uri+"-"+username+"-"+password);
+
+
 
                 break;
         }

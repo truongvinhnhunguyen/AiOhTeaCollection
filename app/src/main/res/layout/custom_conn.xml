@@ -17,7 +17,7 @@
     <ImageView
         android:id="@+id/sw_logo_icon"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="83dp"
         android:contentDescription="@string/app_name"
         android:paddingTop="10dp"
         app:srcCompat="@mipmap/aiohtea_conn_logo" />
@@ -58,9 +58,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:enabled="false"
         android:hint="@string/conn_name"
         android:inputType="textPersonName|textFilter"
         android:maxLength="32"
+        android:text="Default"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="16sp" />
 
@@ -87,6 +89,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/conn_url"
+        android:text="tcp://iot.eclipse.org:1883"
         android:inputType="textPersonName|textFilter"
         android:maxLength="160"
         android:textColor="@android:color/holo_blue_dark"
@@ -138,7 +141,7 @@
         android:textStyle="italic" />
 
     <EditText
-        android:id="@+id/switch_password_box"
+        android:id="@+id/conn_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
